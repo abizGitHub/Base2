@@ -13,4 +13,5 @@ public class Consts {
     public static final String GENERALLIST ="general_list";
     public static final String VISIBLITY ="visiblity";
 
+    public static final String NAVPAGER ="navPager";
 }

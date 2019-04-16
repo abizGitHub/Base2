@@ -30,7 +30,11 @@ public class PagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_paginator);
         GeneralService service = new GeneralService();
-        ArrayList<FragmentPack> allFragmentPacks = service.getAllFragPacks();
+        ArrayList<FragmentPack> allFragmentPacks;
+        if (R.id.nav_pagerList == getIntent().getExtras().getInt(Consts.NAVPAGER))
+            allFragmentPacks = service.getAllNetGetFrag();
+        else
+            allFragmentPacks = service.getAllFragPacks();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

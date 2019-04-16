@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
+import com.tut.abiz.base.frags.ListPagerFrag;
 import com.tut.abiz.base.frags.PagerFragment;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.TagVisiblity;
 
 import java.util.ArrayList;
 
@@ -60,5 +62,37 @@ public class GeneralService {
         return allFragPacks;
     }
 
+    public ArrayList<FragmentPack> getAllNetGetFrag() {
+        allFragPacks = new ArrayList<>();
+
+        ListPagerFrag pFrag1 = new ListPagerFrag();
+        Bundle data1 = new Bundle();
+        data1.putInt(Consts.CURRENTPAGE, 0);
+        data1.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
+        data1.putSerializable(Consts.GENERALLIST,getTestGeneralList());
+        data1.putSerializable(Consts.VISIBLITY,new TagVisiblity().fillMock());
+        FragmentPack fragmentPack1 = new FragmentPack("page-1", pFrag1, data1);
+
+        ListPagerFrag pFrag2 = new ListPagerFrag();
+        Bundle data2 = new Bundle();
+        data2.putInt(Consts.CURRENTPAGE, 1);
+        data2.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
+        data2.putSerializable(Consts.GENERALLIST,getTestGeneralList());
+        data2.putSerializable(Consts.VISIBLITY,new TagVisiblity().fillMock());
+        FragmentPack fragmentPack2 = new FragmentPack("page-2", pFrag2, data2);
+
+        ListPagerFrag pFrag3 = new ListPagerFrag();
+        Bundle data3 = new Bundle();
+        data3.putInt(Consts.CURRENTPAGE, 2);
+        data3.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
+        data3.putSerializable(Consts.GENERALLIST,getTestGeneralList());
+        data3.putSerializable(Consts.VISIBLITY,new TagVisiblity().fillMock());
+        FragmentPack fragmentPack3 = new FragmentPack("page-3", pFrag3, data3);
+
+        allFragPacks.add(fragmentPack1);
+        allFragPacks.add(fragmentPack2);
+        allFragPacks.add(fragmentPack3);
+        return allFragPacks;
+    }
 
 }

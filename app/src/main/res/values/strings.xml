@@ -12,5 +12,6 @@
     <string name="paginator">Paginator</string>
     <string name="list">List</string>
     <string name="net">net</string>
+    <string name="pagerList">pagerList</string>
 
 </resources>

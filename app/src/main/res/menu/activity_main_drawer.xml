@@ -30,6 +30,10 @@
                 android:id="@+id/nav_frag3"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/farg3" />
+            <item
+                android:id="@+id/nav_pagerList"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/pagerList" />
         </menu>
     </item>
 

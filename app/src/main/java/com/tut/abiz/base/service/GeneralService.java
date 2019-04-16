@@ -1,5 +1,8 @@
 package com.tut.abiz.base.service;
 
+import android.os.Bundle;
+
+import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.frags.PagerFragment;
 import com.tut.abiz.base.model.FragmentPack;
@@ -32,13 +35,30 @@ public class GeneralService {
 
     public ArrayList<FragmentPack> getAllFragPacks() {
         allFragPacks = new ArrayList<>();
-        FragmentPack fragmentPack1 = new FragmentPack("page-1",new PagerFragment(), R.layout.pager_frag);
-        FragmentPack fragmentPack2 = new FragmentPack("page-2",new PagerFragment(), R.layout.pager_frag);
-        FragmentPack fragmentPack3 = new FragmentPack("page-3",new PagerFragment(), R.layout.pager_frag);
+
+        PagerFragment pFrag1 = new PagerFragment();
+        Bundle data1 = new Bundle();
+        data1.putInt(Consts.CURRENTPAGE, 0);
+        data1.putInt(Consts.PAGELAYOUT, R.layout.pager_frag);
+        FragmentPack fragmentPack1 = new FragmentPack("page-1", pFrag1, data1);
+
+        PagerFragment pFrag2 = new PagerFragment();
+        Bundle data2 = new Bundle();
+        data2.putInt(Consts.CURRENTPAGE, 1);
+        data2.putInt(Consts.PAGELAYOUT, R.layout.pager_frag);
+        FragmentPack fragmentPack2 = new FragmentPack("page-2", pFrag2, data2);
+
+        PagerFragment pFrag3 = new PagerFragment();
+        Bundle data3 = new Bundle();
+        data3.putInt(Consts.CURRENTPAGE, 2);
+        data3.putInt(Consts.PAGELAYOUT, R.layout.pager_frag);
+        FragmentPack fragmentPack3 = new FragmentPack("page-3", pFrag3, data3);
+
         allFragPacks.add(fragmentPack1);
         allFragPacks.add(fragmentPack2);
         allFragPacks.add(fragmentPack3);
         return allFragPacks;
     }
+
 
 }

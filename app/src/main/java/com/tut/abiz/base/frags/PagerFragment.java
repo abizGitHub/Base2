@@ -31,7 +31,7 @@ public class PagerFragment extends Fragment {
         /** Getting integer data of the key current_page from the bundle */
         ix = data.getInt(Consts.CURRENTPAGE, 0);
         pageLayout = data.getInt(Consts.PAGELAYOUT); // @TODO set default no Content page
-        Toast.makeText(getActivity(), ">>>" + ix, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "onCreate>>>" + ix, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -1,0 +1,10 @@
+
+RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams) footR.getLayoutParams();
+            if (visiblity.isBodyVisible()) {
+                layout.addRule(RelativeLayout.BELOW, R.id.sheetBody);
+            } else {
+                layout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            }
+footL.setLayoutParams(layout);
+
+------------------------------------------------------------------

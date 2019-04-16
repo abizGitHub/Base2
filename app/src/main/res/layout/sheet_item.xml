@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/sheetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_size_xlarge"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="title"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_size_large" />
+
+    <ToggleButton
+        android:id="@+id/sheetStar"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/text_size_xlarge"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/star_btn"
+        android:checked="false"
+        android:textOff=""
+        android:textOn="" />
+
+    <TextView
+        android:id="@+id/sheetHeaderL"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/text_size_xlarge"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/sheetStar"
+        android:text="header_L" />
+
+    <TextView
+        android:id="@+id/sheetHeaderR"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/text_size_xlarge"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sheetStar"
+        android:text="header_R"
+        android:textSize="@dimen/text_size_medium" />
+
+    <TextView
+        android:id="@+id/sheetBody"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_size_xlarge"
+        android:layout_below="@id/sheetHeaderL"
+        android:background="@color/colorAccent"
+        android:gravity="end"
+        android:text="context"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_size_medium" />
+
+    <TextView
+        android:id="@+id/sheetFootL"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/text_size_xlarge"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/sheetBody"
+        android:text="footer_L"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/sheetFootR"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/text_size_xlarge"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/sheetBody"
+        android:background="@color/colorYellow"
+        android:text="footer_R" />
+
+</RelativeLayout>

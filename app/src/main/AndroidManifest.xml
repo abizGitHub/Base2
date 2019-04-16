@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tut.abiz.base">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ActsInMenuAct"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,6 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".acts.Act1" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".acts.Act2" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".acts.Act3" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".acts.PagerActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".acts.ListActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".acts.NetConnectionActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

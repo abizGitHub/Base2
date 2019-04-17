@@ -139,6 +139,10 @@ public class ActsInMenuAct extends AppCompatActivity
             Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
             intent.putExtra(Consts.NAVPAGER, R.id.nav_pagerList);
             startActivity(intent);
+        } else if (selectedMenuAct == R.id.nav_netGetList) {
+            Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
+            intent.putExtra(Consts.NAVPAGER, R.id.nav_netGetList);
+            startActivity(intent);
         } else if (selectedMenuAct == R.id.nav_net) {
             Intent intent = new Intent(ActsInMenuAct.this, NetConnectionActivity.class);
             startActivity(intent);

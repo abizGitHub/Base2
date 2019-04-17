@@ -2,7 +2,6 @@ package com.tut.abiz.base.async;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 
 import com.tut.abiz.base.NetServiceListener;
 
@@ -64,7 +63,7 @@ public class BrowsePageTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        netServiceListener.onTextResposeReady(response);
+        netServiceListener.onTextResponseReady(response);
         Log.e("finished>", url);
     }
 

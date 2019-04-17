@@ -20,6 +20,7 @@ import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.NetService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by abiz on 4/15/2019.
@@ -66,12 +67,17 @@ public class NetConnectionActivity extends AppCompatActivity implements NetServi
     }
 
     @Override
-    public void onTextResposeReady(String response) {
+    public void onTextResponseReady(String response) {
         responseView.setText(response);
     }
 
     @Override
     public void onFailure(String error) {
         responseView.setText(error);
+    }
+
+    @Override
+    public void onGeneralListReady(ArrayList<GeneralModel> generalModels) {
+
     }
 }

@@ -3,9 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_netGetList"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/netGetList" />
+        <item
             android:id="@+id/nav_net"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="@string/net" />
         <item
             android:id="@+id/nav_frag1"
             android:icon="@drawable/ic_menu_gallery"
@@ -16,7 +20,7 @@
             android:title="@string/list" />
         <item
             android:id="@+id/nav_frag2"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_camera"
             android:title="@string/farg2" />
     </group>
 

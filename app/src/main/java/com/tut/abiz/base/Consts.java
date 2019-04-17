@@ -11,7 +11,10 @@ public class Consts {
     public static final String CURRENTPAGE ="current_page";
     public static final String ALLFRAGMENTPACK ="all_fragment_pack";
     public static final String GENERALLIST ="general_list";
+    public static final String GENERALMODEL ="general_model";
     public static final String VISIBLITY ="visiblity";
 
     public static final String NAVPAGER ="navPager";
+    public static final String IX ="ix";
+
 }

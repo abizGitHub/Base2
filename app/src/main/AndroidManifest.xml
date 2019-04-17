@@ -27,6 +27,7 @@
         <activity android:name=".acts.PagerActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".acts.ListActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".acts.NetConnectionActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".acts.ViewListItemActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

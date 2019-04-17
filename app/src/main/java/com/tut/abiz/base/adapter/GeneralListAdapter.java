@@ -1,6 +1,7 @@
 package com.tut.abiz.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,7 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
+import com.tut.abiz.base.acts.Act1;
+import com.tut.abiz.base.acts.ViewListItemActivity;
+import com.tut.abiz.base.listener.CheckListener;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
 
@@ -39,7 +44,7 @@ public class GeneralListAdapter extends ArrayAdapter {
         this.generalModels = generalModels;
         this.context = context;
         this.visiblity = visiblity;
-        sheet_itemLayout = sheet_item;
+        this.sheet_itemLayout = sheet_item;
     }
 
     @NonNull
@@ -104,7 +109,7 @@ public class GeneralListAdapter extends ArrayAdapter {
         star = (ToggleButton) row.findViewById(R.id.sheetStar);
         if (visiblity.isStarVisible()) {
             star.setChecked(generalModels.get(position).getStared());
-            star.setOnCheckedChangeListener(new CheckListener(position));
+            star.setOnCheckedChangeListener(new CheckListener(generalModels.get(position), context));
             minHeight += rowHeight;
         } else {
             layout.removeView(star);
@@ -112,6 +117,7 @@ public class GeneralListAdapter extends ArrayAdapter {
         }
         if (sheet_itemLayout == R.layout.sheet_itemlinear)
             doMoreRemove();
+        layout.setOnClickListener(new LayoutClickListener(generalModels.get(position)));
         layout.setMinimumHeight(minHeight);
         return row;
     }
@@ -127,19 +133,19 @@ public class GeneralListAdapter extends ArrayAdapter {
             layout.removeView(row.findViewById(R.id.sheetBody));
     }
 
+    class LayoutClickListener implements View.OnClickListener {
+        GeneralModel gm;
 
-    class CheckListener implements CompoundButton.OnCheckedChangeListener {
-        int ix;
-
-        CheckListener(int ix) {
-            this.ix = ix;
+        public LayoutClickListener(GeneralModel gm) {
+            this.gm = gm;
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            //boolean b1 = dbHelper.changeStateOf(DbHelper.MOZ_TABLE, ids.get(ix), b);
-            Toast.makeText(context, generalModels.get(ix).getId() + ":state>>" + b, Toast.LENGTH_SHORT).show();
+        public void onClick(View view) {
+            Intent intent = new Intent(context, ViewListItemActivity.class);
+            intent.putExtra(Consts.GENERALMODEL, gm);
+            context.startActivity(intent);
         }
-
     }
+
 }

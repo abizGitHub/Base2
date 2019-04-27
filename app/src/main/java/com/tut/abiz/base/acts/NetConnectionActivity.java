@@ -55,7 +55,7 @@ public class NetConnectionActivity extends AppCompatActivity implements NetServi
         netBtn = (Button) findViewById(R.id.netGet_btn);
         urlView = (EditText) findViewById(R.id.url);
         responseView = (TextView) findViewById(R.id.net_response);
-        netService = new NetService(this);
+        netService = new NetService(this, this);
         netBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -14,5 +14,6 @@
     <string name="net">net</string>
     <string name="pagerList">pagerList</string>
     <string name="netGetList">netGetList</string>
+    <string name="postList">PostList</string>
 
 </resources>

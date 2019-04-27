@@ -16,6 +16,7 @@ public class TagVisiblity implements Serializable {
     private boolean footerRVisible;
     private boolean footerLVisible;
     private boolean starVisible;
+    private int tableId;
 
     public TagVisiblity doTitleVisible(boolean titleVisible) {
         this.titleVisible = titleVisible;
@@ -106,6 +107,14 @@ public class TagVisiblity implements Serializable {
 
     public void setStarVisible(boolean starVisible) {
         this.starVisible = starVisible;
+    }
+
+    public int getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(int tableId) {
+        this.tableId = tableId;
     }
 
     public TagVisiblity fillMock() {

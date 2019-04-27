@@ -38,6 +38,10 @@
                 android:id="@+id/nav_pagerList"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/pagerList" />
+            <item
+                android:id="@+id/nav_postList"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/postList" />
         </menu>
     </item>
 

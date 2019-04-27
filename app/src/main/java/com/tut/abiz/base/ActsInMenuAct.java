@@ -22,6 +22,7 @@ import com.tut.abiz.base.acts.PagerActivity;
 import com.tut.abiz.base.frags.Frag1;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.service.DbHelper;
 import com.tut.abiz.base.service.GeneralService;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class ActsInMenuAct extends AppCompatActivity
         homeFragment = new Frag1();
         service = new GeneralService();
         testList = service.getTestGeneralList();
+        DbHelper dbHelper = new DbHelper(this);
+        dbHelper.initPageNames(dbHelper.getWritableDatabase());
         //Intent intent = new Intent(SecondActivity.this,Main2Activ.class);
         //startActivity(intent);
     }
@@ -142,6 +145,10 @@ public class ActsInMenuAct extends AppCompatActivity
         } else if (selectedMenuAct == R.id.nav_netGetList) {
             Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
             intent.putExtra(Consts.NAVPAGER, R.id.nav_netGetList);
+            startActivity(intent);
+        } else if (selectedMenuAct == R.id.nav_postList) {
+            Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
+            intent.putExtra(Consts.NAVPAGER, R.id.nav_postList);
             startActivity(intent);
         } else if (selectedMenuAct == R.id.nav_net) {
             Intent intent = new Intent(ActsInMenuAct.this, NetConnectionActivity.class);

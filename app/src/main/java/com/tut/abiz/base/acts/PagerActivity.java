@@ -13,7 +13,6 @@ import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.adapter.GeneralPagerAdapter;
 import com.tut.abiz.base.model.FragmentPack;
-import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.service.GeneralService;
 import com.tut.abiz.base.service.NetService;
 
@@ -34,15 +33,16 @@ public class PagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_paginator);
         GeneralService service = new GeneralService();
-        netService = new NetService(null);
+        netService = new NetService(null, this);
         if (R.id.nav_pagerList == getIntent().getExtras().getInt(Consts.NAVPAGER))
             allFragmentPacks = service.getAllNetGetFrag();
         else if (R.id.nav_paginator == getIntent().getExtras().getInt(Consts.NAVPAGER))
             allFragmentPacks = service.getAllFragPacks();
-        else {
+        else if (R.id.nav_netGetList == getIntent().getExtras().getInt(Consts.NAVPAGER)) {
             Toast.makeText(this, "wait4List", Toast.LENGTH_SHORT).show();
             allFragmentPacks = netService.getAllNetList();
-        }
+        } else if (R.id.nav_postList == getIntent().getExtras().getInt(Consts.NAVPAGER))
+            allFragmentPacks = netService.allNetList();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

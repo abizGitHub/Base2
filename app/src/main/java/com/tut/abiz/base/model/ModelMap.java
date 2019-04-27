@@ -12,6 +12,13 @@ import java.io.Serializable;
 
 public class ModelMap implements Serializable {
 
+
+    public static final String COLUMNIX = "columnIx";
+    public static final String INTVALUE = "intValue";
+    public static final String STRINGVALUE = "stringValue";
+    public static final String TABLEID = "tableId";
+
+    private int id;
     private int tableId;
     private int columnIx; // GeneralModel statics;
     private Integer intValue;
@@ -47,5 +54,13 @@ public class ModelMap implements Serializable {
 
     public void setStringValue(String stringValue) {
         this.stringValue = stringValue;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

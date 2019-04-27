@@ -17,7 +17,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 /**
@@ -42,20 +41,18 @@ public class GetListTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
+        super.onPreExecute();
         Log.e("started>", url);
     }
 
     @Override
     protected String doInBackground(String... strings) {
-        HttpURLConnection urlConnection = null;
         try {
             HttpEntity entity = GetData();
             response = getASCIIContentFromEntity(entity);
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
             response = e.getMessage();
-            if (urlConnection != null)
-                urlConnection.disconnect();
             cancel(true);
         }
         netServiceListener.onTextResponseReady(response);
@@ -85,7 +82,7 @@ public class GetListTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-
+        super.onPostExecute(result);
     }
 
     @Override

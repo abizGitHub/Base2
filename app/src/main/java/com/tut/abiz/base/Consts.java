@@ -17,4 +17,12 @@ public class Consts {
     public static final String NAVPAGER ="navPager";
     public static final String IX ="ix";
 
+    public static final int MONAQ = 1;
+    public static final int MOZAY = 2;
+
+    public static final int NEWUSERID = 1;
+    public static final String NEWUSERNAME = "newUser";
+    public static final String SERVERADDRESS = "http://10.0.2.2:8085/rest";
+
+    public static final String ID = "id";
 }

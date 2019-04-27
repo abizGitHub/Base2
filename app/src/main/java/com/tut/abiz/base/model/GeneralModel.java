@@ -16,6 +16,14 @@ import java.util.Random;
  */
 public class GeneralModel implements Serializable{
 
+    public static final String TITLE$ = "title";
+    public static final String HEADERL$ = "headerL";
+    public static final String HEADERR$ = "headerR";
+    public static final String BODY$ = "body";
+    public static final String FOOTERL$ = "footerL";
+    public static final String FOOTERR$ = "footerR";
+
+
     String title;
     String body;
     String headerL;

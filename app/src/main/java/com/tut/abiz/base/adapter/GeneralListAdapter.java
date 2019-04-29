@@ -55,7 +55,6 @@ public class GeneralListAdapter extends ArrayAdapter {
         layout = (ViewGroup) row.findViewById(R.id.item_content);
         int minHeight = 0;
         int rowHeight = 100;
-        visiblity.fillMock();
         title = (TextView) row.findViewById(R.id.sheetTitle);
         if (visiblity.isTitleVisible()) {
             title.setText(generalModels.get(position).getTitle());

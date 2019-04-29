@@ -17,6 +17,7 @@ public class Confiq {
     public static String LASTIDS = "lastIds";
     public static String LASTMODELMAP = "lastModelMap";
     public static String LASTTABLESNAME = "lastTablesName";
+    public static String TAGVISIBLITY = "tagVisiblity";
 
     String userName;
     Long userId;

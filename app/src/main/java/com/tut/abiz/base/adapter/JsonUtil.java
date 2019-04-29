@@ -4,6 +4,7 @@ import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.ModelMap;
+import com.tut.abiz.base.model.TagVisiblity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,15 +36,36 @@ public class JsonUtil {
         return json;
     }
 
-    public static GeneralModel extractGM(JSONObject json) throws JSONException {
+    public static GeneralModel extractGM(JSONObject json) {
         GeneralModel generalModel = new GeneralModel();
-        generalModel.setId(Long.valueOf(json.get(Consts.ID).toString()));
-        generalModel.setTitle(json.get(GeneralModel.TITLE$).toString());
-        generalModel.setHeaderL(json.get(GeneralModel.HEADERL$).toString());
-        generalModel.setHeaderR(json.get(GeneralModel.HEADERR$).toString());
-        generalModel.setBody(json.get(GeneralModel.BODY$).toString());
-        generalModel.setFooterL(json.get(GeneralModel.FOOTERL$).toString());
-        generalModel.setFooterR(json.get(GeneralModel.FOOTERR$).toString());
+        try {
+            generalModel.setId(Long.valueOf(json.get(Consts.ID).toString()));
+        } catch (JSONException e) {
+        }
+        try {
+            generalModel.setTitle(json.get(GeneralModel.TITLE$).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            generalModel.setHeaderL(json.get(GeneralModel.HEADERL$).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            generalModel.setHeaderR(json.get(GeneralModel.HEADERR$).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            generalModel.setBody(json.get(GeneralModel.BODY$).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            generalModel.setFooterL(json.get(GeneralModel.FOOTERL$).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            generalModel.setFooterR(json.get(GeneralModel.FOOTERR$).toString());
+        } catch (JSONException e) {
+        }
         return generalModel;
     }
 
@@ -87,6 +109,15 @@ public class JsonUtil {
         } catch (Exception e) {
         }
         try {
+            JSONArray jsonArray = json.getJSONArray(Confiq.TAGVISIBLITY);
+            ArrayList<TagVisiblity> visiblities = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                visiblities.add(extractTagVisiblity((JSONObject) jsonArray.get(i)));
+            }
+            confiq.setTagVisiblity(visiblities);
+        } catch (Exception e) {
+        }
+        try {
             JSONArray jsonArray = json.getJSONArray(Confiq.LASTTABLESNAME);
             ArrayList<String> list = new ArrayList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -107,6 +138,45 @@ public class JsonUtil {
         return confiq;
     }
 
+    private static TagVisiblity extractTagVisiblity(JSONObject jsonObject) {
+        TagVisiblity visiblity = new TagVisiblity();
+        try {
+            visiblity.setBodyVisible(jsonObject.getBoolean(GeneralModel.BODY$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setTitleVisible(jsonObject.getBoolean(GeneralModel.TITLE$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setHeaderLVisible(jsonObject.getBoolean(GeneralModel.HEADERL$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setHeaderRVisible(jsonObject.getBoolean(GeneralModel.HEADERR$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setFooterLVisible(jsonObject.getBoolean(GeneralModel.FOOTERL$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setFooterRVisible(jsonObject.getBoolean(GeneralModel.FOOTERR$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setStarVisible(jsonObject.getBoolean(GeneralModel.STAR$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return visiblity;
+    }
 
     public static ModelMap extractModelMap(JSONObject json) throws JSONException {
         ModelMap modelMap = new ModelMap();
@@ -116,6 +186,52 @@ public class JsonUtil {
         modelMap.setStringValue(json.getString(ModelMap.STRINGVALUE));
         modelMap.setTableId(json.getInt(ModelMap.TABLEID));
         return modelMap;
+    }
+
+    private static JSONObject parseModelMap(ModelMap mm) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put(ModelMap.INTVALUE, mm.getIntValue());
+            json.put(ModelMap.STRINGVALUE, mm.getStringValue());
+            json.put(ModelMap.COLUMNIX, mm.getColumnIx());
+            json.put(Consts.ID, mm.getId());
+            json.put(ModelMap.TABLEID, mm.getTableId());
+        } catch (JSONException e) {
+        }
+        return json;
+    }
+
+    public static JSONObject parseTagVisiblity(TagVisiblity visiblity) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put(GeneralModel.BODY$, visiblity.isBodyVisible());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put(GeneralModel.TITLE$, visiblity.isTitleVisible());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put(GeneralModel.HEADERL$, visiblity.isHeaderLVisible());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put(GeneralModel.HEADERR$, visiblity.isHeaderRVisible());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put(GeneralModel.FOOTERL$, visiblity.isFooterLVisible());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put(GeneralModel.FOOTERR$, visiblity.isFooterRVisible());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put(GeneralModel.STAR$, visiblity.isStarVisible());
+        } catch (JSONException e) {
+        }
+        return json;
     }
 
     public static JSONObject parseConfiq(Confiq confiq) {
@@ -130,10 +246,18 @@ public class JsonUtil {
         } catch (JSONException e) {
         }
         try {
-            if (confiq.getLastModelMap() != null)
-                json.put(Confiq.LASTMODELMAP, new JSONArray(confiq.getLastModelMap()));
+            json.put(Confiq.LASTIDS, new JSONArray(confiq.getLastIds()));
         } catch (JSONException e) {
         }
+        if (confiq.getLastModelMap() != null)
+            try {
+                JSONArray array = new JSONArray();
+                for (ModelMap mm : confiq.getLastModelMap()) {
+                    array.put(parseModelMap(mm));
+                }
+                json.put(Confiq.LASTMODELMAP, array);
+            } catch (JSONException e) {
+            }
         try {
             if (confiq.getLastTablesName() != null)
                 json.put(Confiq.LASTTABLESNAME, new JSONArray(confiq.getLastTablesName()));
@@ -151,7 +275,15 @@ public class JsonUtil {
             json.put(Confiq.LASTMODELMAPID, confiq.getLastModelMapId());
         } catch (JSONException e) {
         }
+        try {
+            JSONArray array = new JSONArray();
+            if (confiq.getTagVisiblity() != null)
+                for (TagVisiblity tv : confiq.getTagVisiblity()) {
+                    array.put(parseTagVisiblity(tv));
+                }
+            json.put(Confiq.TAGVISIBLITY, array);
+        } catch (JSONException e) {
+        }
         return json;
     }
-
 }   

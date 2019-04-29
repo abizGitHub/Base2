@@ -1,6 +1,7 @@
 package com.tut.abiz.base;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -43,6 +44,8 @@ public class ActsInMenuAct extends AppCompatActivity
     Toolbar toolbar;
     GeneralService service;
     ArrayList<GeneralModel> testList;
+    SharedPreferences pref, visiblityPref;
+    Boolean isRunBefore = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +63,35 @@ public class ActsInMenuAct extends AppCompatActivity
         homeFragment = new Frag1();
         service = new GeneralService();
         testList = service.getTestGeneralList();
-        DbHelper dbHelper = new DbHelper(this);
-        dbHelper.initPageNames(dbHelper.getWritableDatabase());
+        doPrefs();
         //Intent intent = new Intent(SecondActivity.this,Main2Activ.class);
         //startActivity(intent);
+    }
+
+    private void doPrefs() {
+        pref = getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE);
+        visiblityPref = getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE);
+        isRunBefore = pref.getBoolean(Consts.ISRUNBEFORE, false);
+        if (!isRunBefore) {
+            DbHelper dbHelper = new DbHelper(this);
+            dbHelper.initPageNames(dbHelper.getWritableDatabase());
+            Toast.makeText(this, "firstRun", Toast.LENGTH_LONG).show();
+            pref.edit().putBoolean(Consts.ISRUNBEFORE, true).apply();
+            pref.edit().putString(Consts.TABLENAMES[0], "monaq").apply();
+            pref.edit().putString(Consts.TABLENAMES[1], "mozay").apply();
+            pref.edit().putInt(Consts.TABLECOUNT, 2).apply();
+
+            visiblityPref.edit().putBoolean(GeneralModel.TITLE$ + 1, true).apply();
+            visiblityPref.edit().putBoolean(GeneralModel.HEADERR$ + 1, true).apply();
+            visiblityPref.edit().putBoolean(GeneralModel.FOOTERR$ + 1, true).apply();
+            visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + 1, false).apply();
+
+            visiblityPref.edit().putBoolean(GeneralModel.TITLE$ + 2, true).apply();
+            visiblityPref.edit().putBoolean(GeneralModel.HEADERR$ + 2, true).apply();
+            visiblityPref.edit().putBoolean(GeneralModel.HEADERL$ + 2, true).apply();
+            visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + 2, true).apply();
+            visiblityPref.edit().putBoolean(GeneralModel.FOOTERR$ + 2, false).apply();
+        }
     }
 
     @Override

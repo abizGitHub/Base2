@@ -209,7 +209,10 @@ public class NetService implements NetServiceListener {
 
     private void applyNewModelMap(Confiq confiqLocal, Confiq confiqRemote) {
         if (confiqRemote.getHaveNewChange() != null && confiqRemote.getHaveNewChange()) {
-            dbHelper.updateModelMap(confiqRemote.getLastModelMap());
+            if (confiqRemote.getLastModelMap() != null && confiqRemote.getLastModelMap().size() > 0)
+                dbHelper.updateModelMap(confiqRemote.getLastModelMap());
+            if (confiqRemote.getModelMap2Delete() != null && confiqRemote.getModelMap2Delete().size() > 0)
+                dbHelper.deleteModelMap(confiqRemote.getModelMap2Delete());
         }
     }
 

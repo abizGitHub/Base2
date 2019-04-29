@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="modelMap">
+        1- send modelMap
+        2- apply
+        3- edit
+    </item>
+    <item name="staredPage"/>
+    <item name="search">
+        1- ws base
+        2- filter page
+        3- customized filter
+    </item>
+    <item name="myGroup">
+        1- present
+        2- ordering
+    </item>
+
+</resources>

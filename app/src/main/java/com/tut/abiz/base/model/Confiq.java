@@ -28,6 +28,7 @@ public class Confiq {
     ArrayList<String> lastTablesName;
     ArrayList<TagVisiblity> tagVisiblity;
     ArrayList<ModelMap> lastModelMap;
+    ArrayList<Long> modelMap2Delete;
     Long lastModelMapId;
     Boolean haveNewChange;// if (tagVisiblity or lastModelMap)
     // send by server differ from local
@@ -112,4 +113,11 @@ public class Confiq {
         this.haveNewChange = haveNewChange;
     }
 
+    public ArrayList<Long> getModelMap2Delete() {
+        return modelMap2Delete;
+    }
+
+    public void setModelMap2Delete(ArrayList<Long> modelMap2Delete) {
+        this.modelMap2Delete = modelMap2Delete;
+    }
 }

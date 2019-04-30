@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Random;
  * Time: 10:53 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GeneralModel implements Serializable{
+public class GeneralModel implements Serializable {
 
     public static final String TITLE$ = "title";
     public static final String HEADERL$ = "headerL";
@@ -118,29 +118,27 @@ public class GeneralModel implements Serializable{
         this.footerR = footerR;
     }
 
-    public void applyModelMap(ArrayList<ModelMap> modelMaps) {
-        if (modelMaps.isEmpty())
+    public void applyModelMap(HashMap<Integer, HashMap<Integer, String>> columnHash) {
+        if (columnHash.isEmpty())
             return;
-        for (ModelMap modelMap : modelMaps) {
-            if (TITLE == modelMap.getColumnIx() && this.getTitle().equals(modelMap.getIntValue())) {
-                this.setTitle(modelMap.getStringValue());
-            }
-            if (HEADER_R == modelMap.getColumnIx() && this.getHeaderR().equals(modelMap.getIntValue())) {
-                this.setHeaderR(modelMap.getStringValue());
-            }
-            if (HEADER_L == modelMap.getColumnIx() && this.getHeaderL().equals(modelMap.getIntValue())) {
-                this.setHeaderL(modelMap.getStringValue());
-            }
-            if (BODY == modelMap.getColumnIx() && this.getBody().equals(modelMap.getIntValue())) {
-                this.setBody(modelMap.getStringValue());
-            }
-            if (FOOTER_R == modelMap.getColumnIx() && this.getFooterR().equals(modelMap.getIntValue())) {
-                this.setFooterR(modelMap.getStringValue());
-            }
-            if (FOOTER_L == modelMap.getColumnIx() && this.getFooterL().equals(modelMap.getIntValue())) {
-                this.setFooterL(modelMap.getStringValue());
-            }
-        }
+        HashMap<Integer, String> intValueHash = columnHash.get(TITLE);
+        if (intValueHash != null && !intValueHash.isEmpty())
+            this.setTitle(intValueHash.get(Integer.parseInt(this.getTitle())));
+        intValueHash = columnHash.get(HEADER_R);
+        if (intValueHash != null && !intValueHash.isEmpty())
+            this.setHeaderR(intValueHash.get(Integer.parseInt(this.getHeaderR())));
+        intValueHash = columnHash.get(HEADER_L);
+        if (intValueHash != null && !intValueHash.isEmpty())
+            this.setHeaderL(intValueHash.get(Integer.parseInt(this.getHeaderL())));
+        intValueHash = columnHash.get(BODY);
+        if (intValueHash != null && !intValueHash.isEmpty())
+            this.setBody(intValueHash.get(Integer.parseInt(this.getBody())));
+        intValueHash = columnHash.get(FOOTER_R);
+        if (intValueHash != null && !intValueHash.isEmpty())
+            this.setFooterR(intValueHash.get(Integer.parseInt(this.getFooterR())));
+        intValueHash = columnHash.get(FOOTER_L);
+        if (intValueHash != null && !intValueHash.isEmpty())
+            this.setFooterL(intValueHash.get(Integer.parseInt(this.getFooterL())));
     }
 
     public void fillMock() {

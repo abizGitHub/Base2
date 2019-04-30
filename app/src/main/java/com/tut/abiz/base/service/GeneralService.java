@@ -1,16 +1,23 @@
 package com.tut.abiz.base.service;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.frags.ListPagerFrag;
 import com.tut.abiz.base.frags.PagerFragment;
+import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by abiz on 4/14/2019.
@@ -20,8 +27,12 @@ public class GeneralService {
 
     private ArrayList<FragmentPack> allFragPacks;
     private ArrayList<GeneralModel> testGeneralList;
+    private DbHelper dbHelper;
+    SharedPreferences visiblityPref;
 
-    public GeneralService() {
+    public GeneralService(Context context) {
+        dbHelper = new DbHelper(context);
+        visiblityPref = context.getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE);
     }
 
     public ArrayList<GeneralModel> getTestGeneralList() {
@@ -69,24 +80,24 @@ public class GeneralService {
         Bundle data1 = new Bundle();
         data1.putInt(Consts.CURRENTPAGE, 0);
         data1.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
-        data1.putSerializable(Consts.GENERALLIST,getTestGeneralList());
-        data1.putSerializable(Consts.VISIBLITY,new TagVisiblity().fillMock());
+        data1.putSerializable(Consts.GENERALLIST, getTestGeneralList());
+        data1.putSerializable(Consts.VISIBLITY, new TagVisiblity().fillMock());
         FragmentPack fragmentPack1 = new FragmentPack("page-1", pFrag1, data1);
 
         ListPagerFrag pFrag2 = new ListPagerFrag();
         Bundle data2 = new Bundle();
         data2.putInt(Consts.CURRENTPAGE, 1);
         data2.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
-        data2.putSerializable(Consts.GENERALLIST,getTestGeneralList());
-        data2.putSerializable(Consts.VISIBLITY,new TagVisiblity().fillMock());
+        data2.putSerializable(Consts.GENERALLIST, getTestGeneralList());
+        data2.putSerializable(Consts.VISIBLITY, new TagVisiblity().fillMock());
         FragmentPack fragmentPack2 = new FragmentPack("page-2", pFrag2, data2);
 
         ListPagerFrag pFrag3 = new ListPagerFrag();
         Bundle data3 = new Bundle();
         data3.putInt(Consts.CURRENTPAGE, 2);
         data3.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
-        data3.putSerializable(Consts.GENERALLIST,getTestGeneralList());
-        data3.putSerializable(Consts.VISIBLITY,new TagVisiblity().fillMock());
+        data3.putSerializable(Consts.GENERALLIST, getTestGeneralList());
+        data3.putSerializable(Consts.VISIBLITY, new TagVisiblity().fillMock());
         FragmentPack fragmentPack3 = new FragmentPack("page-3", pFrag3, data3);
 
         allFragPacks.add(fragmentPack1);
@@ -95,4 +106,36 @@ public class GeneralService {
         return allFragPacks;
     }
 
+    public ArrayList<GeneralModel> getDBList() {
+        ArrayList<GeneralModel> list = new ArrayList<>();
+        GeneralModel model = new GeneralModel();
+        Confiq confiq = dbHelper.getConfiq();
+        model.setTitle("confiq");
+        model.setBody(confiq.toString());
+        list.add(model);
+
+        ArrayList<ModelMap> modelMap = dbHelper.getModelMap(1);
+        modelMap.addAll(dbHelper.getModelMap(2));
+        modelMap.addAll(dbHelper.getModelMap(3));
+        for (ModelMap map : modelMap) {
+            GeneralModel mdl = new GeneralModel();
+            mdl.setTitle("modelMap-id:" + map.getId());
+            mdl.setBody(map.toString());
+            list.add(mdl);
+        }
+
+        TagVisiblity tagVis = Utils.getTagVisFromPref(1, visiblityPref);
+        model = new GeneralModel();
+        model.setTitle("tagVis-1");
+        model.setBody(tagVis.toString());
+        list.add(model);
+
+        tagVis = Utils.getTagVisFromPref(2, visiblityPref);
+        model = new GeneralModel();
+        model.setTitle("tagVis-2");
+        model.setBody(tagVis.toString());
+        list.add(model);
+
+        return list;
+    }
 }

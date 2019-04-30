@@ -135,6 +135,15 @@ public class JsonUtil {
             confiq.setLastIds(list);
         } catch (Exception e) {
         }
+        try {
+            JSONArray jsonArray = json.getJSONArray(Confiq.MODELMAP2DELETE);
+            ArrayList<Long> list = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                list.add(jsonArray.getLong(i));
+            }
+            confiq.setModelMap2Delete(list);
+        } catch (Exception e) {
+        }
         return confiq;
     }
 

@@ -16,6 +16,7 @@ import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
 
@@ -111,6 +112,7 @@ public class NetService implements NetServiceListener {
                     pref.edit().putString(Consts.TABLENAMES[ix++], tName).apply();
                 }
                 pref.edit().putInt(Consts.TABLECOUNT, ix).apply();
+                dbHelper.updateTableNames(confiqRemote.getLastTablesName());
             }
         }
 
@@ -128,7 +130,7 @@ public class NetService implements NetServiceListener {
             confiqLocal.setLastModelMapId(dbHelper.getLastModelMapId());
             dbHelper.setTagVisiblitys(confiqRemote.getTagVisiblity());
             confiqLocal.setTagVisiblity(confiqRemote.getTagVisiblity());
-            dbHelper.insertTableNames(confiqRemote.getLastTablesName());
+            dbHelper.updateTableNames(confiqRemote.getLastTablesName());
         }
 
         if (confiqRemote.getUserId() != confiqLocal.getUserId() || confiqRemote.getHasUserPermision() != confiqLocal.getHasUserPermision()) {
@@ -162,15 +164,7 @@ public class NetService implements NetServiceListener {
     }
 
     private TagVisiblity getTagVisFromPref(int ix) { // 1 2
-        TagVisiblity visiblity = new TagVisiblity();
-        visiblity.setTitleVisible(visiblityPref.getBoolean(GeneralModel.TITLE$ + ix, false));
-        visiblity.setBodyVisible(visiblityPref.getBoolean(GeneralModel.BODY$ + ix, false));
-        visiblity.setHeaderRVisible(visiblityPref.getBoolean(GeneralModel.HEADERR$ + ix, false));
-        visiblity.setHeaderLVisible(visiblityPref.getBoolean(GeneralModel.HEADERL$ + ix, false));
-        visiblity.setFooterLVisible(visiblityPref.getBoolean(GeneralModel.FOOTERL$ + ix, false));
-        visiblity.setFooterRVisible(visiblityPref.getBoolean(GeneralModel.FOOTERR$ + ix, false));
-        visiblity.setStarVisible(visiblityPref.getBoolean(GeneralModel.STAR$ + ix, false));
-        return visiblity;
+        return Utils.getTagVisFromPref(ix, visiblityPref);
     }
 
     private void doPostList(String url, Confiq confiqLocal) {

@@ -18,6 +18,7 @@ public class Confiq {
     public static String LASTMODELMAP = "lastModelMap";
     public static String LASTTABLESNAME = "lastTablesName";
     public static String TAGVISIBLITY = "tagVisiblity";
+    public static String MODELMAP2DELETE = "modelMap2delete";
 
     String userName;
     Long userId;
@@ -119,5 +120,21 @@ public class Confiq {
 
     public void setModelMap2Delete(ArrayList<Long> modelMap2Delete) {
         this.modelMap2Delete = modelMap2Delete;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("userName :  " + userName + "\n");
+        buffer.append("userId :  " + userId + "\n");
+        buffer.append("lastModelMapId :  " + getLastModelMapId() + "\n");
+        buffer.append("lastId-1 :  " + getLastIds().get(0) + "\n");
+        buffer.append("lastId-2 :  " + getLastIds().get(1) + "\n");
+        buffer.append("lastTableName-1 :  " + getLastTablesName().get(0) + "\n");
+        buffer.append("lastTableName-2 :  " + getLastTablesName().get(1) + "\n");
+        buffer.append("haveNewChange :  " + haveNewChange + "\n");
+        buffer.append("hasUserPermision :  " + hasUserPermision + "\n");
+        buffer.append("clearDB :  " + clearDB + "\n");
+        return buffer.toString();
     }
 }

@@ -32,7 +32,7 @@ public class PagerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_paginator);
-        GeneralService service = new GeneralService();
+        GeneralService service = new GeneralService(this);
         netService = new NetService(null, this);
         if (R.id.nav_pagerList == getIntent().getExtras().getInt(Consts.NAVPAGER))
             allFragmentPacks = service.getAllNetGetFrag();

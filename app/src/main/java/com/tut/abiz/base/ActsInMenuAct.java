@@ -61,7 +61,7 @@ public class ActsInMenuAct extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         homeFragment = new Frag1();
-        service = new GeneralService();
+        service = new GeneralService(this);
         testList = service.getTestGeneralList();
         doPrefs();
         //Intent intent = new Intent(SecondActivity.this,Main2Activ.class);
@@ -160,6 +160,14 @@ public class ActsInMenuAct extends AppCompatActivity
                     doFooterLVisible(true).
                     doHeaderRVisible(true).
                     doStarVisible(true);
+            intent.putExtra(Consts.VISIBLITY, visiblity);
+            startActivity(intent);
+        } else if (selectedMenuAct == R.id.nav_dbView) {
+            Intent intent = new Intent(ActsInMenuAct.this, ListActivity.class);
+            intent.putExtra(Consts.GENERALLIST, R.id.nav_dbView);
+            TagVisiblity visiblity = new TagVisiblity().
+                    doBodyVisible(true).
+                    doTitleVisible(true);
             intent.putExtra(Consts.VISIBLITY, visiblity);
             startActivity(intent);
         } else if (selectedMenuAct == R.id.nav_paginator) {

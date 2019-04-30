@@ -63,4 +63,14 @@ public class ModelMap implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("tableId :  " + tableId + "\n");
+        buffer.append("columnIx :  " + columnIx + "\n");
+        buffer.append("intValue :  " + intValue + "\n");
+        buffer.append("stringValue :  " + stringValue + "\n");
+        return buffer.toString();
+    }
 }

@@ -12,6 +12,7 @@ import com.tut.abiz.base.R;
 import com.tut.abiz.base.adapter.GeneralListAdapter;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.service.GeneralService;
 
 import java.util.ArrayList;
 
@@ -22,12 +23,18 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity {
     Toolbar toolbar;
     ListView listView;
+    GeneralService service;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_list);
-        ArrayList<GeneralModel> generalList = (ArrayList<GeneralModel>) getIntent().getExtras().get(Consts.GENERALLIST);
+        service = new GeneralService(this);
+        ArrayList<GeneralModel> generalList = null;
+        if (((Integer) getIntent().getExtras().get(Consts.GENERALLIST)).equals(R.id.nav_dbView)) {
+            generalList = service.getDBList();
+        } else
+            generalList = (ArrayList<GeneralModel>) getIntent().getExtras().get(Consts.GENERALLIST);
         TagVisiblity visiblity = (TagVisiblity) getIntent().getExtras().get(Consts.VISIBLITY);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

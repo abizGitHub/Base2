@@ -55,11 +55,12 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             JSONObject jsonObject = postData();
-            if (strings[0].equals(GETCONGIQ)) {
-                netService.onConfiqReady(extractConfiq(jsonObject));
-            } else {
-                netService.onGeneralListReady(extractList(jsonObject));
-            }
+            if (jsonObject.length() > 0)
+                if (strings[0].equals(GETCONGIQ)) {
+                    netService.onConfiqReady(extractConfiq(jsonObject));
+                } else {
+                    netService.onGeneralListReady(extractList(jsonObject));
+                }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             Log.e("doInBackground", e.getMessage());
@@ -75,6 +76,8 @@ public class PostListTask extends AsyncTask<String, Void, String> {
         httpPost.setEntity(entity);
         HttpResponse httpResponse = httpClient.execute(httpPost);
         String resp = readResponse(httpResponse);
+        if (resp.trim().isEmpty())
+            return new JSONObject();
         return new JSONObject(resp);
     }
 

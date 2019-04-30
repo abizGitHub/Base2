@@ -127,4 +127,17 @@ public class TagVisiblity implements Serializable {
         this.setFooterLVisible(new Random().nextBoolean());
         return this;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("tableId :  " + tableId + "\n");
+        buffer.append("Title :  " + isTitleVisible() + "\n");
+        buffer.append("Body :  " + isBodyVisible() + "\n");
+        buffer.append("HeaderR :  " + isHeaderRVisible() + "\n");
+        buffer.append("HeaderL :  " + isHeaderLVisible() + "\n");
+        buffer.append("FooterR :  " + isFooterRVisible() + "\n");
+        buffer.append("FooterL :  " + isFooterLVisible() + "\n");
+        return buffer.toString();
+    }
 }

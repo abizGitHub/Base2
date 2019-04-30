@@ -32,11 +32,13 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String MODELMAP = "modelMap";
     public static final String USERCONFIQ = "userConfiq";
 
-    private HashMap<Integer, ArrayList<ModelMap>> modelMaps;
+    private HashMap<Integer, ArrayList<ModelMap>> modelMapListHash;
+    private HashMap<Integer, HashMap<Integer, HashMap<Integer, String>>> modelMapHashs; // tableIX > columnIx > intVal > string
 
     public DbHelper(Context context) {
         super(context, DBNAME, null, 1);
-        modelMaps = new HashMap<Integer, ArrayList<ModelMap>>();
+        modelMapListHash = new HashMap<>();
+        modelMapHashs = new HashMap<>();
     }
 
     @Override
@@ -153,23 +155,42 @@ public class DbHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public HashMap<Integer, HashMap<Integer, String>> getColumnHash(int tableIx) {
+        HashMap<Integer, HashMap<Integer, String>> columnHash = modelMapHashs.get(tableIx);
+        if (columnHash == null || columnHash.isEmpty()) {
+            columnHash = new HashMap<>();
+            ArrayList<ModelMap> modelMaps = getModelMap(tableIx);
+            for (ModelMap mm : modelMaps) {
+                HashMap<Integer, String> intVal = columnHash.get(mm.getColumnIx());
+                if (intVal == null) {
+                    columnHash.put(mm.getColumnIx(), new HashMap<Integer, String>());
+                    intVal = columnHash.get(mm.getColumnIx());
+                }
+                intVal.put(mm.getIntValue(), mm.getStringValue());
+            }
+            modelMapHashs.put(tableIx, columnHash);
+        }
+        return columnHash;
+    }
+
     public ArrayList<ModelMap> getModelMap(int ix) {
-        ArrayList<ModelMap> list = modelMaps.get(ix);
+        ArrayList<ModelMap> list = modelMapListHash.get(ix);
         if (list == null) {
-            list = new ArrayList<ModelMap>();
+            list = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor res = db.rawQuery("SELECT * FROM " + MODELMAP + " WHERE TABLE_ID =" + ix, null);
             if (res != null && res.getCount() > 0) {
                 while (res.moveToNext()) {
                     //(TABLE_ID INTEGER,COLUMN_IX INTEGER,INT_VALUE INTEGER,STRING_VALUE TEXT)
                     ModelMap modelMap = new ModelMap();
-                    modelMap.setTableId(Integer.parseInt(res.getString(0)));
-                    modelMap.setColumnIx(Integer.parseInt(res.getString(1)));
-                    modelMap.setIntValue(Integer.valueOf(res.getString(2)));
-                    modelMap.setStringValue(res.getString(3));
+                    modelMap.setId(res.getInt(0));
+                    modelMap.setTableId(Integer.parseInt(res.getString(1))); // 1 2
+                    modelMap.setColumnIx(Integer.parseInt(res.getString(2))); // 2 3
+                    modelMap.setIntValue(Integer.valueOf(res.getString(3))); // 102 103
+                    modelMap.setStringValue(res.getString(4));
                     list.add(modelMap);
                 }
-                modelMaps.put(ix, list);
+                modelMapListHash.put(ix, list);
             }
             db.close();
         }
@@ -177,7 +198,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<GeneralModel> getAllGeneralFrom(int ix) {
-        ArrayList<ModelMap> modelMap = getModelMap(ix);
+        HashMap<Integer, HashMap<Integer, String>> modelMapHash = getColumnHash(ix);
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<GeneralModel> generalModels = new ArrayList<GeneralModel>();
         Cursor res = db.rawQuery("SELECT * FROM " + GENERALTABLEPREFIX + ix, null);
@@ -193,7 +214,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 generalModel.setFooterR(res.getString(GeneralModel.FOOTER_R));
                 generalModel.setFooterL(res.getString(GeneralModel.FOOTER_L));
                 generalModel.setStared(res.getInt(GeneralModel.STAR) == 1);
-                generalModel.applyModelMap(modelMap);
+                generalModel.applyModelMap(modelMapHash);
                 generalModels.add(generalModel);
             }
         db.close();
@@ -216,7 +237,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 generalModel.setFooterR(res.getString(GeneralModel.FOOTER_R));
                 generalModel.setFooterL(res.getString(GeneralModel.FOOTER_L));
                 generalModel.setStared(res.getInt(GeneralModel.STAR) == 1);
-                generalModel.applyModelMap(getModelMap(ix));
+                generalModel.applyModelMap(getColumnHash(ix));
                 generalModels.add(generalModel);
             }
         db.close();
@@ -275,14 +296,16 @@ public class DbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         for (ModelMap gm : modelMaps) {
             values.put("ID", gm.getId());
-            values.put("INTVALUE", gm.getIntValue());
-            values.put("STRINGVALUE", gm.getStringValue());
-            values.put("COLUMNIX", gm.getColumnIx());
-            values.put("TABLEID", gm.getTableId());
+            values.put("INT_VALUE", gm.getIntValue());
+            values.put("STRING_VALUE", gm.getStringValue());
+            values.put("COLUMN_IX", gm.getColumnIx());
+            values.put("TABLE_ID", gm.getTableId());
             result = db.insert(MODELMAP, null, values);
             values.clear();
         }
         db.close();
+        modelMapHashs = new HashMap<>();
+        modelMapListHash = new HashMap<>();
         return result != -1;
     }
 
@@ -294,8 +317,17 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertTableNames(ArrayList<String> lastTablesName) {
-
+    public void updateTableNames(ArrayList<String> lastTablesName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + PAGESTITLE);
+        int ix = 0;
+        for (String tblName : lastTablesName) {
+            ContentValues values = new ContentValues();
+            values.put("TABLE_ID", ++ix);
+            values.put("NAME", tblName);
+            db.insert(PAGESTITLE, null, values);
+        }
+        db.close();
     }
 
     public void setUserNameId(Long userId, String userName, Boolean hasUserPermision) {
@@ -321,6 +353,8 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL("DELETE FROM " + MODELMAP + " WHERE ID=" + id);
         }
         db.close();
+        modelMapHashs = new HashMap<>();
+        modelMapListHash = new HashMap<>();
     }
 
 }

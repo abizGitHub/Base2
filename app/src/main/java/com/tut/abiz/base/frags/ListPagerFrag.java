@@ -1,13 +1,17 @@
 package com.tut.abiz.base.frags;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
+import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.adapter.GeneralListAdapter;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
@@ -23,6 +27,8 @@ public class ListPagerFrag extends PagerFragment {
     View view;
     ArrayList<GeneralModel> generalList;
     TagVisiblity visiblity;
+    GeneralListAdapter adapter;
+    ArrayList<String> titles;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,10 +50,22 @@ public class ListPagerFrag extends PagerFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater, container, savedInstanceState);
         listView = (ListView) view.findViewById(R.id.list_sheet);
-        ArrayList<String> titles = extractTitles(generalList);
-        GeneralListAdapter adapter = new GeneralListAdapter(getActivity(), generalList, visiblity, titles, R.layout.sheet_itemlinear);
+        titles = extractTitles(generalList);
+        Log.e("stared : ", generalList.size() + "");
+        adapter = new GeneralListAdapter((BaseActivity) getActivity(), generalList, visiblity, titles, R.layout.sheet_itemlinear);
         listView.setAdapter(adapter);
         return view;
     }
 
+    public ArrayList<GeneralModel> getGeneralList() {
+        return generalList;
+    }
+
+    public GeneralListAdapter getAdapter() {
+        return adapter;
+    }
+
+    public ArrayList<String> getTitles() {
+        return titles;
+    }
 }

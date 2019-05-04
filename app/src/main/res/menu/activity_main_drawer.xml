@@ -43,6 +43,10 @@
                 android:icon="@drawable/ic_menu_camera"
                 android:title="@string/postList" />
             <item
+                android:id="@+id/nav_staredList"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/staredList" />
+            <item
                 android:id="@+id/nav_dbView"
                 android:icon="@drawable/ic_menu_camera"
                 android:title="@string/dbView" />

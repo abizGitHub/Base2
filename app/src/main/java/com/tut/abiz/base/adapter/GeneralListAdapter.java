@@ -15,12 +15,15 @@ import android.widget.ToggleButton;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
-import com.tut.abiz.base.acts.Act1;
+import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.acts.ViewListItemActivity;
+import com.tut.abiz.base.frags.ListPagerFrag;
 import com.tut.abiz.base.listener.CheckListener;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.service.DbHelper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +32,7 @@ import java.util.ArrayList;
 
 public class GeneralListAdapter extends ArrayAdapter {
 
-    Context context;
+    BaseActivity baseActivity;
     ArrayList<GeneralModel> generalModels;
     TagVisiblity visiblity;
     int sheet_itemLayout;
@@ -38,13 +41,17 @@ public class GeneralListAdapter extends ArrayAdapter {
     ToggleButton star;
     View row;
     ViewGroup layout;
+    ArrayList<String> titles;
+    Intent intent;
 
-    public GeneralListAdapter(Context context, ArrayList<GeneralModel> generalModels, TagVisiblity visiblity, ArrayList<String> titles, int sheet_item) {
-        super(context, sheet_item, R.id.sheetTitle, titles);
+    public GeneralListAdapter(BaseActivity baseActivity, ArrayList<GeneralModel> generalModels, TagVisiblity visiblity, ArrayList<String> titles, int sheet_item) {
+        super(baseActivity, sheet_item, R.id.sheetTitle, titles);
         this.generalModels = generalModels;
-        this.context = context;
+        this.baseActivity = baseActivity;
         this.visiblity = visiblity;
         this.sheet_itemLayout = sheet_item;
+        this.titles = titles;
+        intent = new Intent(baseActivity, ViewListItemActivity.class);
     }
 
     @NonNull
@@ -108,7 +115,7 @@ public class GeneralListAdapter extends ArrayAdapter {
         star = (ToggleButton) row.findViewById(R.id.sheetStar);
         if (visiblity.isStarVisible()) {
             star.setChecked(generalModels.get(position).getStared());
-            star.setOnCheckedChangeListener(new CheckListener(generalModels.get(position), context));
+            star.setOnCheckedChangeListener(new CheckListener(baseActivity, this, generalModels, titles, position));
             minHeight += rowHeight;
         } else {
             layout.removeView(star);
@@ -116,7 +123,7 @@ public class GeneralListAdapter extends ArrayAdapter {
         }
         if (sheet_itemLayout == R.layout.sheet_itemlinear)
             doMoreRemove();
-        layout.setOnClickListener(new LayoutClickListener(generalModels.get(position)));
+        layout.setOnClickListener(new LayoutClickListener(this, generalModels, titles, position));
         layout.setMinimumHeight(minHeight);
         return row;
     }
@@ -133,17 +140,27 @@ public class GeneralListAdapter extends ArrayAdapter {
     }
 
     class LayoutClickListener implements View.OnClickListener {
-        GeneralModel gm;
+        private GeneralListAdapter adapter;
+        private ArrayList<GeneralModel> generalModels;
+        private ArrayList<String> titles;
+        private int position;
 
-        public LayoutClickListener(GeneralModel gm) {
-            this.gm = gm;
+        public LayoutClickListener(GeneralListAdapter adapter, ArrayList<GeneralModel> generalModels, ArrayList<String> titles, int position) {
+            this.adapter = adapter;
+            this.generalModels = generalModels;
+            this.titles = titles;
+            this.position = position;
         }
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(context, ViewListItemActivity.class);
-            intent.putExtra(Consts.GENERALMODEL, gm);
-            context.startActivity(intent);
+            intent.putExtra(Consts.GENERALMODELS, generalModels);
+            intent.putExtra(Consts.IX, position);
+            intent.putExtra(Consts.NAVPAGER, baseActivity.getNavMenu());
+            intent.putExtra(Consts.TITLES, titles);
+            intent.putExtra(Consts.CURRENTPAGE, baseActivity.getSelectedTable());
+            intent.putExtra(Consts.NAVTITLE, baseActivity.getNavTitle() + " detail");
+            baseActivity.startActivity(intent);
         }
     }
 

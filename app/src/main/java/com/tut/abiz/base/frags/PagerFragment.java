@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class PagerFragment extends Fragment {
 
-    int ix = 0;
+    int ix = 1;
     int pageLayout;
 
     @Override
@@ -29,9 +29,8 @@ public class PagerFragment extends Fragment {
         /** Getting the arguments to the Bundle object */
         Bundle data = getArguments();
         /** Getting integer data of the key current_page from the bundle */
-        ix = data.getInt(Consts.CURRENTPAGE, 0);
+        ix = data.getInt(Consts.CURRENTPAGE, 1);
         pageLayout = data.getInt(Consts.PAGELAYOUT); // @TODO set default no Content page
-        Toast.makeText(getActivity(), "onCreate>>>" + ix, Toast.LENGTH_SHORT).show();
     }
 
     @Override

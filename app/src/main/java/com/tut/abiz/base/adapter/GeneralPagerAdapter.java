@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+import android.view.View;
 
 import com.tut.abiz.base.Consts;
+import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.frags.PagerFragment;
 import com.tut.abiz.base.model.FragmentPack;
 
@@ -17,13 +20,13 @@ import java.util.ArrayList;
 
 public class GeneralPagerAdapter extends FragmentPagerAdapter {
 
-    int PAGE_COUNT;
-    ArrayList<FragmentPack> fragmentPacks;
+    private int PAGE_COUNT;
+    private ArrayList<FragmentPack> fragmentPacks;
 
     /**
      * Constructor of the class
      */
-    public GeneralPagerAdapter(FragmentManager fm, ArrayList<FragmentPack> fragmentPacks) {
+    public GeneralPagerAdapter(FragmentManager fm, ArrayList<FragmentPack> fragmentPacks, BaseActivity baseActivity) {
         super(fm);
         this.fragmentPacks = fragmentPacks;
         PAGE_COUNT = fragmentPacks.size();

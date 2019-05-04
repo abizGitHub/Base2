@@ -2,9 +2,6 @@ package com.tut.abiz.base.acts;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ListView;
 
 import com.tut.abiz.base.Consts;
@@ -20,36 +17,57 @@ import java.util.ArrayList;
  * Created by abiz on 4/14/2019.
  */
 
-public class ListActivity extends AppCompatActivity {
-    Toolbar toolbar;
+public class ListActivity extends BaseActivity {
+
     ListView listView;
     GeneralService service;
+    ArrayList<GeneralModel> generalList;
+    GeneralListAdapter adapter;
+    ArrayList<String> titles;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_list);
+        super.setContentView(R.layout.act_list);
+        setSelectedTable(1);
         service = new GeneralService(this);
-        ArrayList<GeneralModel> generalList = null;
-        if (((Integer) getIntent().getExtras().get(Consts.GENERALLIST)).equals(R.id.nav_dbView)) {
+        if (getNavMenu() == R.id.nav_dbView) {
             generalList = service.getDBList();
         } else
             generalList = (ArrayList<GeneralModel>) getIntent().getExtras().get(Consts.GENERALLIST);
         TagVisiblity visiblity = (TagVisiblity) getIntent().getExtras().get(Consts.VISIBLITY);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         listView = (ListView) findViewById(R.id.list_sheet);
-        ArrayList<String> titles = extractTitles(generalList);
-        GeneralListAdapter adapter = new GeneralListAdapter(this, generalList, visiblity, titles, R.layout.sheet_itemlinear);
+        titles = extractTitles(generalList);
+        setSelectedTable(1);
+        adapter = new GeneralListAdapter(this, generalList, visiblity, titles, R.layout.sheet_itemlinear);
         listView.setAdapter(adapter);
     }
+
+    @Override
+    protected void doStaredTasks() {
+
+    }
+
+    @Override
+    protected GeneralListAdapter getGeneralListAdapter() {
+        return adapter;
+    }
+
+    @Override
+    protected ArrayList<String> getGeneralTitles() {
+        return titles;
+    }
+
+    @Override
+    protected ArrayList<GeneralModel> getGeneralList() {
+        return generalList;
+    }
+
+    @Override
+    public void onStarChanged(int position, boolean checked) {
+
+    }
+
 
     private ArrayList<String> extractTitles(ArrayList<GeneralModel> generalList) {
         ArrayList<String> titles = new ArrayList<>();

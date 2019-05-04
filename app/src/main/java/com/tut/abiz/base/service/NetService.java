@@ -2,25 +2,23 @@ package com.tut.abiz.base.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.NetServiceListener;
-import com.tut.abiz.base.R;
 import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.async.BrowsePageTask;
 import com.tut.abiz.base.async.GetListTask;
 import com.tut.abiz.base.async.PostListTask;
-import com.tut.abiz.base.frags.ListPagerFrag;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
-import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.tut.abiz.base.util.Utils.getFragPack;
+import static com.tut.abiz.base.util.Utils.getTagVisFromPref;
 
 /**
  * Created by abiz on 4/15/2019.
@@ -57,17 +55,6 @@ public class NetService implements NetServiceListener {
         listTask.execute("");
     }
 
-    private FragmentPack getFragPack(ArrayList<GeneralModel> generalList, String title, TagVisiblity visiblity) {
-        ListPagerFrag pFrag1 = new ListPagerFrag();
-        Bundle data1 = new Bundle();
-        data1.putInt(Consts.CURRENTPAGE, 0);
-        data1.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
-        data1.putSerializable(Consts.GENERALLIST, generalList);
-        data1.putSerializable(Consts.VISIBLITY, visiblity);
-        FragmentPack fragmentPack1 = new FragmentPack(title, pFrag1, data1);
-        return fragmentPack1;
-    }
-
     public ArrayList<FragmentPack> getAllNetList() {
         ArrayList<FragmentPack> fragmentPacks = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -82,7 +69,7 @@ public class NetService implements NetServiceListener {
                     e.printStackTrace();
                 }
             }
-            fragmentPacks.add(getFragPack(generalModels, "page-" + i, new TagVisiblity().fillMock()));
+            fragmentPacks.add(getFragPack(generalModels, "page-" + i, new TagVisiblity().fillMock(), i + 1));
         }
         return fragmentPacks;
     }
@@ -158,13 +145,9 @@ public class NetService implements NetServiceListener {
                 }
                 dbHelper.insertGMs(generalModels, ix);
             }
-            fragmentPacks.add(getFragPack(dbHelper.getAllGeneralFrom(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), getTagVisFromPref(ix)));
+            fragmentPacks.add(getFragPack(dbHelper.getAllGeneralFrom(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), getTagVisFromPref(ix, visiblityPref), ix));
         }
         return fragmentPacks;
-    }
-
-    private TagVisiblity getTagVisFromPref(int ix) { // 1 2
-        return Utils.getTagVisFromPref(ix, visiblityPref);
     }
 
     private void doPostList(String url, Confiq confiqLocal) {

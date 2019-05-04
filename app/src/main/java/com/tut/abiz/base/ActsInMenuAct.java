@@ -152,8 +152,11 @@ public class ActsInMenuAct extends AppCompatActivity
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.setDrawerListener(toggle);
             toggle.syncState();
-        } else if (selectedMenuAct == R.id.nav_list) {
-            Intent intent = new Intent(ActsInMenuAct.this, ListActivity.class);
+            return;
+        }
+        Intent intent;
+        if (selectedMenuAct == R.id.nav_list) {
+            intent = new Intent(ActsInMenuAct.this, ListActivity.class);
             intent.putExtra(Consts.GENERALLIST, testList);
             TagVisiblity visiblity = new TagVisiblity().
                     doBodyVisible(true).
@@ -161,38 +164,31 @@ public class ActsInMenuAct extends AppCompatActivity
                     doHeaderRVisible(true).
                     doStarVisible(true);
             intent.putExtra(Consts.VISIBLITY, visiblity);
-            startActivity(intent);
         } else if (selectedMenuAct == R.id.nav_dbView) {
-            Intent intent = new Intent(ActsInMenuAct.this, ListActivity.class);
-            intent.putExtra(Consts.GENERALLIST, R.id.nav_dbView);
+            intent = new Intent(ActsInMenuAct.this, ListActivity.class);
             TagVisiblity visiblity = new TagVisiblity().
                     doBodyVisible(true).
                     doTitleVisible(true);
             intent.putExtra(Consts.VISIBLITY, visiblity);
-            startActivity(intent);
         } else if (selectedMenuAct == R.id.nav_paginator) {
-            Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
-            intent.putExtra(Consts.NAVPAGER, R.id.nav_paginator);
-            startActivity(intent);
+            intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_pagerList) {
-            Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
-            intent.putExtra(Consts.NAVPAGER, R.id.nav_pagerList);
-            startActivity(intent);
+            intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_netGetList) {
-            Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
-            intent.putExtra(Consts.NAVPAGER, R.id.nav_netGetList);
-            startActivity(intent);
+            intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_postList) {
-            Intent intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
-            intent.putExtra(Consts.NAVPAGER, R.id.nav_postList);
-            startActivity(intent);
+            intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
+        } else if (selectedMenuAct == R.id.nav_staredList) {
+            intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_net) {
-            Intent intent = new Intent(ActsInMenuAct.this, NetConnectionActivity.class);
-            startActivity(intent);
+            intent = new Intent(ActsInMenuAct.this, NetConnectionActivity.class);
         } else {
-            Intent intent = new Intent(ActsInMenuAct.this, activity);
-            startActivity(intent);
+            intent = new Intent(ActsInMenuAct.this, activity);
         }
+        intent.putExtra(Consts.CURRENTPAGE, 1);
+        intent.putExtra(Consts.NAVPAGER, selectedMenuAct);
+        intent.putExtra(Consts.NAVTITLE, title);
+        startActivity(intent);
         //getSupportActionBar().setTitle(title);
     }
 

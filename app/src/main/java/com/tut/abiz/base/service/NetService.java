@@ -34,13 +34,14 @@ public class NetService implements NetServiceListener {
     ArrayList<GeneralModel> generalModels;
     DbHelper dbHelper;
     Confiq confiqRemote;
-    SharedPreferences pref, visiblityPref;
+    SharedPreferences pref, visiblityPref, isStringPref;
 
     public NetService(NetServiceListener netServiceListener, Context context) {
         listener = netServiceListener;
         dbHelper = new DbHelper(context);
         pref = context.getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE);
         visiblityPref = context.getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE);
+        isStringPref = context.getSharedPreferences(Consts.ISSTRINGPREF, MODE_PRIVATE);
     }
 
     public void browsePage(String urlString) {
@@ -69,7 +70,7 @@ public class NetService implements NetServiceListener {
                     e.printStackTrace();
                 }
             }
-            fragmentPacks.add(getFragPack(generalModels, "page-" + i, new TagVisiblity().fillMock(), i + 1));
+            fragmentPacks.add(getFragPack(generalModels, "page-" + i, new TagVisiblity(i + 1).fillMock(), i + 1));
         }
         return fragmentPacks;
     }
@@ -115,11 +116,15 @@ public class NetService implements NetServiceListener {
             dbHelper.insertModelMaps(confiqRemote.getLastModelMap());
             confiqLocal.setLastModelMap(confiqRemote.getLastModelMap());
             confiqLocal.setLastModelMapId(dbHelper.getLastModelMapId());
-            dbHelper.setTagVisiblitys(confiqRemote.getTagVisiblity());
-            confiqLocal.setTagVisiblity(confiqRemote.getTagVisiblity());
             dbHelper.updateTableNames(confiqRemote.getLastTablesName());
         }
 
+        if (confiqRemote.getTagVisiblity() != null && !confiqRemote.getTagVisiblity().isEmpty()) {
+            for (TagVisiblity vis : confiqRemote.getTagVisiblity()) {
+                putVisInPref(vis, vis.getTableId());
+            }
+            dbHelper.insertTagVisiblitys(confiqRemote.getTagVisiblity());
+        }
         if (confiqRemote.getUserId() != confiqLocal.getUserId() || confiqRemote.getHasUserPermision() != confiqLocal.getHasUserPermision()) {
             dbHelper.setUserNameId(confiqRemote.getUserId(), confiqRemote.getUserName(), confiqRemote.getHasUserPermision());
         }
@@ -145,7 +150,7 @@ public class NetService implements NetServiceListener {
                 }
                 dbHelper.insertGMs(generalModels, ix);
             }
-            fragmentPacks.add(getFragPack(dbHelper.getAllGeneralFrom(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), getTagVisFromPref(ix, visiblityPref), ix));
+            fragmentPacks.add(getFragPack(dbHelper.getAllGeneralFrom(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), getTagVisFromPref(ix, visiblityPref, isStringPref), ix));
         }
         return fragmentPacks;
     }
@@ -172,16 +177,27 @@ public class NetService implements NetServiceListener {
             dbHelper.updateTagVisiblity(visiblity);
             int ix = 1;
             for (TagVisiblity vis : visiblity) {
-                visiblityPref.edit().putBoolean(GeneralModel.TITLE$ + ix, vis.isTitleVisible()).apply();
-                visiblityPref.edit().putBoolean(GeneralModel.BODY$ + ix, vis.isBodyVisible()).apply();
-                visiblityPref.edit().putBoolean(GeneralModel.HEADERR$ + ix, vis.isHeaderRVisible()).apply();
-                visiblityPref.edit().putBoolean(GeneralModel.HEADERL$ + ix, vis.isHeaderLVisible()).apply();
-                visiblityPref.edit().putBoolean(GeneralModel.FOOTERR$ + ix, vis.isFooterRVisible()).apply();
-                visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + ix, vis.isFooterLVisible()).apply();
-                visiblityPref.edit().putBoolean(GeneralModel.STAR$ + ix, vis.isStarVisible()).apply();
+                putVisInPref(vis, ix);
                 ix++;
             }
         }
+    }
+
+    public void putVisInPref(TagVisiblity vis, int tableIx) {
+        visiblityPref.edit().putBoolean(GeneralModel.TITLE$ + tableIx, vis.isTitleVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.BODY$ + tableIx, vis.isBodyVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.HEADERR$ + tableIx, vis.isHeaderRVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.HEADERL$ + tableIx, vis.isHeaderLVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.FOOTERR$ + tableIx, vis.isFooterRVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.STAR$ + tableIx, vis.isStarVisible()).apply();
+
+        isStringPref.edit().putBoolean(GeneralModel.TITLE$ + tableIx, vis.isTitleString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.BODY$ + tableIx, vis.isBodyString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.HEADERR$ + tableIx, vis.isHeaderRString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.HEADERL$ + tableIx, vis.isHeaderLString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.FOOTERR$ + tableIx, vis.isFooterRString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLString()).apply();
     }
 
     private void applyNewModelMap(Confiq confiqLocal, Confiq confiqRemote) {

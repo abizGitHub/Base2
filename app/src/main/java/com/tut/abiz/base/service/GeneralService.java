@@ -15,6 +15,7 @@ import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.tut.abiz.base.util.Utils.getFragPack;
@@ -29,17 +30,18 @@ public class GeneralService {
     private ArrayList<FragmentPack> allFragPacks;
     private ArrayList<GeneralModel> testGeneralList;
     private DbHelper dbHelper;
-    SharedPreferences pref, visiblityPref;
+    SharedPreferences pref, visiblityPref, isStringPref;
 
     public GeneralService(Context context) {
         dbHelper = new DbHelper(context);
         pref = context.getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE);
         visiblityPref = context.getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE);
+        isStringPref = context.getSharedPreferences(Consts.ISSTRINGPREF, MODE_PRIVATE);
     }
 
     public ArrayList<GeneralModel> getTestGeneralList() {
         testGeneralList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3 + new Random().nextInt(10); i++) {
             GeneralModel generalModel = new GeneralModel();
             generalModel.fillMock();
             testGeneralList.add(generalModel);
@@ -83,7 +85,7 @@ public class GeneralService {
         data1.putInt(Consts.CURRENTPAGE, 1);
         data1.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
         data1.putSerializable(Consts.GENERALLIST, getTestGeneralList());
-        data1.putSerializable(Consts.VISIBLITY, new TagVisiblity().fillMock());
+        data1.putSerializable(Consts.VISIBLITY, new TagVisiblity(1).fillMock());
         FragmentPack fragmentPack1 = new FragmentPack("page-1", pFrag1, data1);
 
         ListPagerFrag pFrag2 = new ListPagerFrag();
@@ -91,7 +93,7 @@ public class GeneralService {
         data2.putInt(Consts.CURRENTPAGE, 2);
         data2.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
         data2.putSerializable(Consts.GENERALLIST, getTestGeneralList());
-        data2.putSerializable(Consts.VISIBLITY, new TagVisiblity().fillMock());
+        data2.putSerializable(Consts.VISIBLITY, new TagVisiblity(2).fillMock());
         FragmentPack fragmentPack2 = new FragmentPack("page-2", pFrag2, data2);
 
         ListPagerFrag pFrag3 = new ListPagerFrag();
@@ -99,7 +101,7 @@ public class GeneralService {
         data3.putInt(Consts.CURRENTPAGE, 3);
         data3.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
         data3.putSerializable(Consts.GENERALLIST, getTestGeneralList());
-        data3.putSerializable(Consts.VISIBLITY, new TagVisiblity().fillMock());
+        data3.putSerializable(Consts.VISIBLITY, new TagVisiblity(3).fillMock());
         FragmentPack fragmentPack3 = new FragmentPack("page-3", pFrag3, data3);
 
         allFragPacks.add(fragmentPack1);
@@ -126,17 +128,15 @@ public class GeneralService {
             list.add(mdl);
         }
 
-        TagVisiblity tagVis = getTagVisFromPref(1, visiblityPref);
-        model = new GeneralModel();
-        model.setTitle("tagVis-1");
-        model.setBody(tagVis.toString());
-        list.add(model);
-
-        tagVis = getTagVisFromPref(2, visiblityPref);
-        model = new GeneralModel();
-        model.setTitle("tagVis-2");
-        model.setBody(tagVis.toString());
-        list.add(model);
+        ArrayList<TagVisiblity> tagVisiblity = dbHelper.getTagVisiblity(1);
+        tagVisiblity.addAll(dbHelper.getTagVisiblity(2));
+        tagVisiblity.addAll(dbHelper.getTagVisiblity(3));
+        for (TagVisiblity vis : tagVisiblity) {
+            model = new GeneralModel();
+            model.setTitle("tagVis-" + vis.getTableId());
+            model.setBody(vis.toString());
+            list.add(model);
+        }
 
         return list;
     }
@@ -145,9 +145,28 @@ public class GeneralService {
         ArrayList<FragmentPack> fragmentPacks = new ArrayList<>();
         int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
         for (int ix = 1; ix < tableCount + 1; ix++) {
-            fragmentPacks.add(getFragPack(dbHelper.getAllStaredGeneralFrom(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), getTagVisFromPref(ix, visiblityPref), ix));
+            fragmentPacks.add(getFragPack(dbHelper.getAllStaredGeneralFrom(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), getTagVisFromPref(ix, visiblityPref, isStringPref), ix));
         }
         return fragmentPacks;
     }
+
+    public ArrayList<GeneralModel> getAllGeneralFrom(int ix) {
+        return dbHelper.getAllGeneralFrom(ix);
+    }
+
+    public ArrayList<GeneralModel> getAllGeneralFrom(int ix, String inWord, TagVisiblity tagVisiblity) {
+        return dbHelper.getAllGeneralFrom(ix, inWord, tagVisiblity);
+    }
+
+    public void fillMockForTest() {
+        testGeneralList = new ArrayList<>();
+        for (int i = 0; i < 3 + new Random().nextInt(10); i++) {
+            GeneralModel generalModel = new GeneralModel();
+            generalModel.fillMock();
+            testGeneralList.add(generalModel);
+        }
+
+    }
+
 
 }

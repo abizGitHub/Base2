@@ -24,10 +24,8 @@ import java.util.ArrayList;
 
 public class PagerActivity extends BaseActivity {
 
-    NetService netService;
     ArrayList<FragmentPack> allFragmentPacks;
     ViewPager pager;
-    GeneralService service;
     GeneralPagerAdapter pagerAdapter;
     GeneralListAdapter generalListAdapter;
     ListPagerFrag pagerFrag;
@@ -36,8 +34,6 @@ public class PagerActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_paginator);
-        service = new GeneralService(this);
-        netService = new NetService(null, this);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 

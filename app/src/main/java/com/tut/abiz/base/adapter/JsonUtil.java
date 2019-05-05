@@ -148,7 +148,12 @@ public class JsonUtil {
     }
 
     private static TagVisiblity extractTagVisiblity(JSONObject jsonObject) {
-        TagVisiblity visiblity = new TagVisiblity();
+        TagVisiblity visiblity = null;
+        try {
+            visiblity = new TagVisiblity(jsonObject.getInt("TableId"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         try {
             visiblity.setBodyVisible(jsonObject.getBoolean(GeneralModel.BODY$));
         } catch (JSONException e) {
@@ -184,6 +189,36 @@ public class JsonUtil {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try {
+            visiblity.setBodyString(jsonObject.getBoolean("S" + GeneralModel.BODY$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setTitleString(jsonObject.getBoolean("S" + GeneralModel.TITLE$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setHeaderLString(jsonObject.getBoolean("S" + GeneralModel.HEADERL$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setHeaderRString(jsonObject.getBoolean("S" + GeneralModel.HEADERR$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setFooterLString(jsonObject.getBoolean("S" + GeneralModel.FOOTERL$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            visiblity.setFooterRString(jsonObject.getBoolean("S" + GeneralModel.FOOTERR$));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return visiblity;
     }
 
@@ -213,6 +248,10 @@ public class JsonUtil {
     public static JSONObject parseTagVisiblity(TagVisiblity visiblity) {
         JSONObject json = new JSONObject();
         try {
+            json.put("TableId", visiblity.getTableId());
+        } catch (JSONException e) {
+        }
+        try {
             json.put(GeneralModel.BODY$, visiblity.isBodyVisible());
         } catch (JSONException e) {
         }
@@ -238,6 +277,30 @@ public class JsonUtil {
         }
         try {
             json.put(GeneralModel.STAR$, visiblity.isStarVisible());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put("S" + GeneralModel.BODY$, visiblity.isBodyString());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put("S" + GeneralModel.TITLE$, visiblity.isTitleString());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put("S" + GeneralModel.HEADERL$, visiblity.isHeaderLString());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put("S" + GeneralModel.HEADERR$, visiblity.isHeaderRString());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put("S" + GeneralModel.FOOTERL$, visiblity.isFooterLString());
+        } catch (JSONException e) {
+        }
+        try {
+            json.put("S" + GeneralModel.FOOTERR$, visiblity.isFooterRString());
         } catch (JSONException e) {
         }
         return json;

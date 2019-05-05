@@ -8,3 +8,12 @@ RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams) footR.getLayo
 footL.setLayoutParams(layout);
 
 ------------------------------------------------------------------
+
+
+LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View inflate = inflater.inflate(R.layout.radio_btn, null);
+        radioGroup.addView(inflate.findViewById(R.id.customRB));
+        inflate = inflater.inflate(R.layout.radio_btn, null);
+        radioGroup.addView(inflate.findViewById(R.id.customRB));
+
+

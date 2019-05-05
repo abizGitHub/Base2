@@ -1,5 +1,7 @@
 package com.tut.abiz.base.model;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,13 +18,13 @@ import java.util.Random;
  */
 public class GeneralModel implements Serializable {
 
-    public static final String TITLE$ = "title";
-    public static final String HEADERL$ = "headerL";
-    public static final String HEADERR$ = "headerR";
-    public static final String BODY$ = "body";
-    public static final String FOOTERL$ = "footerL";
-    public static final String FOOTERR$ = "footerR";
-    public static final String STAR$ = "star";
+    public static final String TITLE$ = "TITLE";
+    public static final String HEADERL$ = "HEADER_L";
+    public static final String HEADERR$ = "HEADER_R";
+    public static final String BODY$ = "BODY";
+    public static final String FOOTERL$ = "FOOTER_L";
+    public static final String FOOTERR$ = "FOOTER_R";
+    public static final String STAR$ = "STARED";
 
     String title;
     String body;
@@ -45,13 +47,13 @@ public class GeneralModel implements Serializable {
     }
 
     public GeneralModel(JSONObject json) throws JSONException {
-        this.setId(Long.valueOf(json.get("id").toString()));
-        this.setTitle(json.get("title").toString());
-        this.setHeaderL(json.get("headerL").toString());
-        this.setHeaderR(json.get("headerR").toString());
-        this.setBody(json.get("body").toString());
-        this.setFooterL(json.get("footerL").toString());
-        this.setFooterR(json.get("footerR").toString());
+        this.setId(Long.valueOf(json.get("ID").toString()));
+        this.setTitle(json.get(TITLE$).toString());
+        this.setHeaderL(json.get(HEADERL$).toString());
+        this.setHeaderR(json.get(HEADERR$).toString());
+        this.setBody(json.get(BODY$).toString());
+        this.setFooterL(json.get(FOOTERL$).toString());
+        this.setFooterR(json.get(FOOTERR$).toString());
     }
 
     public String getTitle() {
@@ -121,24 +123,28 @@ public class GeneralModel implements Serializable {
     public void applyModelMap(HashMap<Integer, HashMap<Integer, String>> columnHash) {
         if (columnHash.isEmpty())
             return;
-        HashMap<Integer, String> intValueHash = columnHash.get(TITLE);
-        if (intValueHash != null && !intValueHash.isEmpty())
-            this.setTitle(intValueHash.get(Integer.parseInt(this.getTitle())));
-        intValueHash = columnHash.get(HEADER_R);
-        if (intValueHash != null && !intValueHash.isEmpty())
-            this.setHeaderR(intValueHash.get(Integer.parseInt(this.getHeaderR())));
-        intValueHash = columnHash.get(HEADER_L);
-        if (intValueHash != null && !intValueHash.isEmpty())
-            this.setHeaderL(intValueHash.get(Integer.parseInt(this.getHeaderL())));
-        intValueHash = columnHash.get(BODY);
-        if (intValueHash != null && !intValueHash.isEmpty())
-            this.setBody(intValueHash.get(Integer.parseInt(this.getBody())));
-        intValueHash = columnHash.get(FOOTER_R);
-        if (intValueHash != null && !intValueHash.isEmpty())
-            this.setFooterR(intValueHash.get(Integer.parseInt(this.getFooterR())));
-        intValueHash = columnHash.get(FOOTER_L);
-        if (intValueHash != null && !intValueHash.isEmpty())
-            this.setFooterL(intValueHash.get(Integer.parseInt(this.getFooterL())));
+        try {
+            HashMap<Integer, String> intValueHash = columnHash.get(TITLE);
+            if (intValueHash != null && !intValueHash.isEmpty() && this.getTitle() != null)
+                this.setTitle(intValueHash.get(Integer.parseInt(this.getTitle())));
+            intValueHash = columnHash.get(HEADER_R);
+            if (intValueHash != null && !intValueHash.isEmpty() && this.getHeaderR() != null)
+                this.setHeaderR(intValueHash.get(Integer.parseInt(this.getHeaderR())));
+            intValueHash = columnHash.get(HEADER_L);
+            if (intValueHash != null && !intValueHash.isEmpty() && this.getHeaderL() != null)
+                this.setHeaderL(intValueHash.get(Integer.parseInt(this.getHeaderL())));
+            intValueHash = columnHash.get(BODY);
+            if (intValueHash != null && !intValueHash.isEmpty() && this.getBody() != null)
+                this.setBody(intValueHash.get(Integer.parseInt(this.getBody())));
+            intValueHash = columnHash.get(FOOTER_R);
+            if (intValueHash != null && !intValueHash.isEmpty() && this.getFooterR() != null)
+                this.setFooterR(intValueHash.get(Integer.parseInt(this.getFooterR())));
+            intValueHash = columnHash.get(FOOTER_L);
+            if (intValueHash != null && !intValueHash.isEmpty() && this.getFooterL() != null)
+                this.setFooterL(intValueHash.get(Integer.parseInt(this.getFooterL())));
+        } catch (Exception e) {
+            Log.e("applyMdlMp", e.getMessage());
+        }
     }
 
     public void fillMock() {

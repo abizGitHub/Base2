@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--android:theme="@style/AppTheme.AppBarOverlay"-->
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary" >
+        <!--app:popupTheme="@style/AppTheme.PopupOverlay"-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_alignParentLeft="true"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_menu_search"/>
+                <EditText
+                    android:id="@+id/search_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="end"
+                    android:layout_weight="2"
+                    android:textAlignment="textEnd"
+                    android:layoutDirection="rtl"
+                    android:layout_alignParentRight="true"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBarLayout"
+        android:background="@color/colorAccent"
+        android:layoutDirection="rtl"
+        android:layout_gravity="start"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:id="@+id/scro"
+            android:layoutDirection="rtl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+            </RadioGroup>
+        </HorizontalScrollView>
+
+        <ListView
+            android:id="@+id/list_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scro"
+            android:layout_marginLeft="@dimen/list_sides_margin"
+            android:layout_marginRight="@dimen/list_sides_margin"
+            android:background="@color/colorPrimary"
+            android:dividerHeight="@dimen/list_sides_margin" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -10,8 +10,11 @@ import com.tut.abiz.base.adapter.GeneralListAdapter;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.GeneralService;
+import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
+
+import static com.tut.abiz.base.util.Utils.extractTitles;
 
 /**
  * Created by abiz on 4/14/2019.
@@ -20,7 +23,6 @@ import java.util.ArrayList;
 public class ListActivity extends BaseActivity {
 
     ListView listView;
-    GeneralService service;
     ArrayList<GeneralModel> generalList;
     GeneralListAdapter adapter;
     ArrayList<String> titles;
@@ -30,7 +32,6 @@ public class ListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.act_list);
         setSelectedTable(1);
-        service = new GeneralService(this);
         if (getNavMenu() == R.id.nav_dbView) {
             generalList = service.getDBList();
         } else
@@ -67,16 +68,6 @@ public class ListActivity extends BaseActivity {
     public void onStarChanged(int position, boolean checked) {
 
     }
-
-
-    private ArrayList<String> extractTitles(ArrayList<GeneralModel> generalList) {
-        ArrayList<String> titles = new ArrayList<>();
-        for (GeneralModel generalModel : generalList) {
-            titles.add(generalModel.getTitle());
-        }
-        return titles;
-    }
-
 
 }
 

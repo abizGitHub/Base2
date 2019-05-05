@@ -3,6 +3,7 @@ package com.tut.abiz.base.acts;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,8 +13,13 @@ import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.adapter.GeneralListAdapter;
 import com.tut.abiz.base.frags.ListPagerFrag;
+import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.DbHelper;
+import com.tut.abiz.base.service.GeneralService;
+import com.tut.abiz.base.service.NetService;
+import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private DbHelper dbHelper;
     private int navMenu, selectedTable = 1;
     private String navTitle;
+    NetService netService;
+    GeneralService service;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +43,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         dbHelper = new DbHelper(this);
         navMenu = getIntent().getExtras().getInt(Consts.NAVPAGER);
         navTitle = getIntent().getExtras().getString(Consts.NAVTITLE);
+        service = new GeneralService(this);
+        netService = new NetService(null, this);
         setSelectedTable(getIntent().getExtras().getInt(Consts.CURRENTPAGE));
     }
 
@@ -112,6 +122,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.selectedTable = selectedTable;
     }
 
+    public int getTablesCount() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getInt(Consts.TABLECOUNT, 0);
+    }
+
+    public String getTableName(int ix) {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.TABLENAMES[ix], " - 1234567890 -");
+    }
+
     public String getLastActivityName() {
         return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.LASTACTIVITY, "");
     }
@@ -146,6 +164,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setIsStared(boolean b) {
         getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.STARED, b).apply();
+    }
+
+    public TagVisiblity getTagVisiblity(int tableIx) {
+        return Utils.getTagVisFromPref(tableIx, getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE),
+                getSharedPreferences(Consts.ISSTRINGPREF, MODE_PRIVATE));
+    }
+
+    public void setTagVisiblity(int tableIx, TagVisiblity vis) {
+        netService.putVisInPref(vis, tableIx);
     }
 
 }

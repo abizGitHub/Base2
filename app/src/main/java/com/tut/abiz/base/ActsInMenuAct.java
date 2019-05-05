@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.tut.abiz.base.acts.Act1;
@@ -20,11 +22,13 @@ import com.tut.abiz.base.acts.Act3;
 import com.tut.abiz.base.acts.ListActivity;
 import com.tut.abiz.base.acts.NetConnectionActivity;
 import com.tut.abiz.base.acts.PagerActivity;
+import com.tut.abiz.base.acts.SearchActivity;
 import com.tut.abiz.base.frags.Frag1;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.DbHelper;
 import com.tut.abiz.base.service.GeneralService;
+import com.tut.abiz.base.service.OffLineTestService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,8 +48,9 @@ public class ActsInMenuAct extends AppCompatActivity
     Toolbar toolbar;
     GeneralService service;
     ArrayList<GeneralModel> testList;
-    SharedPreferences pref, visiblityPref;
+    SharedPreferences pref, visiblityPref, isStringPref;
     Boolean isRunBefore = false;
+    OffLineTestService offLineTestService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +67,29 @@ public class ActsInMenuAct extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         homeFragment = new Frag1();
         service = new GeneralService(this);
+        offLineTestService = new OffLineTestService(this);
         testList = service.getTestGeneralList();
         doPrefs();
+        ImageButton searchButton = (ImageButton) findViewById(R.id.search_btn);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActsInMenuAct.this, SearchActivity.class);
+                intent.putExtra(Consts.CURRENTPAGE, 1);
+                intent.putExtra(Consts.NAVPAGER, selectedMenuAct);
+                intent.putExtra(Consts.NAVTITLE, getResources().getString(R.string.dbView));
+                startActivity(intent);
+            }
+        });
         //Intent intent = new Intent(SecondActivity.this,Main2Activ.class);
         //startActivity(intent);
+        offLineTestService.fillMockForTest();
     }
 
     private void doPrefs() {
         pref = getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE);
         visiblityPref = getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE);
+        isStringPref = getSharedPreferences(Consts.ISSTRINGPREF, MODE_PRIVATE);
         isRunBefore = pref.getBoolean(Consts.ISRUNBEFORE, false);
         if (!isRunBefore) {
             DbHelper dbHelper = new DbHelper(this);
@@ -91,6 +110,17 @@ public class ActsInMenuAct extends AppCompatActivity
             visiblityPref.edit().putBoolean(GeneralModel.HEADERL$ + 2, true).apply();
             visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + 2, true).apply();
             visiblityPref.edit().putBoolean(GeneralModel.FOOTERR$ + 2, false).apply();
+
+            isStringPref.edit().putBoolean(GeneralModel.TITLE$ + 1, true).apply();
+            isStringPref.edit().putBoolean(GeneralModel.HEADERR$ + 1, true).apply();
+            isStringPref.edit().putBoolean(GeneralModel.FOOTERR$ + 1, true).apply();
+            isStringPref.edit().putBoolean(GeneralModel.FOOTERL$ + 1, true).apply();
+
+            isStringPref.edit().putBoolean(GeneralModel.TITLE$ + 2, true).apply();
+            isStringPref.edit().putBoolean(GeneralModel.HEADERR$ + 2, true).apply();
+            isStringPref.edit().putBoolean(GeneralModel.HEADERL$ + 2, true).apply();
+            isStringPref.edit().putBoolean(GeneralModel.FOOTERL$ + 2, true).apply();
+            isStringPref.edit().putBoolean(GeneralModel.FOOTERR$ + 2, true).apply();
         }
     }
 
@@ -158,7 +188,7 @@ public class ActsInMenuAct extends AppCompatActivity
         if (selectedMenuAct == R.id.nav_list) {
             intent = new Intent(ActsInMenuAct.this, ListActivity.class);
             intent.putExtra(Consts.GENERALLIST, testList);
-            TagVisiblity visiblity = new TagVisiblity().
+            TagVisiblity visiblity = new TagVisiblity(-1).
                     doBodyVisible(true).
                     doFooterLVisible(true).
                     doHeaderRVisible(true).
@@ -166,7 +196,7 @@ public class ActsInMenuAct extends AppCompatActivity
             intent.putExtra(Consts.VISIBLITY, visiblity);
         } else if (selectedMenuAct == R.id.nav_dbView) {
             intent = new Intent(ActsInMenuAct.this, ListActivity.class);
-            TagVisiblity visiblity = new TagVisiblity().
+            TagVisiblity visiblity = new TagVisiblity(-1).
                     doBodyVisible(true).
                     doTitleVisible(true);
             intent.putExtra(Consts.VISIBLITY, visiblity);

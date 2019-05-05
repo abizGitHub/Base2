@@ -41,4 +41,6 @@ public class Consts {
     public static final String STAREDPOSITION = "removedPosition";
     public static final String HASNEWCHANGE = "hasNewChange";
     public static final String STARED = "stared";
+
+    public static final String ISSTRINGPREF = "isStringPrf";
 }

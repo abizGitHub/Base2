@@ -154,10 +154,10 @@ public class GeneralListAdapter extends ArrayAdapter {
 
         @Override
         public void onClick(View view) {
-            intent.putExtra(Consts.GENERALMODELS, generalModels);
+            intent.putExtra(Consts.GENERALMODEL, generalModels.get(position));
             intent.putExtra(Consts.IX, position);
             intent.putExtra(Consts.NAVPAGER, baseActivity.getNavMenu());
-            intent.putExtra(Consts.TITLES, titles);
+            intent.putExtra(Consts.TITLES, titles.get(position));
             intent.putExtra(Consts.CURRENTPAGE, baseActivity.getSelectedTable());
             intent.putExtra(Consts.NAVTITLE, baseActivity.getNavTitle() + " detail");
             baseActivity.startActivity(intent);

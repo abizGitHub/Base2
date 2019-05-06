@@ -32,9 +32,8 @@ public class SearchActivity extends BaseActivity {
     GeneralListAdapter adapter;
     ArrayList<String> titles;
     HashMap<Integer, RadioButton> rbs;
-    int checkedTable;
     HorizontalScrollView scrollView;
-    String searchWord;
+    String searchWord = "";
     EditText editText;
 
     @Override
@@ -42,16 +41,10 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.act_search_list);
         setSelectedTable(1);
-        checkedTable = 1;
-        if (getNavMenu() == R.id.nav_dbView) {
-            generalList = service.getDBList();
-        } else
-            generalList = service.getTestGeneralList();
-        TagVisiblity visiblity = new TagVisiblity(checkedTable).fillMock();
+        generalList = new ArrayList<>();
         listView = (ListView) findViewById(R.id.list_sheet);
         titles = extractTitles(generalList);
-        setSelectedTable(1);
-        adapter = new GeneralListAdapter(this, generalList, visiblity, titles, R.layout.sheet_itemlinear);
+        adapter = new GeneralListAdapter(this, generalList, getTagVisiblity(getSelectedTable()), titles, R.layout.sheet_itemlinear);
         listView.setAdapter(adapter);
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
@@ -62,7 +55,7 @@ public class SearchActivity extends BaseActivity {
             public void run() {
                 scrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             }
-        }, 100L);
+        }, 1000L);
         rbs = new HashMap<>();
         for (int i = 0; i < getTablesCount(); i++) {
             RadioButton rb = (RadioButton) radioGroup.getChildAt(5 - i);
@@ -80,19 +73,7 @@ public class SearchActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View view) {
-                    searchWord = editText.getText().toString().trim();
-                    generalList.clear();
-                    titles.clear();
-                    ArrayList<GeneralModel> allGeneralFrom;
-                    if (searchWord.isEmpty())
-                        allGeneralFrom = service.getAllGeneralFrom(checkedTable);
-                    else
-                        allGeneralFrom = service.getAllGeneralFrom(checkedTable, searchWord, getTagVisiblity(checkedTable));
-                    for (GeneralModel model : allGeneralFrom) {
-                        getGeneralList().add(model);
-                        titles.add(model.getTitle());
-                    }
-                    adapter.notifyDataSetChanged();
+                    SearchActivity.this.doSearch();
                 }
             });
         }
@@ -105,10 +86,28 @@ public class SearchActivity extends BaseActivity {
                     rbs.get(key).setChecked(false);
                 }
                 radioButton.setChecked(true);
-                checkedTable = Integer.parseInt(radioButton.getTag().toString()) + 1;
+                setSelectedTable(Integer.parseInt(radioButton.getTag().toString()) + 1);
+                /*if (!searchWord.isEmpty())
+                    doSearch();*/
             }
         });
 
+    }
+
+    private void doSearch() {
+        searchWord = editText.getText().toString().trim();
+        generalList.clear();
+        titles.clear();
+        ArrayList<GeneralModel> allGeneralFrom;
+        if (searchWord.isEmpty())
+            allGeneralFrom = service.getAllGeneralFrom(getSelectedTable());
+        else
+            allGeneralFrom = service.getAllGeneralFrom(getSelectedTable(), searchWord, getTagVisiblity(getSelectedTable()));
+        for (GeneralModel model : allGeneralFrom) {
+            getGeneralList().add(model);
+            titles.add(model.getTitle());
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

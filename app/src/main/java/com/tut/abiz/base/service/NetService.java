@@ -123,6 +123,7 @@ public class NetService implements NetServiceListener {
             for (TagVisiblity vis : confiqRemote.getTagVisiblity()) {
                 putVisInPref(vis, vis.getTableId());
             }
+            dbHelper.clearTagVisiblitys();
             dbHelper.insertTagVisiblitys(confiqRemote.getTagVisiblity());
         }
         if (confiqRemote.getUserId() != confiqLocal.getUserId() || confiqRemote.getHasUserPermision() != confiqLocal.getHasUserPermision()) {

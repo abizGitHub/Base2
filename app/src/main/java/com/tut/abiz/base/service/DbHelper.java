@@ -446,7 +446,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public ArrayList<GeneralModel> getAllGeneralFrom(int ix, String inWord, TagVisiblity vis) {
         HashMap<Integer, HashMap<Integer, String>> modelMapHash = getColumnHash(ix);
-        SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<GeneralModel> generalModels = new ArrayList<GeneralModel>();
         String query = "SELECT * FROM " + GENERALTABLEPREFIX + ix + " WHERE 0 = 1 ";
         //TITLE TEXT,HEADER_R TEXT,HEADER_L TEXT,BODY TEXT,FOOTER_R TEXT,FOOTER_L TEXT
@@ -491,6 +490,7 @@ public class DbHelper extends SQLiteOpenHelper {
         if (utils.getQuery().contains("IN"))
             query += " OR " + utils.getQuery();
         Log.e("search:", query);
+        SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery(query, null);
         if (res != null && res.getCount() > 0)
             while (res.moveToNext()) {
@@ -511,4 +511,9 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
+    public void clearTagVisiblitys() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE  FROM " + TAGVISIBLITY);
+        db.close();
+    }
 }

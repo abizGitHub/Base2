@@ -17,5 +17,6 @@
     <string name="postList">PostList</string>
     <string name="dbView">DBView</string>
     <string name="staredList">staredList</string>
+    <string name="search">search</string>
 
 </resources>

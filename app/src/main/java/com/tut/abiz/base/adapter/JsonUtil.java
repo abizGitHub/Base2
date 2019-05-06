@@ -313,14 +313,19 @@ public class JsonUtil {
         } catch (JSONException e) {
         }
         try {
+            json.put(Confiq.HAVENEWCHANGE, confiq.getHaveNewChange());
+        } catch (JSONException e) {
+        }
+        try {
             if (confiq.getLastIds() != null)
                 json.put(Confiq.LASTIDS, new JSONArray(confiq.getLastIds()));
         } catch (JSONException e) {
         }
-        try {
-            json.put(Confiq.LASTIDS, new JSONArray(confiq.getLastIds()));
-        } catch (JSONException e) {
-        }
+        if (confiq.getLastIds() != null)
+            try {
+                json.put(Confiq.LASTIDS, new JSONArray(confiq.getLastIds()));
+            } catch (JSONException e) {
+            }
         if (confiq.getLastModelMap() != null)
             try {
                 JSONArray array = new JSONArray();

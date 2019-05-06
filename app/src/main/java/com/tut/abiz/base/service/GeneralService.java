@@ -118,16 +118,6 @@ public class GeneralService {
         model.setBody(confiq.toString());
         list.add(model);
 
-        ArrayList<ModelMap> modelMap = dbHelper.getModelMap(1);
-        modelMap.addAll(dbHelper.getModelMap(2));
-        modelMap.addAll(dbHelper.getModelMap(3));
-        for (ModelMap map : modelMap) {
-            GeneralModel mdl = new GeneralModel();
-            mdl.setTitle("modelMap-id:" + map.getId());
-            mdl.setBody(map.toString());
-            list.add(mdl);
-        }
-
         ArrayList<TagVisiblity> tagVisiblity = dbHelper.getTagVisiblity(1);
         tagVisiblity.addAll(dbHelper.getTagVisiblity(2));
         tagVisiblity.addAll(dbHelper.getTagVisiblity(3));
@@ -136,6 +126,16 @@ public class GeneralService {
             model.setTitle("tagVis-" + vis.getTableId());
             model.setBody(vis.toString());
             list.add(model);
+        }
+
+        ArrayList<ModelMap> modelMap = dbHelper.getModelMap(1);
+        modelMap.addAll(dbHelper.getModelMap(2));
+        modelMap.addAll(dbHelper.getModelMap(3));
+        for (ModelMap map : modelMap) {
+            GeneralModel mdl = new GeneralModel();
+            mdl.setTitle("modelMap-id:" + map.getId());
+            mdl.setBody(map.toString());
+            list.add(mdl);
         }
 
         return list;
@@ -156,16 +156,6 @@ public class GeneralService {
 
     public ArrayList<GeneralModel> getAllGeneralFrom(int ix, String inWord, TagVisiblity tagVisiblity) {
         return dbHelper.getAllGeneralFrom(ix, inWord, tagVisiblity);
-    }
-
-    public void fillMockForTest() {
-        testGeneralList = new ArrayList<>();
-        for (int i = 0; i < 3 + new Random().nextInt(10); i++) {
-            GeneralModel generalModel = new GeneralModel();
-            generalModel.fillMock();
-            testGeneralList.add(generalModel);
-        }
-
     }
 
 

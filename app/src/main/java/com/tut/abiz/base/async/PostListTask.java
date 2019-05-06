@@ -3,10 +3,12 @@ package com.tut.abiz.base.async;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.service.NetService;
+import com.tut.abiz.base.service.OffLineTestService;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -54,7 +56,11 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
         try {
-            JSONObject jsonObject = postData();
+            JSONObject jsonObject;
+            if (BaseActivity.offline)
+                jsonObject = OffLineTestService.postData(url ,sentJson);
+            else
+                jsonObject = postData();
             if (jsonObject.length() > 0)
                 if (strings[0].equals(GETCONGIQ)) {
                     netService.onConfiqReady(extractConfiq(jsonObject));

@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 public class ViewListItemActivity extends BaseActivity {
 
-    ArrayList<GeneralModel> generalModels;
-    ArrayList<String> titles;
+    GeneralModel generalModel_;
+    String title_;
     int position;
     TextView title, body, footL, headerL,
             headerR, footR;
@@ -32,25 +32,25 @@ public class ViewListItemActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sheet_linear);
-        generalModels = (ArrayList<GeneralModel>) getIntent().getExtras().getSerializable(Consts.GENERALMODELS);
-        titles = (ArrayList<String>) getIntent().getExtras().getSerializable(Consts.TITLES);
+        generalModel_ = (GeneralModel) getIntent().getExtras().getSerializable(Consts.GENERALMODEL);
+        title_ = (String) getIntent().getExtras().getSerializable(Consts.TITLES);
         position = getIntent().getExtras().getInt(Consts.IX);
         layout = (ViewGroup) findViewById(R.id.item_content);
         title = (TextView) findViewById(R.id.sheetTitle);
-        title.setText(generalModels.get(position).getTitle());
+        title.setText(generalModel_.getTitle());
         body = (TextView) findViewById(R.id.sheetBody);
-        body.setText(generalModels.get(position).getBody());
+        body.setText(generalModel_.getBody());
         headerL = (TextView) findViewById(R.id.sheetHeaderL);
-        headerL.setText(generalModels.get(position).getHeaderL());
+        headerL.setText(generalModel_.getHeaderL());
         headerR = (TextView) findViewById(R.id.sheetHeaderR);
-        headerR.setText(generalModels.get(position).getHeaderR());
+        headerR.setText(generalModel_.getHeaderR());
         footL = (TextView) findViewById(R.id.sheetFootL);
-        footL.setText(generalModels.get(position).getFooterL());
+        footL.setText(generalModel_.getFooterL());
         footR = (TextView) findViewById(R.id.sheetFootR);
-        footR.setText(generalModels.get(position).getFooterR());
+        footR.setText(generalModel_.getFooterR());
         star = (ToggleButton) findViewById(R.id.sheetStar);
-        star.setChecked(generalModels.get(position).getStared());
-        star.setOnCheckedChangeListener(new CheckListener(this, null, generalModels, titles, position));
+        star.setChecked(generalModel_.getStared());
+        star.setOnCheckedChangeListener(new CheckListener(this, null, generalModel_, position));
     }
 
     @Override

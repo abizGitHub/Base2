@@ -67,7 +67,6 @@ public class ActsInMenuAct extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         homeFragment = new Frag1();
         service = new GeneralService(this);
-        offLineTestService = new OffLineTestService(this);
         testList = service.getTestGeneralList();
         doPrefs();
         ImageButton searchButton = (ImageButton) findViewById(R.id.search_btn);
@@ -83,7 +82,6 @@ public class ActsInMenuAct extends AppCompatActivity
         });
         //Intent intent = new Intent(SecondActivity.this,Main2Activ.class);
         //startActivity(intent);
-        offLineTestService.fillMockForTest();
     }
 
     private void doPrefs() {

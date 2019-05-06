@@ -36,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private String navTitle;
     NetService netService;
     GeneralService service;
+    public static boolean offline = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -174,5 +175,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setTagVisiblity(int tableIx, TagVisiblity vis) {
         netService.putVisInPref(vis, tableIx);
     }
+
 
 }

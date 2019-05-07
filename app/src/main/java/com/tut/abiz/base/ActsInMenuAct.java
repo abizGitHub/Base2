@@ -22,6 +22,7 @@ import com.tut.abiz.base.acts.Act3;
 import com.tut.abiz.base.acts.ListActivity;
 import com.tut.abiz.base.acts.NetConnectionActivity;
 import com.tut.abiz.base.acts.PagerActivity;
+import com.tut.abiz.base.acts.SchedulActivity;
 import com.tut.abiz.base.acts.SearchActivity;
 import com.tut.abiz.base.frags.Frag1;
 import com.tut.abiz.base.model.GeneralModel;
@@ -50,12 +51,12 @@ public class ActsInMenuAct extends AppCompatActivity
     ArrayList<GeneralModel> testList;
     SharedPreferences pref, visiblityPref, isStringPref;
     Boolean isRunBefore = false;
-    OffLineTestService offLineTestService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acts_in_menu);
+        startDialog();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actsMap = new HashMap<>();
@@ -82,6 +83,10 @@ public class ActsInMenuAct extends AppCompatActivity
         });
         //Intent intent = new Intent(SecondActivity.this,Main2Activ.class);
         //startActivity(intent);
+    }
+
+    private void startDialog() {
+        Toast.makeText(this, getIntent().getExtras().getString(SchedulActivity.DOCONNECT), Toast.LENGTH_SHORT).show();
     }
 
     private void doPrefs() {

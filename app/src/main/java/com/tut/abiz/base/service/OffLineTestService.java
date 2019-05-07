@@ -27,7 +27,7 @@ public class OffLineTestService {
         generalModelHash = new HashMap<>();
         modelMapHash = new HashMap<>();
         for (int tableId = 1; tableId < 3; tableId++) {
-            for (int j = 0; j < 1500; j++) {
+            for (int j = 0; j < 150; j++) {
                 ModelMap map = new ModelMap();
                 map.setId(j + 1 + 1000 * tableId);
                 map.setColumnIx(GeneralModel.HEADER_R);
@@ -36,7 +36,7 @@ public class OffLineTestService {
                 map.setStringValue(tableId + GeneralModel.HEADERR$ + "-iv-" + j);
                 modelMapHash.put(map.getId(), map);
             }
-            for (int j = 0; j < 1500; j++) {
+            for (int j = 0; j < 150; j++) {
                 ModelMap map = new ModelMap();
                 map.setId(j + 10000 + 1000 * tableId);
                 map.setColumnIx(GeneralModel.HEADER_L);
@@ -45,7 +45,7 @@ public class OffLineTestService {
                 map.setStringValue(tableId + GeneralModel.HEADERL$ + "-iv-" + j);
                 modelMapHash.put(map.getId(), map);
             }
-            for (int j = 0; j < 5000; j++) {
+            for (int j = 0; j < 500; j++) {
                 ModelMap map = new ModelMap();
                 map.setId(j + 50000 + 1000 * tableId);
                 map.setColumnIx(GeneralModel.FOOTER_L);
@@ -56,14 +56,14 @@ public class OffLineTestService {
             }
         }
 
-        for (int i = 0; i < 94000; i++) {
+        for (int i = 0; i < 940; i++) {
             GeneralModel generalModel = new GeneralModel();
             generalModel.fillMock();
             generalModel.setId(i + 1L);
             generalModel.setTitle((new Random().nextBoolean() ? 1 : 2) + "-title-" + i);
-            generalModel.setHeaderR(new Random().nextInt(1500) + "");
-            generalModel.setHeaderL(new Random().nextInt(1500) + "");
-            generalModel.setFooterL(new Random().nextInt(1500) + "");
+            generalModel.setHeaderR(new Random().nextInt(150) + "");
+            generalModel.setHeaderL(new Random().nextInt(150) + "");
+            generalModel.setFooterL(new Random().nextInt(150) + "");
             generalModelHash.put(i + 1, generalModel);
         }
 

@@ -2,6 +2,7 @@ package com.tut.abiz.base.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.NetServiceListener;
@@ -146,6 +147,7 @@ public class NetService implements NetServiceListener {
                         waitCount++;
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
+                        Log.e(">>??", e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -221,6 +223,7 @@ public class NetService implements NetServiceListener {
                 waitCount++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {
+                Log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
         }

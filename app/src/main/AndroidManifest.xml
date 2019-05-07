@@ -3,6 +3,7 @@
     package="com.tut.abiz.base">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ActsInMenuAct"
+            android:name=".acts.SchedulActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ActsInMenuAct" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".acts.Act1" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".acts.Act2" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".acts.Act3" android:theme="@style/AppTheme.NoActionBar"/>
@@ -29,6 +31,7 @@
         <activity android:name=".acts.NetConnectionActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".acts.ViewListItemActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".acts.SearchActivity" android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

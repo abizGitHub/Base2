@@ -29,7 +29,7 @@ import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.DbHelper;
 import com.tut.abiz.base.service.GeneralService;
-import com.tut.abiz.base.service.OffLineTestService;
+import com.tut.abiz.base.service.SchedulService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +56,10 @@ public class ActsInMenuAct extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acts_in_menu);
-        startDialog();
+        if (getIntent() == null || getIntent().getExtras() == null)
+            SchedulActivity.phase = SchedulService.DOCONNECT;
+        else
+            startDialog();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actsMap = new HashMap<>();
@@ -81,12 +84,11 @@ public class ActsInMenuAct extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        //Intent intent = new Intent(SecondActivity.this,Main2Activ.class);
-        //startActivity(intent);
+
     }
 
     private void startDialog() {
-        Toast.makeText(this, getIntent().getExtras().getString(SchedulActivity.DOCONNECT), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getIntent().getExtras().getString(SchedulService.DOCONNECT), Toast.LENGTH_SHORT).show();
     }
 
     private void doPrefs() {

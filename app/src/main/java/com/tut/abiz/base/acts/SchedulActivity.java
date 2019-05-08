@@ -1,22 +1,23 @@
 package com.tut.abiz.base.acts;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.tut.abiz.base.ActsInMenuAct;
+import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
-import com.tut.abiz.base.service.NetService;
+import com.tut.abiz.base.service.PostListService;
+import com.tut.abiz.base.service.SchedulService;
+
+import static com.tut.abiz.base.service.SchedulService.CONNECTED;
+import static com.tut.abiz.base.service.SchedulService.DOCONNECT;
+import static com.tut.abiz.base.service.SchedulService.ISINBACK;
 
 
 /**
@@ -26,21 +27,8 @@ import com.tut.abiz.base.service.NetService;
 public class SchedulActivity extends AppCompatActivity {
 
     private View mContentView;
-    public static String DOSTART = "do_Start";
-    public static String DOCONNECT = "do_Connect";
-    public static String CANTCONNECT = "cant_Connect";
-    public static String CONNECTED = "connected";
-    String phase;
-    private SchedulTask task;
-    int try_ = 0;
-    NotificationCompat.BigTextStyle bigTextStyle;
-    NotificationManager manager;
-    Intent resultIntent;
-    PendingIntent piIntent;
-    NotificationCompat.Builder builder;
-    NetService netService;
-    ConnectivityManager conMan;
-    boolean connectedToNet;
+    public static String phase = "";
+    Intent act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,79 +42,47 @@ public class SchedulActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        netService = new NetService(null, this);
+        registerReceiver(receiver, new IntentFilter(
+                SchedulService.NOTIFICATION));
 
-        bigTextStyle = new android.support.v7.app.NotificationCompat.BigTextStyle();
-        bigTextStyle.bigText("hello this is one").build();
-        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        resultIntent = new Intent(this, SchedulActivity.class);
-        piIntent = PendingIntent.getActivity(this, 666, resultIntent, 0);
-        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("START")
-                //.setContentText(" <content TEXT> ")
-                .setStyle(bigTextStyle)
-                .setContentIntent(piIntent);
-
-        phase = DOSTART;
-        task = new SchedulTask();
-        task.execute(DOSTART);
-    }
-
-    private void doNotification(String note) {
-        task = new SchedulTask();
-        task.execute(DOCONNECT);
-        if (isConnectedToNet()) {
-            builder.setContentTitle(note).setContentText("<content-text><" + note + ">");
-            manager.notify(0, builder.build());
-        }
+        Intent service = new Intent(this, SchedulService.class);
+        startService(service);
+        act = new Intent(SchedulActivity.this, ActsInMenuAct.class);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (phase.equals(DOCONNECT)) {
+        if (phase.equals(ISINBACK)) {
+            act.putExtra(Consts.LASTACTIVITY, SchedulActivity.class.getSimpleName());
+            act.putExtra(DOCONNECT, CONNECTED);
+            startActivity(act);
+            phase = DOCONNECT;
+        } else if (phase.equals(DOCONNECT)) {
             Toast.makeText(this, "move To Back", Toast.LENGTH_SHORT).show();
+            phase = ISINBACK;
             moveTaskToBack(true);
         }
     }
 
-    private boolean isConnectedToNet() {
-        conMan = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = conMan.getActiveNetworkInfo();
-        connectedToNet = (info != null && info.isAvailable() && info.isConnected());
-        return connectedToNet;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    class SchedulTask extends AsyncTask<String, Void, String> {
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
-        protected String doInBackground(String... strings) {
-            String connect = connect();
-            if (phase.equals(DOSTART)) {
-                Intent intent = new Intent(SchedulActivity.this, ActsInMenuAct.class);
-                intent.putExtra(DOCONNECT, isConnectedToNet() ? CONNECTED : CANTCONNECT);
-                startActivity(intent);
-                phase = DOCONNECT;
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                /*int resultCode = bundle.getInt(SchedulService.RESULT);
+                int result = bundle.getInt(PostListService.RESULT);*/
+                if (phase.isEmpty()) {
+                    act.putExtra(Consts.LASTACTIVITY, SchedulActivity.class.getSimpleName());
+                    act.putExtra(DOCONNECT, bundle.getString(DOCONNECT));
+                    startActivity(act);
+                    phase = DOCONNECT;
+                }
             }
-            doNotification(connect + ">" + try_++);
-            return null;
         }
 
-        private String connect() {
-            Log.e(">", "connecting ...");
-            netService.allNetList();
-            /*try {
-                Thread.sleep(111);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-            return CONNECTED;
-        }
+    };
 
-    }
 
 }

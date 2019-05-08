@@ -22,15 +22,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActsInMenuAct" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.Act1" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.Act2" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.Act3" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.PagerActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.ListActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.NetConnectionActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.ViewListItemActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".acts.SearchActivity" android:theme="@style/AppTheme.NoActionBar"/>
+
+        <service android:name=".service.SchedulService" />
+        <service android:name=".service.PostListService" />
+
+        <activity
+            android:name=".ActsInMenuAct"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.Act1"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.Act2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.Act3"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.PagerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.ListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.NetConnectionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.ViewListItemActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

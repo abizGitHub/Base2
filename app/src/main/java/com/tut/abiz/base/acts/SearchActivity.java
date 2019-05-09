@@ -1,6 +1,8 @@
 package com.tut.abiz.base.acts;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
@@ -35,6 +37,8 @@ public class SearchActivity extends BaseActivity {
     HorizontalScrollView scrollView;
     String searchWord = "";
     EditText editText;
+    ProgressDialog progressDialog;
+    Handler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +50,10 @@ public class SearchActivity extends BaseActivity {
         titles = extractTitles(generalList);
         adapter = new GeneralListAdapter(this, generalList, getTagVisiblity(getSelectedTable()), titles, R.layout.sheet_itemlinear);
         listView.setAdapter(adapter);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait....");
+        progressDialog.setCanceledOnTouchOutside(false);
+        handler = new Handler();
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
         ViewCompat.setLayoutDirection(radioGroup, ViewCompat.LAYOUT_DIRECTION_RTL);
@@ -74,6 +82,13 @@ public class SearchActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     SearchActivity.this.doSearch();
+                    progressDialog.show();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                        }
+                    }, 500);
                 }
             });
         }
@@ -107,6 +122,7 @@ public class SearchActivity extends BaseActivity {
             getGeneralList().add(model);
             titles.add(model.getTitle());
         }
+        //progressDialog.dismiss();
         adapter.notifyDataSetChanged();
     }
 

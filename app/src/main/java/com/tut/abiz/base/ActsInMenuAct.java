@@ -1,5 +1,7 @@
 package com.tut.abiz.base;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,7 +61,7 @@ public class ActsInMenuAct extends AppCompatActivity
         if (getIntent() == null || getIntent().getExtras() == null)
             SchedulActivity.phase = SchedulService.DOCONNECT;
         else
-            startDialog();
+            startDialog(getIntent().getExtras().getString(SchedulService.DOCONNECT));
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actsMap = new HashMap<>();
@@ -87,8 +89,45 @@ public class ActsInMenuAct extends AppCompatActivity
 
     }
 
-    private void startDialog() {
-        Toast.makeText(this, getIntent().getExtras().getString(SchedulService.DOCONNECT), Toast.LENGTH_SHORT).show();
+    private void startDialog(String command) {
+        //Toast.makeText(this, getIntent().getExtras().getString(SchedulService.DOCONNECT), Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);//, R.drawable.background_dialog);
+
+        if (command.equals(SchedulService.CONNECTED))
+            alertDialogBuilder.setMessage(getResources().getString(R.string.wait4UpdateMessage));
+        else
+            alertDialogBuilder.setMessage(getResources().getString(R.string.canNotconnectMessage));
+/*
+
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.understood),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Toast.makeText(ActsInMenuAct.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+                    }
+                });
+*/
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //finish();
+            }
+        });
+
+/*
+        alertDialogBuilder.setNeutralButton("Neutral",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Toast.makeText(ActsInMenuAct.this, "You clicked Neutral button", Toast.LENGTH_LONG).show();
+                    }
+                });
+*/
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     private void doPrefs() {

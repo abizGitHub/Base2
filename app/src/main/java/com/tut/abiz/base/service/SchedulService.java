@@ -77,7 +77,7 @@ public class SchedulService extends Service {
         piIntent = PendingIntent.getActivity(this, (int) new Date().getTime(), resultIntent, 0);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_menu_gallery)
                 .setContentTitle("START")
                 .setStyle(bigTextStyle)
                 .setContentIntent(piIntent);

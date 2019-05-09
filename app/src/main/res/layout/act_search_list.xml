@@ -70,6 +70,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_weight="1"
                 android:gravity="end"
+                android:background="@color/colorYellow"
                 android:layoutDirection="rtl"
                 android:textAlignment="textEnd" />
         </LinearLayout>

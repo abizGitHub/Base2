@@ -18,5 +18,9 @@
     <string name="dbView">DBView</string>
     <string name="staredList">staredList</string>
     <string name="search">search</string>
+    <string name="connected">con</string>
+    <string name="wait4UpdateMessage">wait for update</string>
+    <string name="canNotconnectMessage">Can not connect to internet</string>
+    <string name="understood">understood</string>
 
 </resources>

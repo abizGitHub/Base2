@@ -150,6 +150,15 @@ public class GeneralService {
         return fragmentPacks;
     }
 
+    public ArrayList<FragmentPack> getAllList() {
+        ArrayList<FragmentPack> fragmentPacks = new ArrayList<>();
+        int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
+        for (int ix = 1; ix < tableCount + 1; ix++) {
+            fragmentPacks.add(getFragPack(dbHelper.getAllGeneralFrom(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), getTagVisFromPref(ix, visiblityPref, isStringPref), ix));
+        }
+        return fragmentPacks;
+    }
+
     public ArrayList<GeneralModel> getAllGeneralFrom(int ix) {
         return dbHelper.getAllGeneralFrom(ix);
     }

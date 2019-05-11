@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -48,6 +49,7 @@ public class SchedulService extends Service {
 
     ConnectivityManager conMan;
     boolean connectedToNet;
+    SharedPreferences pref;
 
     int i;
 
@@ -78,10 +80,11 @@ public class SchedulService extends Service {
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_gallery)
-                .setContentTitle("START")
+                //.setContentTitle("START")
                 .setStyle(bigTextStyle)
                 .setContentIntent(piIntent);
         intent = new Intent(SchedulService.this, PostListService.class);
+        pref = getApplicationContext().getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE);
     }
 
     Handler handler = new Handler();
@@ -94,7 +97,7 @@ public class SchedulService extends Service {
                 intent.getExtras().clear();
             intent.putExtra(RESULT, i++);
             startService(intent);
-            handler.postDelayed(periodicUpdate, 700);
+            handler.postDelayed(periodicUpdate, 1700);
         }
     };
 
@@ -130,9 +133,29 @@ public class SchedulService extends Service {
     }
 
     private void notifyResults(ArrayList<Integer> updated) {
-        builder.setContentTitle("i:" + updated.get(0) + ",created:" + updated.get(1)
-                + ",dead:" + updated.get(2)).setAutoCancel(true);
-        manager.notify(0, builder.build());
+        String message = "";
+        int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
+        if (updated.size() == tableCount) {
+            for (int j = 0; j < tableCount; j++) {
+                if (updated.get(j) > 0)
+                    message += updated.get(j)
+                            + getResources().getString(R.string.Case)
+                            + " " + pref.getString(Consts.TABLENAMES[j], " ") + " " + getResources().getString(R.string.hasUpdated)
+                            + "\n";
+            }
+            if (!message.isEmpty()) {
+                bigTextStyle = new android.support.v7.app.NotificationCompat.BigTextStyle();
+                bigTextStyle.bigText(message).build();
+                builder.setStyle(bigTextStyle).setAutoCancel(true);
+                //builder.setContentTitle("! content !");
+                manager.notify(0, builder.build());
+            }
+        }
     }
 
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
 }

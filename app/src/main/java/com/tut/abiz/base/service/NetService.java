@@ -14,12 +14,14 @@ import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.tut.abiz.base.util.Utils.getFragPack;
 import static com.tut.abiz.base.util.Utils.getTagVisFromPref;
+import static com.tut.abiz.base.util.Utils.putVisInPref;
 
 /**
  * Created by abiz on 4/15/2019.
@@ -89,6 +91,7 @@ public class NetService implements NetServiceListener {
         return fragmentPacks;
     }
 
+
     private void applyNewUserSetting(Confiq confiqLocal, Confiq confiqRemote) {
 
         if (confiqRemote.getHaveNewChange() != null && confiqRemote.getHaveNewChange()) {
@@ -122,7 +125,7 @@ public class NetService implements NetServiceListener {
 
         if (confiqRemote.getTagVisiblity() != null && !confiqRemote.getTagVisiblity().isEmpty()) {
             for (TagVisiblity vis : confiqRemote.getTagVisiblity()) {
-                putVisInPref(vis, vis.getTableId());
+                Utils.putVisInPref(vis, vis.getTableId(), visiblityPref, isStringPref);
             }
             dbHelper.clearTagVisiblitys();
             dbHelper.insertTagVisiblitys(confiqRemote.getTagVisiblity());
@@ -180,27 +183,10 @@ public class NetService implements NetServiceListener {
             dbHelper.updateTagVisiblity(visiblity);
             int ix = 1;
             for (TagVisiblity vis : visiblity) {
-                putVisInPref(vis, ix);
+                Utils.putVisInPref(vis, ix, visiblityPref, isStringPref);
                 ix++;
             }
         }
-    }
-
-    public void putVisInPref(TagVisiblity vis, int tableIx) {
-        visiblityPref.edit().putBoolean(GeneralModel.TITLE$ + tableIx, vis.isTitleVisible()).apply();
-        visiblityPref.edit().putBoolean(GeneralModel.BODY$ + tableIx, vis.isBodyVisible()).apply();
-        visiblityPref.edit().putBoolean(GeneralModel.HEADERR$ + tableIx, vis.isHeaderRVisible()).apply();
-        visiblityPref.edit().putBoolean(GeneralModel.HEADERL$ + tableIx, vis.isHeaderLVisible()).apply();
-        visiblityPref.edit().putBoolean(GeneralModel.FOOTERR$ + tableIx, vis.isFooterRVisible()).apply();
-        visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLVisible()).apply();
-        visiblityPref.edit().putBoolean(GeneralModel.STAR$ + tableIx, vis.isStarVisible()).apply();
-
-        isStringPref.edit().putBoolean(GeneralModel.TITLE$ + tableIx, vis.isTitleString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.BODY$ + tableIx, vis.isBodyString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.HEADERR$ + tableIx, vis.isHeaderRString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.HEADERL$ + tableIx, vis.isHeaderLString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.FOOTERR$ + tableIx, vis.isFooterRString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLString()).apply();
     }
 
     private void applyNewModelMap(Confiq confiqLocal, Confiq confiqRemote) {
@@ -245,6 +231,7 @@ public class NetService implements NetServiceListener {
         wait4List = false;
     }
 
+    @Override
     public void onConfiqReady(Confiq confiqRemote) {
         this.confiqRemote = confiqRemote;
         wait4List = false;

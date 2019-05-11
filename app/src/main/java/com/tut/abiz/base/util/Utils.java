@@ -39,6 +39,23 @@ public class Utils {
         return visiblity;
     }
 
+    public static void putVisInPref(TagVisiblity vis, int tableIx, SharedPreferences visiblityPref, SharedPreferences isStringPref) {
+        visiblityPref.edit().putBoolean(GeneralModel.TITLE$ + tableIx, vis.isTitleVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.BODY$ + tableIx, vis.isBodyVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.HEADERR$ + tableIx, vis.isHeaderRVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.HEADERL$ + tableIx, vis.isHeaderLVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.FOOTERR$ + tableIx, vis.isFooterRVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLVisible()).apply();
+        visiblityPref.edit().putBoolean(GeneralModel.STAR$ + tableIx, vis.isStarVisible()).apply();
+
+        isStringPref.edit().putBoolean(GeneralModel.TITLE$ + tableIx, vis.isTitleString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.BODY$ + tableIx, vis.isBodyString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.HEADERR$ + tableIx, vis.isHeaderRString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.HEADERL$ + tableIx, vis.isHeaderLString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.FOOTERR$ + tableIx, vis.isFooterRString()).apply();
+        isStringPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLString()).apply();
+    }
+
     public static FragmentPack getFragPack(ArrayList<GeneralModel> generalList, String title, TagVisiblity visiblity, int pageNum) {
         ListPagerFrag pFrag = new ListPagerFrag();
         Bundle data1 = new Bundle();

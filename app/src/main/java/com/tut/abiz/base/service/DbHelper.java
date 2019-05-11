@@ -323,6 +323,11 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         confiq.setLastIds(lastIds);
+        ArrayList<TagVisiblity> visiblityList = new ArrayList<>();
+        for (int i = 0; i < lastIds.size(); i++) {
+            visiblityList.addAll(getTagVisiblity(i + 1));
+        }
+        confiq.setTagVisiblity(visiblityList);
         return confiq;
     }
 

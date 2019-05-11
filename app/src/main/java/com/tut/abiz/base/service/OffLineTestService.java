@@ -1,5 +1,7 @@
 package com.tut.abiz.base.service;
 
+import android.util.Log;
+
 import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
@@ -20,12 +22,18 @@ import java.util.Random;
 
 public class OffLineTestService {
 
-    static HashMap<Integer, GeneralModel> generalModelHash;
+    static HashMap<Integer, HashMap<Long, GeneralModel>> generalModelHash;
     static HashMap<Integer, ModelMap> modelMapHash;
+    static ArrayList<Long> lastIds;
 
     static {
         generalModelHash = new HashMap<>();
         modelMapHash = new HashMap<>();
+        lastIds = new ArrayList<>();
+        lastIds.add(0L);
+        lastIds.add(0L);
+        generalModelHash.put(1, new HashMap<Long, GeneralModel>());
+        generalModelHash.put(2, new HashMap<Long, GeneralModel>());
         for (int tableId = 1; tableId < 3; tableId++) {
             for (int j = 0; j < 150; j++) {
                 ModelMap map = new ModelMap();
@@ -45,7 +53,7 @@ public class OffLineTestService {
                 map.setStringValue(tableId + GeneralModel.HEADERL$ + "-iv-" + j);
                 modelMapHash.put(map.getId(), map);
             }
-            for (int j = 0; j < 500; j++) {
+            for (int j = 0; j < 102; j++) {
                 ModelMap map = new ModelMap();
                 map.setId(j + 50000 + 1000 * tableId);
                 map.setColumnIx(GeneralModel.FOOTER_L);
@@ -54,17 +62,18 @@ public class OffLineTestService {
                 map.setStringValue(tableId + GeneralModel.FOOTERL$ + "-iv-" + j);
                 modelMapHash.put(map.getId(), map);
             }
-        }
 
-        for (int i = 0; i < 940; i++) {
-            GeneralModel generalModel = new GeneralModel();
-            generalModel.fillMock();
-            generalModel.setId(i + 1L);
-            generalModel.setTitle((new Random().nextBoolean() ? 1 : 2) + "-title-" + i);
-            generalModel.setHeaderR(new Random().nextInt(150) + "");
-            generalModel.setHeaderL(new Random().nextInt(150) + "");
-            generalModel.setFooterL(new Random().nextInt(150) + "");
-            generalModelHash.put(i + 1, generalModel);
+            for (long i = 1; i < 100; i++) {
+                GeneralModel generalModel = new GeneralModel();
+                generalModel.fillMock();
+                generalModel.setId(i);
+                generalModel.setTitle(tableId + "-title-" + i);
+                generalModel.setHeaderR(new Random().nextInt(100) + "");
+                generalModel.setHeaderL(new Random().nextInt(100) + "");
+                generalModel.setFooterL(new Random().nextInt(100) + "");
+                generalModelHash.get(tableId).put(i, generalModel);
+            }
+            lastIds.set(tableId - 1, 141L);
         }
 
     }
@@ -98,21 +107,33 @@ public class OffLineTestService {
 
     private static ArrayList<GeneralModel> getGeneralListAfter(int tableIx, Long id) {
         ArrayList<GeneralModel> list = new ArrayList<>();
-        for (Integer id_ : generalModelHash.keySet()) {
-            if (id < id_ && generalModelHash.get(id_).getTitle().startsWith("" + tableIx))
-                list.add(generalModelHash.get(id_));
+        for (Long id_ : generalModelHash.get(tableIx).keySet()) {
+            list.add(generalModelHash.get(tableIx).get(id_));
         }
         return list;
     }
 
+    private static void addNewGM(int tableIx, Long id) {
+        for (long i = id + 1; i < id + 4; i++) {
+            GeneralModel generalModel = new GeneralModel();
+            generalModel.fillMock();
+            generalModel.setId(i);
+            generalModel.setTitle((tableIx) + "-title-" + i);
+            generalModel.setHeaderR(new Random().nextInt(100) + "");
+            generalModel.setHeaderL(new Random().nextInt(100) + "");
+            generalModel.setFooterL(new Random().nextInt(100) + "");
+            generalModelHash.get(tableIx).put(i, generalModel);
+        }
+        lastIds.set(tableIx - 1, id + 4);
+    }
+
     private static JSONObject returnMockConfiq(Confiq reqCnf) {
         JSONObject jsonResponse = new JSONObject();
+       // Log.e("req-ids> ", reqCnf.getLastIds().get(0) + "," + reqCnf.getLastIds().get(1));
+       // Log.e("last-ids> ", lastIds.get(0) + "," + lastIds.get(1));
         try {
             Confiq confiq = getConfig();
-            ArrayList<Long> list = new ArrayList<>();
-            list.add(100L);
-            list.add(100L);
-            confiq.setLastIds(list);
+            confiq.setLastIds(lastIds);
             confiq.setLastModelMap(getModelMapAfter(reqCnf.getLastModelMapId()));
             confiq.setModelMap2Delete(getModelMapAfter2Delete(reqCnf.getLastModelMapId()));
             JSONObject c = JsonUtil.parseConfiq(confiq);
@@ -120,6 +141,10 @@ public class OffLineTestService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        if (new Random().nextBoolean())
+            addNewGM(1, reqCnf.getLastIds().get(0));
+        if (new Random().nextBoolean())
+            addNewGM(2, reqCnf.getLastIds().get(1));
         return jsonResponse;
     }
 
@@ -144,8 +169,8 @@ public class OffLineTestService {
         confiq.setUserName("newSeen");
         confiq.setHaveNewChange(true);
         ArrayList<String> names = new ArrayList<>();
-        names.add("one");
-        names.add("two");
+        names.add("one-");
+        names.add("two-");
         confiq.setLastTablesName(names);
         ArrayList<TagVisiblity> tagV = new ArrayList<>();
         tagV.add(getTagVisiblity(1));

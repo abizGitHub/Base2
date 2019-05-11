@@ -199,4 +199,48 @@ public class TagVisiblity implements Serializable {
         this.footerLString = footerLString;
     }
 
+    public boolean equal(TagVisiblity vis) {
+        boolean eq = this.isTitleVisible() == vis.isTitleVisible();
+        if (!eq)
+            return false;
+        eq = this.isBodyVisible() == vis.isBodyVisible();
+        if (!eq)
+            return false;
+        eq = this.isHeaderLVisible() == vis.isHeaderLVisible();
+        if (!eq)
+            return false;
+        eq = this.isHeaderRVisible() == vis.isHeaderRVisible();
+        if (!eq)
+            return false;
+        eq = this.isFooterLVisible() == vis.isFooterLVisible();
+        if (!eq)
+            return false;
+        eq = this.isFooterRVisible() == vis.isFooterRVisible();
+        if (!eq)
+            return false;
+        eq = this.isStarVisible() == vis.isStarVisible();
+        if (!eq)
+            return false;
+
+        eq = this.isTitleString() == vis.isTitleString();
+        if (!eq)
+            return false;
+        eq = this.isBodyString() == vis.isBodyString();
+        if (!eq)
+            return false;
+        eq = this.isHeaderLString() == vis.isHeaderLString();
+        if (!eq)
+            return false;
+        eq = this.isHeaderRString() == vis.isHeaderRString();
+        if (!eq)
+            return false;
+        eq = this.isFooterLString() == vis.isFooterLString();
+        if (!eq)
+            return false;
+        eq = this.isFooterRString() == vis.isFooterRString();
+        if (!eq)
+            return false;
+        return true;
+    }
+
 }

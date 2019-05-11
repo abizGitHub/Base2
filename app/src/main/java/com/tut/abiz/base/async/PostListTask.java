@@ -3,6 +3,7 @@ package com.tut.abiz.base.async;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.tut.abiz.base.NetServiceListener;
 import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.model.Confiq;
@@ -31,13 +32,13 @@ import java.util.ArrayList;
 public class PostListTask extends AsyncTask<String, Void, String> {
 
     String url;
-    NetService netService;
+    NetServiceListener netService;
     HttpClient httpClient;
     JSONObject sentJson;
 
     public static String GETCONGIQ = "getConfiq", GETLIST = "getList";
 
-    public PostListTask(NetService netService) {
+    public PostListTask(NetServiceListener netService) {
         this.netService = netService;
         httpClient = new DefaultHttpClient();
     }

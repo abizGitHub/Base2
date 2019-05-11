@@ -173,7 +173,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void setTagVisiblity(int tableIx, TagVisiblity vis) {
-        netService.putVisInPref(vis, tableIx);
+        Utils.putVisInPref(vis, tableIx, getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE),
+                getSharedPreferences(Consts.ISSTRINGPREF, MODE_PRIVATE));
     }
 
 

@@ -22,5 +22,7 @@
     <string name="wait4UpdateMessage">wait for update</string>
     <string name="canNotconnectMessage">Can not connect to internet</string>
     <string name="understood">understood</string>
+    <string name="Case">مورد</string>
+    <string name="hasUpdated">بروزرسانی شد</string>
 
 </resources>

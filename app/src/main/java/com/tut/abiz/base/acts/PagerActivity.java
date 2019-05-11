@@ -58,7 +58,7 @@ public class PagerActivity extends BaseActivity {
             Toast.makeText(this, "wait4List", Toast.LENGTH_SHORT).show();
             allFragmentPacks = netService.getAllNetList();
         } else if (R.id.nav_postList == getNavMenu()) {
-            allFragmentPacks = netService.allNetList();
+            allFragmentPacks = service.getAllList();
         } else if (R.id.nav_staredList == getNavMenu()) {
             allFragmentPacks = service.getStaredList();
         }

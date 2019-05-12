@@ -13,6 +13,7 @@ import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.async.PostListTask;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.util.Utils;
 
@@ -36,7 +37,7 @@ public class PostListService extends IntentService implements NetServiceListener
     private Boolean wait4List;
     private int waitCount;
     private ArrayList<GeneralModel> generalModels;
-
+    private ArrayList<Group> groups;
     SharedPreferences pref, visiblityPref, isStringPref;
 
     public PostListService() {
@@ -74,7 +75,33 @@ public class PostListService extends IntentService implements NetServiceListener
             }
         i++;
         if (i > 10) i = 0;
+        ArrayList<Integer> orderedGroups = dbHelper.getGroupsByStatus(Group.ORDERED);
+        if (orderedGroups.size() > 0 || (confiqRemote != null && confiqRemote.getUpdateGroup() != null && confiqRemote.getUpdateGroup())) {
+            ArrayList<Integer> registeredGroups = dbHelper.getGroupsByStatus(Group.REGISTERED);
+            ArrayList<Group> groups = doPostGroups(orderedGroups, registeredGroups);
+            if (groups != null && groups.size() > 0)
+                dbHelper.updateGroups(groups);
+        }
     }
+
+    private ArrayList<Group> doPostGroups(ArrayList<Integer> orderedGroups, ArrayList<Integer> registeredGroups) {
+        PostListTask postListTask = new PostListTask(this);
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + "/gm/groups", JsonUtil.parseGroups(orderedGroups, registeredGroups));
+        postListTask.execute(PostListTask.GETGROUP);
+        wait4List = true;
+        waitCount = 0;
+        while (wait4List) {
+            try {
+                waitCount++;
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                Log.e(">>??", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return groups;
+    }
+
 
     private ArrayList<Integer> applyNewGmList(Confiq confiqLocal, Confiq confiqRemote) {
         ArrayList<Integer> updateCount = new ArrayList<>();
@@ -236,5 +263,12 @@ public class PostListService extends IntentService implements NetServiceListener
         this.confiqRemote = confiqRemote;
         wait4List = false;
     }
+
+    @Override
+    public void onGroupListReady(ArrayList<Group> groups) {
+        this.groups = groups;
+        wait4List = false;
+    }
+
 
 }

@@ -13,6 +13,7 @@ import com.tut.abiz.base.async.PostListTask;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.util.Utils;
 
@@ -235,6 +236,11 @@ public class NetService implements NetServiceListener {
     public void onConfiqReady(Confiq confiqRemote) {
         this.confiqRemote = confiqRemote;
         wait4List = false;
+    }
+
+    @Override
+    public void onGroupListReady(ArrayList<Group> groups) {
+
     }
 
 }

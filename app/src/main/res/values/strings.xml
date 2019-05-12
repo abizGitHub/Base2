@@ -24,5 +24,10 @@
     <string name="understood">understood</string>
     <string name="Case">مورد</string>
     <string name="hasUpdated">بروزرسانی شد</string>
+    <string name="group">group</string>
+
+    <string name="ordered">سفارش شده</string>
+    <string name="registered">ثبت شده</string>
+    <string name="add">افزودن</string>
 
 </resources>

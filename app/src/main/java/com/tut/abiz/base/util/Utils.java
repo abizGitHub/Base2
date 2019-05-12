@@ -8,6 +8,7 @@ import com.tut.abiz.base.R;
 import com.tut.abiz.base.frags.ListPagerFrag;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.TagVisiblity;
 
 import java.util.ArrayList;
@@ -67,12 +68,22 @@ public class Utils {
         return fragmentPack;
     }
 
-    public static ArrayList<String> extractTitles(ArrayList<GeneralModel> generalList) {
+    public static ArrayList<String> extractGeneralTitles(ArrayList<GeneralModel> generalList) {
         ArrayList<String> titles = new ArrayList<>();
         if (generalList == null || generalList.isEmpty())
             return titles;
         for (GeneralModel generalModel : generalList) {
             titles.add(generalModel.getTitle());
+        }
+        return titles;
+    }
+
+    public static ArrayList<String> extractGroupTitles(ArrayList<Group> groups) {
+        ArrayList<String> titles = new ArrayList<>();
+        if (groups == null || groups.isEmpty())
+            return titles;
+        for (Group gr : groups) {
+            titles.add(gr.getName());
         }
         return titles;
     }

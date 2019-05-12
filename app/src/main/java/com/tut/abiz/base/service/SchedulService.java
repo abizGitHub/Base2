@@ -97,7 +97,7 @@ public class SchedulService extends Service {
                 intent.getExtras().clear();
             intent.putExtra(RESULT, i++);
             startService(intent);
-            handler.postDelayed(periodicUpdate, 1700);
+            handler.postDelayed(periodicUpdate, 4700);
         }
     };
 

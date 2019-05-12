@@ -17,6 +17,7 @@ import com.tut.abiz.base.R;
 import com.tut.abiz.base.adapter.GeneralListAdapter;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.NetService;
 
@@ -84,6 +85,11 @@ public class NetConnectionActivity extends AppCompatActivity implements NetServi
 
     @Override
     public void onConfiqReady(Confiq confiq) {
+
+    }
+
+    @Override
+    public void onGroupListReady(ArrayList<Group> groups) {
 
     }
 }

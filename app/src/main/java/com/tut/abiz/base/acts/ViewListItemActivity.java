@@ -3,6 +3,7 @@ package com.tut.abiz.base.acts;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -59,7 +60,7 @@ public class ViewListItemActivity extends BaseActivity {
     }
 
     @Override
-    protected GeneralListAdapter getGeneralListAdapter() {
+    protected ArrayAdapter getListAdapter() {
 
         return null;
     }

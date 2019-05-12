@@ -43,4 +43,7 @@ public class Consts {
     public static final String STARED = "stared";
 
     public static final String ISSTRINGPREF = "isStringPrf";
+    public static final String STATUS = "STATUS";
+
+    public static final String NAME = "NAME";
 }

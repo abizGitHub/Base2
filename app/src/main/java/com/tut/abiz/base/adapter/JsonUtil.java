@@ -3,6 +3,7 @@ package com.tut.abiz.base.adapter;
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 
@@ -93,6 +94,10 @@ public class JsonUtil {
         }
         try {
             confiq.setHaveNewChange(json.getBoolean(Confiq.HAVENEWCHANGE));
+        } catch (Exception e) {
+        }
+        try {
+            confiq.setUpdateGroup(json.getBoolean(Confiq.UPDATEGROUP));
         } catch (Exception e) {
         }
         try {
@@ -317,6 +322,10 @@ public class JsonUtil {
         } catch (JSONException e) {
         }
         try {
+            json.put(Confiq.UPDATEGROUP, confiq.getUpdateGroup());
+        } catch (JSONException e) {
+        }
+        try {
             if (confiq.getLastIds() != null)
                 json.put(Confiq.LASTIDS, new JSONArray(confiq.getLastIds()));
         } catch (JSONException e) {
@@ -363,4 +372,48 @@ public class JsonUtil {
         }
         return json;
     }
-}   
+
+    public static JSONObject parseGroups(ArrayList<Integer> orderedGroups, ArrayList<Integer> registeredGroups) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put(Group.ORDERED$, new JSONArray(orderedGroups));
+            json.put(Group.REGISTERED$, new JSONArray(registeredGroups));
+        } catch (JSONException e) {
+        }
+        return json;
+    }
+
+    public static ArrayList<Integer> extractGroupIds(JSONObject json, String status) throws JSONException {
+        ArrayList<Integer> list = new ArrayList<>();
+        JSONArray array = json.getJSONArray(status);
+        for (int i = 0; i < array.length(); i++) {
+            list.add(array.getInt(i));
+        }
+        return list;
+    }
+
+    public static ArrayList<Group> extractGroups(JSONArray array) throws JSONException {
+        ArrayList<Group> groups = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            groups.add(extractGr((JSONObject) array.get(i)));
+        }
+        return groups;
+    }
+
+    private static Group extractGr(JSONObject json) {
+        Group group = new Group();
+        try {
+            group.setId(Integer.valueOf(json.get(Consts.ID).toString()));
+        } catch (JSONException e) {
+        }
+        try {
+            group.setName(json.get(Consts.NAME).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            group.setStatus((Integer.valueOf(json.get(Consts.STATUS).toString())));
+        } catch (JSONException e) {
+        }
+        return group;
+    }
+}

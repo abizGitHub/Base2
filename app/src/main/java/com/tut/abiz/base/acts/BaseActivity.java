@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
@@ -82,15 +83,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                     getGeneralList().remove(position);
                     getGeneralTitles().remove(position);
                 }
-            if (getGeneralListAdapter() != null)
-                getGeneralListAdapter().notifyDataSetChanged();
+            if (getListAdapter() != null)
+                getListAdapter().notifyDataSetChanged();
             clearNewChange();
         }
     }
 
     protected abstract void doStaredTasks();
 
-    protected abstract GeneralListAdapter getGeneralListAdapter();
+    protected abstract ArrayAdapter getListAdapter();
 
     protected abstract ArrayList<String> getGeneralTitles();
 

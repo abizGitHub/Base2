@@ -11,6 +11,7 @@ import com.tut.abiz.base.frags.PagerFragment;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 
@@ -168,4 +169,7 @@ public class GeneralService {
     }
 
 
+    public ArrayList<Group> getGroupList() {
+        return dbHelper.getAllGroups();
+    }
 }

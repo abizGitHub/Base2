@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.tut.abiz.base.R;
@@ -80,7 +82,7 @@ public class PagerActivity extends BaseActivity {
     }
 
     @Override
-    protected GeneralListAdapter getGeneralListAdapter() {
+    protected ArrayAdapter getListAdapter() {
         return generalListAdapter;
     }
 

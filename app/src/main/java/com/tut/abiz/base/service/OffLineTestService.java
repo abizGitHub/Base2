@@ -2,9 +2,11 @@ package com.tut.abiz.base.service;
 
 import android.util.Log;
 
+import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 
@@ -25,11 +27,24 @@ public class OffLineTestService {
     static HashMap<Integer, HashMap<Long, GeneralModel>> generalModelHash;
     static HashMap<Integer, ModelMap> modelMapHash;
     static ArrayList<Long> lastIds;
+    static HashMap<Integer, Group> groupsHash;
+    static ArrayList<Integer> reqOrderGroup, reqRegisterGroup;
 
     static {
         generalModelHash = new HashMap<>();
         modelMapHash = new HashMap<>();
         lastIds = new ArrayList<>();
+        groupsHash = new HashMap<>();
+        reqOrderGroup = new ArrayList<>();
+        reqRegisterGroup = new ArrayList<>();
+        groupsHash.put(69, new Group().fillMock(69));
+        groupsHash.put(50, new Group().fillMock(50));
+        groupsHash.put(47, new Group().fillMock(47));
+        groupsHash.put(33, new Group().fillMock(33));
+        groupsHash.put(17, new Group().fillMock(17));
+        groupsHash.put(8, new Group().fillMock(8));
+        groupsHash.put(3, new Group().fillMock(3));
+        groupsHash.put(4, new Group().fillMock(4));
         lastIds.add(0L);
         lastIds.add(0L);
         generalModelHash.put(1, new HashMap<Long, GeneralModel>());
@@ -79,14 +94,49 @@ public class OffLineTestService {
     }
 
     public static JSONObject postData(String url, JSONObject sentJson) {
-        Confiq reqCnf = JsonUtil.extractConfiq(sentJson);
-        if (url.contains("Confiq"))
+        if (url.contains("Confiq")) {
+            Confiq reqCnf = JsonUtil.extractConfiq(sentJson);
             return returnMockConfiq(reqCnf);
-        else {
-            String[] split = url.split("/");
+        } else if (url.contains("groups")) {
+            return returnMockGroups(sentJson);
+        } else {
+            String[] split = url.split("/"); // "address/gm/1/987";
             int tableIx = Integer.parseInt(split[split.length - 2]);
             long id = Long.parseLong(split[split.length - 1]);
             return returnMockGMs(tableIx, id);
+        }
+    }
+
+    private static JSONObject returnMockGroups(JSONObject reqJson) {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray array = new JSONArray();
+        try {
+            reqRegisterGroup = JsonUtil.extractGroupIds(reqJson, Group.REGISTERED$);
+            reqOrderGroup = JsonUtil.extractGroupIds(reqJson, Group.ORDERED$);
+            applyOrderGroup();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        for (Integer id : groupsHash.keySet()) {
+            array.put(parseGr(groupsHash.get(id)));
+        }
+        try {
+            jsonObject.put("groupList", array);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+        //return null;
+    }
+
+    private static void applyOrderGroup() {
+        for (Integer id : reqOrderGroup) {
+            //if (new Random().nextBoolean())
+            //Log.e(" order Gr>","-----------     " + id);
+            groupsHash.get(id).setStatus(Group.REGISTERED);
+        }
+        for (Integer id : reqRegisterGroup) {
+            groupsHash.get(id).setStatus(Group.REGISTERED);
         }
     }
 
@@ -129,8 +179,8 @@ public class OffLineTestService {
 
     private static JSONObject returnMockConfiq(Confiq reqCnf) {
         JSONObject jsonResponse = new JSONObject();
-       // Log.e("req-ids> ", reqCnf.getLastIds().get(0) + "," + reqCnf.getLastIds().get(1));
-       // Log.e("last-ids> ", lastIds.get(0) + "," + lastIds.get(1));
+        // Log.e("req-ids> ", reqCnf.getLastIds().get(0) + "," + reqCnf.getLastIds().get(1));
+        // Log.e("last-ids> ", lastIds.get(0) + "," + lastIds.get(1));
         try {
             Confiq confiq = getConfig();
             confiq.setLastIds(lastIds);
@@ -168,6 +218,7 @@ public class OffLineTestService {
         Confiq confiq = new Confiq();
         confiq.setUserName("newSeen");
         confiq.setHaveNewChange(true);
+        //confiq.setUpdateGroup(true);
         ArrayList<String> names = new ArrayList<>();
         names.add("one-");
         names.add("two-");
@@ -211,4 +262,15 @@ public class OffLineTestService {
         return json;
     }
 
+    public static JSONObject parseGr(Group gr) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put(Consts.ID, gr.getId());
+            json.put(Consts.NAME, gr.getName());
+            json.put(Consts.STATUS, gr.getStatus());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
 }

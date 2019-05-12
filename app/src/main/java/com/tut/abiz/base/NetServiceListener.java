@@ -2,6 +2,7 @@ package com.tut.abiz.base;
 
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 
 public interface NetServiceListener {
+
     public void onTextResponseReady(String response);
 
     public void onFailure(String error);
@@ -18,5 +20,7 @@ public interface NetServiceListener {
     public void onGeneralListReady(ArrayList<GeneralModel> generalModels);
 
     public void onConfiqReady(Confiq confiq);
+
+    public void onGroupListReady(ArrayList<Group> groups);
 
 }

@@ -224,6 +224,8 @@ public class ActsInMenuAct extends AppCompatActivity
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_net) {
             intent = new Intent(ActsInMenuAct.this, NetConnectionActivity.class);
+        } else if (selectedMenuAct == R.id.nav_Group) {
+            intent = new Intent(ActsInMenuAct.this, ListActivity.class);
         } else {
             intent = new Intent(ActsInMenuAct.this, activity);
         }

@@ -7,6 +7,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -16,12 +17,11 @@ import android.widget.RadioGroup;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.adapter.GeneralListAdapter;
 import com.tut.abiz.base.model.GeneralModel;
-import com.tut.abiz.base.model.TagVisiblity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.tut.abiz.base.util.Utils.extractTitles;
+import static com.tut.abiz.base.util.Utils.extractGeneralTitles;
 
 /**
  * Created by abiz on 5/4/2019.
@@ -47,7 +47,7 @@ public class SearchActivity extends BaseActivity {
         setSelectedTable(1);
         generalList = new ArrayList<>();
         listView = (ListView) findViewById(R.id.list_sheet);
-        titles = extractTitles(generalList);
+        titles = extractGeneralTitles(generalList);
         adapter = new GeneralListAdapter(this, generalList, getTagVisiblity(getSelectedTable()), titles, R.layout.sheet_itemlinear);
         listView.setAdapter(adapter);
         progressDialog = new ProgressDialog(this);
@@ -63,7 +63,7 @@ public class SearchActivity extends BaseActivity {
             public void run() {
                 scrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             }
-        }, 1000L);
+        }, 200L);
         rbs = new HashMap<>();
         for (int i = 0; i < getTablesCount(); i++) {
             RadioButton rb = (RadioButton) radioGroup.getChildAt(5 - i);
@@ -132,7 +132,7 @@ public class SearchActivity extends BaseActivity {
     }
 
     @Override
-    protected GeneralListAdapter getGeneralListAdapter() {
+    protected ArrayAdapter getListAdapter() {
         return adapter;
     }
 

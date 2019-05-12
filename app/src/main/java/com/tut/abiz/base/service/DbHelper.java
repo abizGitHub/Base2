@@ -10,6 +10,7 @@ import android.util.Log;
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.util.Utils;
@@ -33,6 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String MODELMAP = "modelMap";
     public static final String USERCONFIQ = "userConfiq";
     public static final String TAGVISIBLITY = "tagVisiblity";
+    public static final String GROUP = "group0";
 
     private HashMap<Integer, ArrayList<ModelMap>> modelMapListHash;
     private HashMap<Integer, HashMap<Integer, HashMap<Integer, String>>> modelMapHashs; // tableIX > columnIx > intVal > string
@@ -46,6 +48,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + PAGESTITLE + " (TABLE_ID INTEGER PRIMARY KEY,NAME TEXT)");
+        db.execSQL("CREATE TABLE " + GROUP + " (ID INTEGER PRIMARY KEY,NAME TEXT,STATUS INTEGER)");
         db.execSQL("CREATE TABLE " + MODELMAP +
                 " (ID INTEGER PRIMARY KEY,TABLE_ID INTEGER,COLUMN_IX INTEGER NOT NULL,INT_VALUE INTEGER NOT NULL,STRING_VALUE TEXT)");
         //TITLE = 1;HEADER_R = 2;HEADER_L = 3;BODY = 4;FOOTER_R = 5;FOOTER_L = 6;
@@ -322,6 +325,12 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         }
         cursor.close();
+        cursor = db.rawQuery("SELECT MAX(ID) FROM " + GROUP, null);
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToNext())
+            confiq.setLastGroupId(cursor.getLong(0));
+        else
+            confiq.setLastGroupId(0L);
+        cursor.close();
         confiq.setLastIds(lastIds);
         ArrayList<TagVisiblity> visiblityList = new ArrayList<>();
         for (int i = 0; i < lastIds.size(); i++) {
@@ -520,5 +529,64 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE  FROM " + TAGVISIBLITY);
         db.close();
+    }
+
+    public void clearGroups() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE  FROM " + GROUP);
+        db.close();
+    }
+
+    public boolean updateGroups(ArrayList<Group> grs) {
+        clearGroups();
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = -1;
+        ContentValues values = new ContentValues();
+        for (Group gr : grs) {
+            values.put("ID", gr.getId());
+            values.put("NAME", gr.getName());
+            values.put(Consts.STATUS, gr.getStatus());
+            result = db.insert(GROUP, null, values);
+            values.clear();
+        }
+        db.close();
+        return result != -1;
+    }
+
+    public boolean changeStateOfGroup(Integer id, int state) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Consts.STATUS, state);
+        long result = db.update(GROUP, values, "ID=?", new String[]{id.toString()});
+        db.close();
+        return result != -1;
+    }
+
+    public ArrayList<Integer> getGroupsByStatus(int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Integer> groups = new ArrayList<>();
+        Cursor res = db.rawQuery("SELECT ID FROM " + GROUP + " WHERE STATUS ='" + status + "'", null);
+        if (res != null && res.getCount() > 0)
+            while (res.moveToNext()) {
+                groups.add(res.getInt(0));
+            }
+        db.close();
+        return groups;
+    }
+
+    public ArrayList<Group> getAllGroups() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Group> groups = new ArrayList<>();
+        Cursor res = db.rawQuery("SELECT * FROM " + GROUP + " ORDER BY STATUS DESC", null);
+        if (res != null && res.getCount() > 0)
+            while (res.moveToNext()) {
+                Group group = new Group();
+                group.setId(res.getInt(0));
+                group.setName(res.getString(1));
+                group.setStatus(res.getInt(2));
+                groups.add(group);
+            }
+        db.close();
+        return groups;
     }
 }

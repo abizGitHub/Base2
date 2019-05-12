@@ -8,7 +8,7 @@ import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
-import com.tut.abiz.base.service.NetService;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.service.OffLineTestService;
 
 import org.apache.http.HttpResponse;
@@ -36,7 +36,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     HttpClient httpClient;
     JSONObject sentJson;
 
-    public static String GETCONGIQ = "getConfiq", GETLIST = "getList";
+    public static String GETCONGIQ = "getConfiq", GETLIST = "getList", GETGROUP = "getGroup";
 
     public PostListTask(NetServiceListener netService) {
         this.netService = netService;
@@ -59,18 +59,26 @@ public class PostListTask extends AsyncTask<String, Void, String> {
         try {
             JSONObject jsonObject;
             if (BaseActivity.offline)
-                jsonObject = OffLineTestService.postData(url ,sentJson);
+                jsonObject = OffLineTestService.postData(url, sentJson);
             else
                 jsonObject = postData();
-            if (jsonObject.length() > 0)
-                if (strings[0].equals(GETCONGIQ)) {
-                    netService.onConfiqReady(extractConfiq(jsonObject));
-                } else {
-                    netService.onGeneralListReady(extractList(jsonObject));
-                }
+            if (strings[0].equals(GETCONGIQ)) {
+                netService.onConfiqReady(extractConfiq(jsonObject));
+            } else if (strings[0].equals(GETLIST)) {
+                netService.onGeneralListReady(extractList(jsonObject));
+            } else if (strings[0].equals(GETGROUP)) {
+                netService.onGroupListReady(extractGroups(jsonObject));
+            }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             Log.e("doInBackground", e.getMessage());
+            if (strings[0].equals(GETCONGIQ)) {
+                netService.onConfiqReady(null);
+            } else if (strings[0].equals(GETLIST)) {
+                netService.onGeneralListReady(null);
+            } else if (strings[0].equals(GETGROUP)) {
+                netService.onGroupListReady(null);
+            }
         }
         Log.e("finished>", url);
         return "done";
@@ -107,11 +115,21 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     }
 
     private Confiq extractConfiq(JSONObject json) throws JSONException {
+        if (json == null)
+            return null;
         return JsonUtil.extractConfiq(json.getJSONObject("confiq"));
     }
 
     private ArrayList<GeneralModel> extractList(JSONObject json) throws JSONException {
+        if (json == null)
+            return null;
         return JsonUtil.extractGMs(json.getJSONArray("dataList"));
+    }
+
+    private ArrayList<Group> extractGroups(JSONObject json) throws JSONException {
+        if (json == null)
+            return null;
+        return JsonUtil.extractGroups(json.getJSONArray("groupList"));
     }
 
 }

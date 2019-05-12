@@ -13,6 +13,7 @@ public class Confiq {
     public static final String LASTMODELMAPID = "lastModelMapId";
     public static final String CLEARDB = "clearDB";
     public static final String HAVENEWCHANGE = "haveNewChange";
+    public static final String UPDATEGROUP = "updateGroup";
     public static String HASUSERPERMISSION = "hasUserPermission";
     public static String LASTIDS = "lastIds";
     public static String LASTMODELMAP = "lastModelMap";
@@ -31,8 +32,10 @@ public class Confiq {
     ArrayList<ModelMap> lastModelMap;
     ArrayList<Long> modelMap2Delete;
     Long lastModelMapId;
+    Long lastGroupId;
     Boolean haveNewChange;// if (tagVisiblity or lastModelMap)
     // send by server differ from local
+    Boolean updateGroup;
 
     public String getUserName() {
         return userName;
@@ -134,7 +137,24 @@ public class Confiq {
         buffer.append("lastTableName-2 :  " + getLastTablesName().get(1) + "\n");
         buffer.append("haveNewChange :  " + haveNewChange + "\n");
         buffer.append("hasUserPermision :  " + hasUserPermision + "\n");
+        buffer.append("lastGroupId :  " + lastGroupId + "\n");
         buffer.append("clearDB :  " + clearDB + "\n");
         return buffer.toString();
+    }
+
+    public Boolean getUpdateGroup() {
+        return updateGroup;
+    }
+
+    public void setUpdateGroup(Boolean updateGroup) {
+        this.updateGroup = updateGroup;
+    }
+
+    public Long getLastGroupId() {
+        return lastGroupId;
+    }
+
+    public void setLastGroupId(Long lastGroupId) {
+        this.lastGroupId = lastGroupId;
     }
 }

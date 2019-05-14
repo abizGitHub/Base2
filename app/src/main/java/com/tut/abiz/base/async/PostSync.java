@@ -1,10 +1,8 @@
 package com.tut.abiz.base.async;
 
-import android.os.AsyncTask;
+import android.content.Context;
 import android.util.Log;
 
-import com.tut.abiz.base.Consts;
-import com.tut.abiz.base.NetServiceListener;
 import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.adapter.JsonUtil;
 import com.tut.abiz.base.model.Confiq;
@@ -27,70 +25,43 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Created by abiz on 4/18/2019.
+ * Created by abiz on 5/13/2019.
  */
 
-public class PostListTask extends AsyncTask<String, Void, String> {
+public class PostSync {
 
     String url;
-    NetServiceListener netService;
     HttpClient httpClient;
     JSONObject sentJson;
+    Context context;
 
     public static String GETCONGIQ = "getConfiq", GETLIST = "getList",
             GETGROUP = "getGroup", REGISTERUSER = "registerUser", EDITUSER = "editUser";
 
-    public PostListTask(NetServiceListener netService) {
-        this.netService = netService;
+    public PostSync(Context context, String url, JSONObject sentJson) {
         httpClient = new DefaultHttpClient();
-    }
-
-    public void setUrlAndMessage(String url, JSONObject sentJson) {
+        this.context = context;
         this.url = url;
         this.sentJson = sentJson;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        Log.e("started>", url);
-    }
 
-    @Override
-    protected String doInBackground(String... strings) {
+    public JSONObject execute(String command) {
+        JSONObject jsonObject = null;
         try {
-            JSONObject jsonObject;
             if (BaseActivity.offline)
                 jsonObject = OffLineTestService.postData(url, sentJson);
             else
                 jsonObject = postData();
-            if (strings[0].equals(GETCONGIQ)) {
-                netService.onConfiqReady(extractConfiq(jsonObject));
-            } else if (strings[0].equals(GETLIST)) {
-                netService.onGeneralListReady(extractList(jsonObject));
-            } else if (strings[0].equals(GETGROUP)) {
-                netService.onGroupListReady(extractGroups(jsonObject));
-            } else if (strings[0].equals(EDITUSER)) {
-                netService.onUpdateAccountReady(extractRegResponse(jsonObject));
-            }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             Log.e("doInBackground", e.getMessage());
-            if (strings[0].equals(GETCONGIQ)) {
-                netService.onConfiqReady(null);
-            } else if (strings[0].equals(GETLIST)) {
-                netService.onGeneralListReady(null);
-            } else if (strings[0].equals(GETGROUP)) {
-                netService.onGroupListReady(null);
-            } else if (strings[0].equals(REGISTERUSER)) {
-                netService.onUpdateAccountReady(Consts.CANTREGISTERE);
-            }
         }
         Log.e("finished>", url);
-        return "done";
+        return jsonObject;
     }
 
-    private int extractRegResponse(JSONObject json) throws JSONException {
+    public int extractRegResponse(JSONObject json) throws JSONException {
         return json.getInt("response");
     }
 
@@ -124,19 +95,19 @@ public class PostListTask extends AsyncTask<String, Void, String> {
         return return_text;
     }
 
-    private Confiq extractConfiq(JSONObject json) throws JSONException {
+    public Confiq extractConfiq(JSONObject json) throws JSONException {
         if (json == null)
             return null;
         return JsonUtil.extractConfiq(json.getJSONObject("confiq"));
     }
 
-    private ArrayList<GeneralModel> extractList(JSONObject json) throws JSONException {
+    public ArrayList<GeneralModel> extractList(JSONObject json) throws JSONException {
         if (json == null)
             return null;
         return JsonUtil.extractGMs(json.getJSONArray("dataList"));
     }
 
-    private ArrayList<Group> extractGroups(JSONObject json) throws JSONException {
+    public ArrayList<Group> extractGroups(JSONObject json) throws JSONException {
         if (json == null)
             return null;
         return JsonUtil.extractGroups(json.getJSONArray("groupList"));

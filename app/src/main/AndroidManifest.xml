@@ -53,7 +53,9 @@
         <activity
             android:name=".acts.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".acts.RegistrationAct"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

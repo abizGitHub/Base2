@@ -13,6 +13,7 @@ import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.model.UserAccount;
 import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String USERCONFIQ = "userConfiq";
     public static final String TAGVISIBLITY = "tagVisiblity";
     public static final String GROUP = "group0";
+    public static final String USERACCOUNT = "userAccountT";
+
 
     private HashMap<Integer, ArrayList<ModelMap>> modelMapListHash;
     private HashMap<Integer, HashMap<Integer, HashMap<Integer, String>>> modelMapHashs; // tableIX > columnIx > intVal > string
@@ -47,6 +50,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + USERACCOUNT + " (USERNAME TEXT,PASSWORD TEXT,EMAIL TEXT,PHONE TEXT)");
         db.execSQL("CREATE TABLE " + PAGESTITLE + " (TABLE_ID INTEGER PRIMARY KEY,NAME TEXT)");
         db.execSQL("CREATE TABLE " + GROUP + " (ID INTEGER PRIMARY KEY,NAME TEXT,STATUS INTEGER)");
         db.execSQL("CREATE TABLE " + MODELMAP +
@@ -325,13 +329,13 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         }
         cursor.close();
+        confiq.setLastIds(lastIds);
         cursor = db.rawQuery("SELECT MAX(ID) FROM " + GROUP, null);
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToNext())
             confiq.setLastGroupId(cursor.getLong(0));
         else
             confiq.setLastGroupId(0L);
         cursor.close();
-        confiq.setLastIds(lastIds);
         ArrayList<TagVisiblity> visiblityList = new ArrayList<>();
         for (int i = 0; i < lastIds.size(); i++) {
             visiblityList.addAll(getTagVisiblity(i + 1));
@@ -531,14 +535,14 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void clearGroups() {
+    public void clearTable(String tableName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE  FROM " + GROUP);
+        db.execSQL("DELETE  FROM " + tableName);
         db.close();
     }
 
     public boolean updateGroups(ArrayList<Group> grs) {
-        clearGroups();
+        clearTable(GROUP);
         SQLiteDatabase db = this.getWritableDatabase();
         long result = -1;
         ContentValues values = new ContentValues();
@@ -589,4 +593,72 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
         return groups;
     }
+
+    //  USERACCOUNT  (USERNAME  TEXT,  PASSWORD  TEXT,  EMAIL  TEXT,  PHONE  TEXT);
+    public UserAccount getUserAccount() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        UserAccount userAccount = new UserAccount();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USERACCOUNT, null);
+        if (cursor != null && cursor.moveToNext()) {
+            userAccount.setUserName(cursor.getString(0));
+            userAccount.setPassword(cursor.getString(1));
+            userAccount.setEmail(cursor.getString(2));
+            userAccount.setPhone(cursor.getString(3));
+        } else {
+            userAccount.setUserName("");
+            userAccount.setPassword("");
+            userAccount.setEmail("");
+            userAccount.setPhone("");
+        }
+        return userAccount;
+    }
+
+    //  USERACCOUNT  (USERNAME  TEXT,  PASSWORD  TEXT,  EMAIL  TEXT,  PHONE  TEXT);
+    public void insertUserAccount(UserAccount userAccount, int id) {
+        clearTable(USERACCOUNT);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("USERNAME", userAccount.getUserName());
+        values.put("PASSWORD", userAccount.getPassword());
+        values.put("EMAIL", userAccount.getEmail());
+        values.put("PHONE", userAccount.getPhone());
+        db.insert(USERACCOUNT, null, values);
+        values.clear();
+        values.put(Consts.USERNAME, userAccount.getUserName());
+        values.put(Confiq.HASUSERPERMISSION, 1);
+        values.put("USERID", id);
+        db.update(USERCONFIQ, values, null, null);
+        db.close();
+    }
+
+    public void updateUserAccount(UserAccount userAccount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("PASSWORD", userAccount.getPassword());
+        values.put("EMAIL", userAccount.getEmail());
+        values.put("PHONE", userAccount.getPhone());
+        db.update(USERACCOUNT, values, null, null);
+        db.close();
+    }
+
+    public boolean hasUserPermission() {
+        boolean permitted = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + Confiq.HASUSERPERMISSION.toUpperCase() + " FROM " + USERCONFIQ, null);
+        if (cursor != null && cursor.getCount() > 0)
+            if (cursor.moveToNext()) {
+                permitted = cursor.getInt(0) > 0;
+            }
+        cursor.close();
+        return permitted;
+    }
+
+    public void updateUserPermision(Boolean hasUserPermision) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Confiq.HASUSERPERMISSION, hasUserPermision ? 1 : 0);
+        db.update(USERCONFIQ, values, null, null);
+        db.close();
+    }
+
 }

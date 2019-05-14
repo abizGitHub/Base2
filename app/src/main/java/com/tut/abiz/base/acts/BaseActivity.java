@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private String navTitle;
     NetService netService;
     GeneralService service;
-    public static boolean offline = true;
+    public static boolean offline = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -166,6 +166,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setIsStared(boolean b) {
         getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.STARED, b).apply();
+    }
+
+    public void setUserAccountEdited(boolean b) {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.USERACCOUNTEDITED, b).apply();
     }
 
     public TagVisiblity getTagVisiblity(int tableIx) {

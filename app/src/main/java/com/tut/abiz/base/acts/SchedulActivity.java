@@ -1,13 +1,19 @@
 package com.tut.abiz.base.acts;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tut.abiz.base.ActsInMenuAct;
@@ -16,6 +22,7 @@ import com.tut.abiz.base.R;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.DbHelper;
+import com.tut.abiz.base.service.PostListService;
 import com.tut.abiz.base.service.SchedulService;
 import com.tut.abiz.base.util.Utils;
 
@@ -37,7 +44,7 @@ public class SchedulActivity extends AppCompatActivity {
     Intent act;
     SharedPreferences pref, visiblityPref, isStringPref;
     Boolean isRunBefore = false;
-
+    ImageView rotateImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,8 @@ public class SchedulActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        rotateImg = (ImageView) findViewById(R.id.start_imageRotate);
+        animate();
         doPrefs();
         registerReceiver(receiver, new IntentFilter(
                 SchedulService.NOTIFICATION));
@@ -57,6 +66,9 @@ public class SchedulActivity extends AppCompatActivity {
         Intent service = new Intent(this, SchedulService.class);
         startService(service);
         act = new Intent(SchedulActivity.this, ActsInMenuAct.class);
+        if (!isRunBefore) {
+            startDialog(getResources().getString(R.string.firstRunWelcome));
+        }
     }
 
     @Override
@@ -88,6 +100,7 @@ public class SchedulActivity extends AppCompatActivity {
                     startActivity(act);
                     phase = DOCONNECT;
                 }
+                Log.e("net->", bundle.getString(PostListService.RESULT));
             }
         }
 
@@ -101,11 +114,11 @@ public class SchedulActivity extends AppCompatActivity {
         if (!isRunBefore) {
             DbHelper dbHelper = new DbHelper(this);
             dbHelper.initPageNames(dbHelper.getWritableDatabase());
-            Toast.makeText(this, "firstRun", Toast.LENGTH_LONG).show();
             pref.edit().putBoolean(Consts.ISRUNBEFORE, true).apply();
             pref.edit().putString(Consts.TABLENAMES[0], "monaq").apply();
             pref.edit().putString(Consts.TABLENAMES[1], "mozay").apply();
             pref.edit().putInt(Consts.TABLECOUNT, 2).apply();
+            pref.edit().putBoolean(Consts.USERACCOUNTEDITED, false).apply();
             TagVisiblity vis1 = new TagVisiblity(1);
             vis1.doTitleVisible(true).doHeaderRVisible(true);
             vis1.doFooterRVisible(true).doFooterLVisible(true);
@@ -133,11 +146,38 @@ public class SchedulActivity extends AppCompatActivity {
         }
     }
 
+    private void startDialog(String command) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(command);
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.understood), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        }, 300);
+    }
 
     @Override
     protected void onDestroy() {
         unregisterReceiver(receiver);
         super.onDestroy();
+    }
+
+
+    private void animate() {
+        rotateImg.animate()
+                .scaleX(0.5f)
+                .scaleY(0.5f)
+                .rotationBy(-360f)
+                .setDuration(30000);
     }
 
 }

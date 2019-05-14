@@ -5,7 +5,6 @@ import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by abiz on 4/15/2019.
@@ -22,5 +21,7 @@ public interface NetServiceListener {
     public void onConfiqReady(Confiq confiq);
 
     public void onGroupListReady(ArrayList<Group> groups);
+
+    public void onUpdateAccountReady(int response);
 
 }

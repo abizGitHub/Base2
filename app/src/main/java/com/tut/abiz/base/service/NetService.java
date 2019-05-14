@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import static android.content.Context.MODE_PRIVATE;
 import static com.tut.abiz.base.util.Utils.getFragPack;
 import static com.tut.abiz.base.util.Utils.getTagVisFromPref;
-import static com.tut.abiz.base.util.Utils.putVisInPref;
 
 /**
  * Created by abiz on 4/15/2019.
@@ -81,7 +80,7 @@ public class NetService implements NetServiceListener {
 
     public ArrayList<FragmentPack> allNetList() {
         Confiq confiqLocal = dbHelper.getConfiq();
-        doPostConfig(Consts.SERVERADDRESS + "/gm/getConfiq", confiqLocal);
+        doPostConfig(Consts.SERVERADDRESS + Consts.ADDRESSCONFIQ, confiqLocal);
         if (confiqRemote != null)
             applyNewUserSetting(confiqLocal, confiqRemote);
         if (confiqRemote != null) {
@@ -240,6 +239,11 @@ public class NetService implements NetServiceListener {
 
     @Override
     public void onGroupListReady(ArrayList<Group> groups) {
+
+    }
+
+    @Override
+    public void onUpdateAccountReady(int response) {
 
     }
 

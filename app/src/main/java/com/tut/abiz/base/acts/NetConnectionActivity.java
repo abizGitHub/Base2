@@ -92,4 +92,10 @@ public class NetConnectionActivity extends AppCompatActivity implements NetServi
     public void onGroupListReady(ArrayList<Group> groups) {
 
     }
+
+    @Override
+    public void onUpdateAccountReady(int response) {
+
+    }
+
 }

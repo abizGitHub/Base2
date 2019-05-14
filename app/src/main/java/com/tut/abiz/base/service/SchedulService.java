@@ -46,6 +46,8 @@ public class SchedulService extends Service {
     public static String CANTCONNECT = "cant_Connect";
     public static String CONNECTED = "connected";
     public static String ISINBACK = "is_In_Back";
+    public static String SERVERNOTRESPOND = "server_not_respond";
+    public static String SERVERCONECTED = "server_connected";
 
     ConnectivityManager conMan;
     boolean connectedToNet;
@@ -61,7 +63,7 @@ public class SchedulService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, " : started", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.connectingToNet), Toast.LENGTH_LONG).show();
         handler.post(periodicUpdate);
         return START_STICKY;
     }
@@ -107,7 +109,7 @@ public class SchedulService extends Service {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                int result = bundle.getInt(RESULT);
+                String result = bundle.getString(RESULT);
                 nofitySchedulAct(result, isConnectedToNet());
                 ArrayList<Integer> list = bundle.getIntegerArrayList(PostListService.UPDATEDCOUNT);
                 if (SchedulActivity.phase.equals(ISINBACK))
@@ -117,7 +119,7 @@ public class SchedulService extends Service {
 
     };
 
-    private void nofitySchedulAct(int result, boolean connectedToNet) {
+    private void nofitySchedulAct(String result, boolean connectedToNet) {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(RESULT, result);
         intent.putExtra(DOCONNECT, connectedToNet ? CONNECTED : CANTCONNECT);
@@ -135,7 +137,7 @@ public class SchedulService extends Service {
     private void notifyResults(ArrayList<Integer> updated) {
         String message = "";
         int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
-        if (updated.size() == tableCount) {
+        if (updated != null && updated.size() == tableCount) {
             for (int j = 0; j < tableCount; j++) {
                 if (updated.get(j) > 0)
                     message += updated.get(j)

@@ -29,5 +29,25 @@
     <string name="ordered">سفارش شده</string>
     <string name="registered">ثبت شده</string>
     <string name="add">افزودن</string>
+    <string name="usernameWarn">نام کاربری نمی تواند از چهار حرف کمتر یا از هشت حرف بیشتر باشد</string>
+    <string name="passWarn">کلمه عبور باید بین چهار تا هشت حرف داشته باشد</string>
+    <string name="phoneWarn">شماره تلفن وارد شده صحیح نمی باشد</string>
+    <string name="userAccount">حساب کاربری</string>
+    <string name="canNotRegister">حساب کاربری ثبت نشد</string>
+    <string name="accountSuccessReg">کاربر با موفقیت ثبت شد</string>
+    <string name="usernameReserved">نام کاربری قبلا ثبت شده است ، نام کاربری دیگری انتخاب کنید</string>
+    <string name="edit">ویرایش</string>
+    <string name="emailWarn">ایمیل وارد شده صحیح نمی باشد</string>
+    <string name="save">ذخیره</string>
+    <string name="status">وضعیت </string>
+    <string name="active">فعال</string>
+    <string name="inActive">غیر فعال</string>
+    <string name="unRegistered">ثبت نشده</string>
+    <string name="firstRunWelcome">خوش آمدید ، برای فعال سازی به منوی حساب کاربری بروید</string>
+    <string name="invalidChars">از حروف انگلیسی یا فارسی و یا از اعداد استفاده کنید</string>
+    <string name="connectingToNet">در حال اتصال ...</string>
+
 
 </resources>
+
+

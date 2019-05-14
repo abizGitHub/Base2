@@ -15,6 +15,7 @@ import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.model.UserAccount;
 import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
@@ -29,9 +30,8 @@ public class PostListService extends IntentService implements NetServiceListener
     public static final String NOTIFICATION = "PostListService";
     public static final String UPDATEDCOUNT = "updated_Count";
     public static final String RESULT = "result";
+
     static int i = 0;
-    int CONNECTED = 1;
-    int CANTCONNECT = -1;
     private DbHelper dbHelper;
     private Confiq confiqRemote;
     private Boolean wait4List;
@@ -39,6 +39,10 @@ public class PostListService extends IntentService implements NetServiceListener
     private ArrayList<GeneralModel> generalModels;
     private ArrayList<Group> groups;
     SharedPreferences pref, visiblityPref, isStringPref;
+    Integer updateAccount;
+    int maxCount = 30;
+    boolean forceStop = false;
+
 
     public PostListService() {
         super("-haha-");
@@ -63,7 +67,7 @@ public class PostListService extends IntentService implements NetServiceListener
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Confiq confiqLocal = dbHelper.getConfiq();
-        confiqRemote = doPostConfig(Consts.SERVERADDRESS + "/gm/getConfiq", confiqLocal);
+        confiqRemote = doPostConfig(Consts.SERVERADDRESS + Consts.ADDRESSCONFIQ, confiqLocal);
         if (confiqRemote != null)
             if (i % 2 == 0) {
                 applyNewUserSetting(confiqLocal, confiqRemote);
@@ -71,7 +75,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 applyNewTagVisiblity(confiqRemote, confiqLocal);
             } else {
                 ArrayList<Integer> updateCount = applyNewGmList(confiqLocal, confiqRemote);
-                publishResults(updateCount, CONNECTED);
+                publishResults(updateCount, SchedulService.SERVERCONECTED);
             }
         i++;
         if (i > 10) i = 0;
@@ -82,14 +86,23 @@ public class PostListService extends IntentService implements NetServiceListener
             if (groups != null && groups.size() > 0)
                 dbHelper.updateGroups(groups);
         }
+        if (pref.getBoolean(Consts.USERACCOUNTEDITED, true)) {
+            Integer response = doPostUserAccount(dbHelper.getUserAccount());
+            if (response != null && response == Consts.USERREGISTERED)
+                pref.edit().putBoolean(Consts.USERACCOUNTEDITED, false).apply();
+        }
+        if (forceStop) {
+            publishResults(null, SchedulService.SERVERNOTRESPOND);
+        }
     }
 
-    private ArrayList<Group> doPostGroups(ArrayList<Integer> orderedGroups, ArrayList<Integer> registeredGroups) {
+    private Integer doPostUserAccount(UserAccount userAccount) {
         PostListTask postListTask = new PostListTask(this);
-        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + "/gm/groups", JsonUtil.parseGroups(orderedGroups, registeredGroups));
-        postListTask.execute(PostListTask.GETGROUP);
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSUPDATEUSER, JsonUtil.parseUserAccount(userAccount));
+        postListTask.execute(PostListTask.EDITUSER);
         wait4List = true;
         waitCount = 0;
+        forceStop = false;
         while (wait4List) {
             try {
                 waitCount++;
@@ -97,6 +110,33 @@ public class PostListService extends IntentService implements NetServiceListener
             } catch (InterruptedException e) {
                 Log.e(">>??", e.getMessage());
                 e.printStackTrace();
+            }
+            if (waitCount > maxCount) {
+                wait4List = false;
+                forceStop = true;
+            }
+        }
+        return updateAccount;
+    }
+
+    private ArrayList<Group> doPostGroups(ArrayList<Integer> orderedGroups, ArrayList<Integer> registeredGroups) {
+        PostListTask postListTask = new PostListTask(this);
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSGROUP, JsonUtil.parseGroups(orderedGroups, registeredGroups));
+        postListTask.execute(PostListTask.GETGROUP);
+        wait4List = true;
+        waitCount = 0;
+        forceStop = false;
+        while (wait4List) {
+            try {
+                waitCount++;
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                Log.e(">>??", e.getMessage());
+                e.printStackTrace();
+            }
+            if (waitCount > maxCount) {
+                wait4List = false;
+                forceStop = true;
             }
         }
         return groups;
@@ -108,11 +148,15 @@ public class PostListService extends IntentService implements NetServiceListener
         int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
         ArrayList<Long> lastIds = confiqLocal.getLastIds();
         for (int ix = 1; ix < tableCount + 1; ix++) {
-            Log.e(ix + ">", confiqRemote.getLastIds().get(ix - 1) + "," + confiqLocal.getLastIds().get(ix - 1));
+            Log.e("ix:"+ix + ">remote lastID:", confiqRemote.getLastIds().get(ix - 1) +
+                    " , local lastID:" + confiqLocal.getLastIds().get(ix - 1));
             if (confiqRemote != null && confiqRemote.getLastIds().get(ix - 1) > confiqLocal.getLastIds().get(ix - 1)) {
                 ArrayList<GeneralModel> generalModels = doPostList(Consts.SERVERADDRESS + "/gm/" + ix + "/" + lastIds.get(ix - 1), confiqLocal);
-                dbHelper.insertGMs(generalModels, ix);
-                updateCount.add(generalModels.size());
+                if (generalModels != null) {
+                    dbHelper.insertGMs(generalModels, ix);
+                    updateCount.add(generalModels.size());
+                } else
+                    updateCount.add(0);
             } else
                 updateCount.add(0);
         }
@@ -125,12 +169,17 @@ public class PostListService extends IntentService implements NetServiceListener
         postListTask.execute(PostListTask.GETLIST);
         wait4List = true;
         waitCount = 0;
+        forceStop = false;
         while (wait4List) {
             try {
                 waitCount++;
                 Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            if (waitCount > maxCount) {
+                wait4List = false;
+                forceStop = true;
             }
         }
         return generalModels;
@@ -142,6 +191,7 @@ public class PostListService extends IntentService implements NetServiceListener
         postListTask.execute(PostListTask.GETCONGIQ);
         wait4List = true;
         waitCount = 0;
+        forceStop = false;
         while (wait4List) {
             try {
                 waitCount++;
@@ -150,11 +200,15 @@ public class PostListService extends IntentService implements NetServiceListener
                 Log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
+            if (waitCount > maxCount) {
+                forceStop = true;
+                wait4List = false;
+            }
         }
         return confiqRemote;
     }
 
-    private void publishResults(ArrayList<Integer> list, int result) {
+    private void publishResults(ArrayList<Integer> list, String result) {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(UPDATEDCOUNT, list);
         intent.putExtra(RESULT, result);
@@ -206,6 +260,10 @@ public class PostListService extends IntentService implements NetServiceListener
             confiqLocal.setLastModelMap(confiqRemote.getLastModelMap());
             confiqLocal.setLastModelMapId(dbHelper.getLastModelMapId());
             dbHelper.updateTableNames(confiqRemote.getLastTablesName());
+        }
+
+        if (confiqRemote.getHasUserPermision() != null) {
+            dbHelper.updateUserPermision(confiqRemote.getHasUserPermision());
         }
 
     }
@@ -270,5 +328,10 @@ public class PostListService extends IntentService implements NetServiceListener
         wait4List = false;
     }
 
+    @Override
+    public void onUpdateAccountReady(int response) {
+        wait4List = false;
+        updateAccount = response;
+    }
 
 }

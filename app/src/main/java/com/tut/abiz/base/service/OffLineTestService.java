@@ -9,6 +9,7 @@ import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.model.UserAccount;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,17 +95,61 @@ public class OffLineTestService {
     }
 
     public static JSONObject postData(String url, JSONObject sentJson) {
+        try {
+            Thread.sleep(5333);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (url.contains("Confiq")) {
             Confiq reqCnf = JsonUtil.extractConfiq(sentJson);
             return returnMockConfiq(reqCnf);
         } else if (url.contains("groups")) {
             return returnMockGroups(sentJson);
+        } else if (url.contains("registerUser")) {
+            return returnRegisterResponse(sentJson);
+        } else if (url.contains("updateUser")) {
+            return returnUpdateUser(sentJson);
         } else {
             String[] split = url.split("/"); // "address/gm/1/987";
             int tableIx = Integer.parseInt(split[split.length - 2]);
             long id = Long.parseLong(split[split.length - 1]);
             return returnMockGMs(tableIx, id);
         }
+    }
+
+    private static JSONObject returnUpdateUser(JSONObject reqJson) {
+        JSONObject jsonObject = new JSONObject();
+        UserAccount user = JsonUtil.extractUserAccount(reqJson);
+        try {
+            Thread.sleep(7999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.e("updatedUser:", user.getUserName() + "," + user.getPassword() + "," + user.getPhone() + "," + user.getEmail());
+        try {
+            jsonObject.put("response", Consts.USERREGISTERED);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    private static JSONObject returnRegisterResponse(JSONObject reqJson) {
+        JSONObject jsonObject = new JSONObject();
+        UserAccount user = JsonUtil.extractUserAccount(reqJson);
+        try {
+            Thread.sleep(7999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.e("register:", user.getUserName() + "," + user.getPassword() + "," + user.getPhone() + "," + user.getEmail());
+        try {
+            jsonObject.put("response", Consts.USERREGISTERED);
+            jsonObject.put("id", 17360439);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     private static JSONObject returnMockGroups(JSONObject reqJson) {
@@ -184,6 +229,8 @@ public class OffLineTestService {
         try {
             Confiq confiq = getConfig();
             confiq.setLastIds(lastIds);
+            confiq.setHasUserPermision(false);
+            confiq.setHaveNewChange(true);
             confiq.setLastModelMap(getModelMapAfter(reqCnf.getLastModelMapId()));
             confiq.setModelMap2Delete(getModelMapAfter2Delete(reqCnf.getLastModelMapId()));
             JSONObject c = JsonUtil.parseConfiq(confiq);

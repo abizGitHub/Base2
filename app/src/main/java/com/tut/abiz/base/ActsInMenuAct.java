@@ -25,6 +25,7 @@ import com.tut.abiz.base.acts.Act3;
 import com.tut.abiz.base.acts.ListActivity;
 import com.tut.abiz.base.acts.NetConnectionActivity;
 import com.tut.abiz.base.acts.PagerActivity;
+import com.tut.abiz.base.acts.RegistrationAct;
 import com.tut.abiz.base.acts.SchedulActivity;
 import com.tut.abiz.base.acts.SearchActivity;
 import com.tut.abiz.base.frags.Frag1;
@@ -226,6 +227,8 @@ public class ActsInMenuAct extends AppCompatActivity
             intent = new Intent(ActsInMenuAct.this, NetConnectionActivity.class);
         } else if (selectedMenuAct == R.id.nav_Group) {
             intent = new Intent(ActsInMenuAct.this, ListActivity.class);
+        } else if (selectedMenuAct == R.id.nav_registration) {
+            intent = new Intent(ActsInMenuAct.this, RegistrationAct.class);
         } else {
             intent = new Intent(ActsInMenuAct.this, activity);
         }

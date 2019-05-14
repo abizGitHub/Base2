@@ -27,7 +27,7 @@ public class Consts {
     public static final String NEWUSERNAME = "newUser";
     public static final String SERVERADDRESS = "http://10.0.2.2:8085/rest";
 
-    public static final String ID = "id";
+    public static final String ID = "ID";
     public static final String SHEREDPREF = "sharedPrf";
     public static final String VISIBLITYPREF = "visiblityPrf";
     public static final String ISRUNBEFORE = "isRunBefore";
@@ -46,4 +46,18 @@ public class Consts {
     public static final String STATUS = "STATUS";
 
     public static final String NAME = "NAME";
+    public static final String USERNAME = "USERNAME";
+    public static final String PASSWORD = "PASSWORD";
+    public static final String PHONE = "PHONE";
+    public static final String EMAIL = "EMAIL";
+    public static final String USERACCOUNTEDITED = "USERACCOUNTEDITED";
+    public static int USERREGISTERED = 34209;
+    public static int USERNAMERESERVED = 78615;
+    public static int CANTREGISTERE = 10209;
+
+    public static final String ADDRESSCONFIQ = "/gm/getConfiq";
+    public static final String ADDRESSREGUSER = "/userAccount/registerUser";
+    public static final String ADDRESSUPDATEUSER = "/userAccount/updateUser";
+    public static final String ADDRESSGROUP = "/userAccount/groups";
+
 }

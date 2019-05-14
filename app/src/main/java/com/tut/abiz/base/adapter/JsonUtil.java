@@ -6,6 +6,7 @@ import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.model.UserAccount;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,6 +95,10 @@ public class JsonUtil {
         }
         try {
             confiq.setHaveNewChange(json.getBoolean(Confiq.HAVENEWCHANGE));
+        } catch (Exception e) {
+        }
+        try {
+            confiq.setHasUserPermision(json.getBoolean(Confiq.HASUSERPERMISSION));
         } catch (Exception e) {
         }
         try {
@@ -416,4 +421,39 @@ public class JsonUtil {
         }
         return group;
     }
+
+
+    public static UserAccount extractUserAccount(JSONObject reqJson) {
+        UserAccount user = new UserAccount();
+        try {
+            user.setUserName(reqJson.get(Consts.USERNAME).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            user.setPassword(reqJson.get(Consts.PASSWORD).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            user.setEmail(reqJson.get(Consts.EMAIL).toString());
+        } catch (JSONException e) {
+        }
+        try {
+            user.setPhone(reqJson.get(Consts.PHONE).toString());
+        } catch (JSONException e) {
+        }
+        return user;
+    }
+
+    public static JSONObject parseUserAccount(UserAccount userAccount) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put(Consts.USERNAME, userAccount.getUserName());
+            json.put(Consts.PASSWORD, userAccount.getPassword());
+            json.put(Consts.PHONE, userAccount.getPhone());
+            json.put(Consts.EMAIL, userAccount.getEmail());
+        } catch (JSONException e) {
+        }
+        return json;
+    }
+
 }

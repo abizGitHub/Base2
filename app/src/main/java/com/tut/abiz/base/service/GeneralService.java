@@ -14,6 +14,7 @@ import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -129,6 +130,16 @@ public class GeneralService {
             list.add(model);
         }
 
+        ArrayList<Group> groups = dbHelper.getAllGroups(1);
+        groups.addAll(dbHelper.getAllGroups(2));
+        groups.addAll(dbHelper.getAllGroups(3));
+        for (Group group : groups) {
+            GeneralModel mdl = new GeneralModel();
+            mdl.setTitle("group-" + group.getTableId());
+            mdl.setBody(group.getId() + "-" + group.getName() + "-status:" + group.getStatus());
+            list.add(mdl);
+        }
+
         ArrayList<ModelMap> modelMap = dbHelper.getModelMap(1);
         modelMap.addAll(dbHelper.getModelMap(2));
         modelMap.addAll(dbHelper.getModelMap(3));
@@ -170,6 +181,17 @@ public class GeneralService {
 
 
     public ArrayList<Group> getGroupList() {
-        return dbHelper.getAllGroups();
+        return dbHelper.getAllGroups(1);
     }
+
+    public ArrayList<FragmentPack> getGroupPacks() {
+        ArrayList<FragmentPack> fragmentPacks = new ArrayList<>();
+        int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
+        for (int ix = 1; ix < tableCount + 1; ix++) {
+            fragmentPacks.add(Utils.getFragPack(dbHelper.getAllGroups(ix), pref.getString(Consts.TABLENAMES[ix - 1], "-"), ix));
+        }
+        return fragmentPacks;
+    }
+
+
 }

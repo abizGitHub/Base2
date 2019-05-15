@@ -33,12 +33,14 @@ public class GroupListAdapter extends ArrayAdapter {
     ArrayList<String> titles;
     TextView title, sub;
     ArrayAdapter adapter;
+    int tableIx;
 
-    public GroupListAdapter(BaseActivity baseActivity, ArrayList<Group> groups, ArrayList<String> titles) {
+    public GroupListAdapter(BaseActivity baseActivity, ArrayList<Group> groups, ArrayList<String> titles, int tableIx) {
         super(baseActivity, R.layout.sheet_item_group, R.id.sheetTitle, titles);
         this.groups = groups;
         this.baseActivity = baseActivity;
         this.titles = titles;
+        this.tableIx = tableIx;
     }
 
     @NonNull
@@ -84,13 +86,13 @@ public class GroupListAdapter extends ArrayAdapter {
             if (b) {
                 //sub.setText(baseActivity.getResources().getString(R.string.ordered));
                 group.setStatus(Group.ORDERED);
-                baseActivity.getDbHelper().changeStateOfGroup(group.getId(), Group.ORDERED);
+                baseActivity.getDbHelper().changeStateOfGroup(group.getId(), Group.ORDERED, tableIx);
             } else {
                 //sub.setText(baseActivity.getResources().getString(R.string.add));
                 group.setStatus(Group.UNREGISTERED);
-                baseActivity.getDbHelper().changeStateOfGroup(group.getId(), Group.UNREGISTERED);
+                baseActivity.getDbHelper().changeStateOfGroup(group.getId(), Group.UNREGISTERED, tableIx);
             }
-            Toast.makeText(baseActivity, adapter + ">" + b + ">" + group.getStatus(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(baseActivity, tableIx + ">" + group.getId() + ">" + b + ">" + group.getStatus(), Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
         }
 

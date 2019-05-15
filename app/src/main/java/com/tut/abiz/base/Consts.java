@@ -11,6 +11,7 @@ public class Consts {
     public static final String CURRENTPAGE = "current_page";
     public static final String ALLFRAGMENTPACK = "all_fragment_pack";
     public static final String GENERALLIST = "general_list";
+    public static final String GROUPLIST = "group_list";
     public static final String GENERALMODEL = "general_model";
     public static final String GENERALMODELS = "general_models";
     public static final String TITLES = "titles";
@@ -51,6 +52,7 @@ public class Consts {
     public static final String PHONE = "PHONE";
     public static final String EMAIL = "EMAIL";
     public static final String USERACCOUNTEDITED = "USERACCOUNTEDITED";
+    public static final String TABLEID = "TABLE_ID";
     public static int USERREGISTERED = 34209;
     public static int USERNAMERESERVED = 78615;
     public static int CANTREGISTERE = 10209;
@@ -59,5 +61,7 @@ public class Consts {
     public static final String ADDRESSREGUSER = "/userAccount/registerUser";
     public static final String ADDRESSUPDATEUSER = "/userAccount/updateUser";
     public static final String ADDRESSGROUP = "/userAccount/groups";
+
+    public static final String SENDDETAICONFIG = "sendDetailConfiq";
 
 }

@@ -52,7 +52,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + USERACCOUNT + " (USERNAME TEXT,PASSWORD TEXT,EMAIL TEXT,PHONE TEXT)");
         db.execSQL("CREATE TABLE " + PAGESTITLE + " (TABLE_ID INTEGER PRIMARY KEY,NAME TEXT)");
-        db.execSQL("CREATE TABLE " + GROUP + " (ID INTEGER PRIMARY KEY,NAME TEXT,STATUS INTEGER)");
+        db.execSQL("CREATE TABLE " + GROUP + " (ID INTEGER,TABLE_ID INTEGER,NAME TEXT,STATUS INTEGER)");
         db.execSQL("CREATE TABLE " + MODELMAP +
                 " (ID INTEGER PRIMARY KEY,TABLE_ID INTEGER,COLUMN_IX INTEGER NOT NULL,INT_VALUE INTEGER NOT NULL,STRING_VALUE TEXT)");
         //TITLE = 1;HEADER_R = 2;HEADER_L = 3;BODY = 4;FOOTER_R = 5;FOOTER_L = 6;
@@ -330,12 +330,18 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         confiq.setLastIds(lastIds);
-        cursor = db.rawQuery("SELECT MAX(ID) FROM " + GROUP, null);
-        if (cursor != null && cursor.getCount() > 0 && cursor.moveToNext())
-            confiq.setLastGroupId(cursor.getLong(0));
-        else
-            confiq.setLastGroupId(0L);
+
+        ArrayList<Integer> lastGroupIds = new ArrayList<>();
+        for (int i = 1; i < names.size() + 1; i++) {
+            cursor = db.rawQuery("SELECT MAX(ID) FROM " + GROUP + " WHERE TABLE_ID='" + i + "'", null);
+            if (cursor != null && cursor.getCount() > 0 && cursor.moveToNext())
+                lastGroupIds.add(cursor.getInt(0));
+            else
+                lastGroupIds.add(0);
+        }
         cursor.close();
+        confiq.setLastGroupIds(lastGroupIds);
+
         ArrayList<TagVisiblity> visiblityList = new ArrayList<>();
         for (int i = 0; i < lastIds.size(); i++) {
             visiblityList.addAll(getTagVisiblity(i + 1));
@@ -549,6 +555,7 @@ public class DbHelper extends SQLiteOpenHelper {
         for (Group gr : grs) {
             values.put("ID", gr.getId());
             values.put("NAME", gr.getName());
+            values.put("TABLE_ID", gr.getTableId());
             values.put(Consts.STATUS, gr.getStatus());
             result = db.insert(GROUP, null, values);
             values.clear();
@@ -557,19 +564,21 @@ public class DbHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean changeStateOfGroup(Integer id, int state) {
+    public boolean changeStateOfGroup(Integer id, int state, int tableIx) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Consts.STATUS, state);
-        long result = db.update(GROUP, values, "ID=?", new String[]{id.toString()});
+        values.put("TABLE_ID", state);
+        long result = db.update(GROUP, values, "ID=? AND TABLE_ID=?", new String[]{id.toString(), String.valueOf(tableIx)});
         db.close();
         return result != -1;
     }
 
-    public ArrayList<Integer> getGroupsByStatus(int status) {
+    public ArrayList<Integer> getGroupsByStatus(int tableIx, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<Integer> groups = new ArrayList<>();
-        Cursor res = db.rawQuery("SELECT ID FROM " + GROUP + " WHERE STATUS ='" + status + "'", null);
+        Cursor res = db.rawQuery(
+                "SELECT ID FROM " + GROUP + " WHERE STATUS ='" + status + "' AND TABLE_ID ='" + tableIx + "'", null);
         if (res != null && res.getCount() > 0)
             while (res.moveToNext()) {
                 groups.add(res.getInt(0));
@@ -578,16 +587,17 @@ public class DbHelper extends SQLiteOpenHelper {
         return groups;
     }
 
-    public ArrayList<Group> getAllGroups() {
+    public ArrayList<Group> getAllGroups(int tableIx) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<Group> groups = new ArrayList<>();
-        Cursor res = db.rawQuery("SELECT * FROM " + GROUP + " ORDER BY STATUS DESC", null);
+        ArrayList<Group> groups = new ArrayList<>(); //(ID INTEGER,TABLE_ID INTEGER,NAME TEXT,STATUS INTEGER)");
+        Cursor res = db.rawQuery("SELECT * FROM " + GROUP + " WHERE TABLE_ID ='" + tableIx + "' ORDER BY STATUS DESC", null);
         if (res != null && res.getCount() > 0)
             while (res.moveToNext()) {
                 Group group = new Group();
                 group.setId(res.getInt(0));
-                group.setName(res.getString(1));
-                group.setStatus(res.getInt(2));
+                group.setTableId(res.getInt(1));
+                group.setName(res.getString(2));
+                group.setStatus(res.getInt(3));
                 groups.add(group);
             }
         db.close();
@@ -661,4 +671,32 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public Confiq getBriefConfiq() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USERCONFIQ, null);
+        Confiq confiq = new Confiq();
+        if (cursor != null && cursor.getCount() > 0)
+            if (cursor.moveToNext()) {
+                confiq.setUserId(cursor.getLong(0));
+                confiq.setUserName(cursor.getString(1));
+                confiq.setHasUserPermision(cursor.getInt(2) == 1);
+            }
+        cursor.close();
+        cursor = db.rawQuery("SELECT name FROM " + PAGESTITLE, null);
+        ArrayList<String> names = new ArrayList<>();
+        while (cursor != null && cursor.moveToNext()) {
+            names.add(cursor.getString(0));
+        }
+        cursor.close();
+        ArrayList<Long> lastIds = new ArrayList<>();
+        for (int i = 1; i < names.size() + 1; i++) {
+            cursor = db.rawQuery("SELECT MAX(ID) FROM " + GENERALTABLEPREFIX + i, null);
+            if (cursor != null && cursor.moveToNext()) {
+                lastIds.add(cursor.getLong(0));
+            }
+        }
+        cursor.close();
+        confiq.setLastIds(lastIds);
+        return confiq;
+    }
 }

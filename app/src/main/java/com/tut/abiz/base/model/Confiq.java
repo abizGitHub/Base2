@@ -20,6 +20,9 @@ public class Confiq {
     public static String LASTTABLESNAME = "lastTablesName";
     public static String TAGVISIBLITY = "tagVisiblity";
     public static String MODELMAP2DELETE = "modelMap2delete";
+    public static final String LASTGROUPIDS = "lastGroupIds";
+    public static final String WAIT4SERVER = "wait4Server";
+    public static final String CONNECTPERIOD = "connectPeriod";
 
     String userName;
     Long userId;
@@ -32,10 +35,13 @@ public class Confiq {
     ArrayList<ModelMap> lastModelMap;
     ArrayList<Long> modelMap2Delete;
     Long lastModelMapId;
-    Long lastGroupId;
+    ArrayList<Integer> lastGroupIds;
     Boolean haveNewChange;// if (tagVisiblity or lastModelMap)
     // send by server differ from local
     Boolean updateGroup;
+    Boolean sendDetail;
+    Integer wait4Server;
+    Integer connectPeriod;
 
     public String getUserName() {
         return userName;
@@ -137,7 +143,7 @@ public class Confiq {
         buffer.append("lastTableName-2 :  " + getLastTablesName().get(1) + "\n");
         buffer.append("haveNewChange :  " + haveNewChange + "\n");
         buffer.append("hasUserPermision :  " + hasUserPermision + "\n");
-        buffer.append("lastGroupId :  " + lastGroupId + "\n");
+        buffer.append("lastGroupIds :  " + lastGroupIds.get(0) + "," + lastGroupIds.get(1) + "\n");
         buffer.append("clearDB :  " + clearDB + "\n");
         return buffer.toString();
     }
@@ -150,11 +156,35 @@ public class Confiq {
         this.updateGroup = updateGroup;
     }
 
-    public Long getLastGroupId() {
-        return lastGroupId;
+    public ArrayList<Integer> getLastGroupIds() {
+        return lastGroupIds;
     }
 
-    public void setLastGroupId(Long lastGroupId) {
-        this.lastGroupId = lastGroupId;
+    public void setLastGroupIds(ArrayList<Integer> lastGroupIds) {
+        this.lastGroupIds = lastGroupIds;
+    }
+
+    public Boolean getSendDetail() {
+        return sendDetail;
+    }
+
+    public void setSendDetail(Boolean sendDetail) {
+        this.sendDetail = sendDetail;
+    }
+
+    public Integer getWait4Server() {
+        return wait4Server;
+    }
+
+    public void setWait4Server(Integer wait4Server) {
+        this.wait4Server = wait4Server;
+    }
+
+    public Integer getConnectPeriod() {
+        return connectPeriod;
+    }
+
+    public void setConnectPeriod(Integer connectPeriod) {
+        this.connectPeriod = connectPeriod;
     }
 }

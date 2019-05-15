@@ -63,6 +63,8 @@ public class PagerActivity extends BaseActivity {
             allFragmentPacks = service.getAllList();
         } else if (R.id.nav_staredList == getNavMenu()) {
             allFragmentPacks = service.getStaredList();
+        }else if (R.id.nav_Group == getNavMenu()) {
+            allFragmentPacks = service.getGroupPacks();
         }
 
 
@@ -78,7 +80,7 @@ public class PagerActivity extends BaseActivity {
     @Override
     protected void doStaredTasks() {
         pagerFrag = (ListPagerFrag) allFragmentPacks.get(getSelectedTable() - 1).getPagerFragment();
-        generalListAdapter = pagerFrag.getAdapter();
+        generalListAdapter = (GeneralListAdapter) pagerFrag.getAdapter();
     }
 
     @Override

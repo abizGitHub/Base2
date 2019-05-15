@@ -103,6 +103,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
         String resp = readResponse(httpResponse);
         if (resp.trim().isEmpty())
             return new JSONObject();
+        Log.e("response:",resp);
         return new JSONObject(resp);
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,8 +14,11 @@ import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.adapter.GeneralListAdapter;
+import com.tut.abiz.base.adapter.GroupListAdapter;
 import com.tut.abiz.base.model.GeneralModel;
+import com.tut.abiz.base.model.Group;
 import com.tut.abiz.base.model.TagVisiblity;
+import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
 
@@ -26,9 +30,11 @@ public class ListPagerFrag extends PagerFragment {
     ListView listView;
     View view;
     ArrayList<GeneralModel> generalList;
+    ArrayList<Group> groupList;
     TagVisiblity visiblity;
-    GeneralListAdapter adapter;
+    ArrayAdapter adapter;
     ArrayList<String> titles;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,7 @@ public class ListPagerFrag extends PagerFragment {
         Bundle data = getArguments();
         generalList = (ArrayList<GeneralModel>) data.get(Consts.GENERALLIST);
         visiblity = (TagVisiblity) data.get(Consts.VISIBLITY);
+        groupList = (ArrayList<Group>) data.get(Consts.GROUPLIST);
     }
 
     private ArrayList<String> extractTitles(ArrayList<GeneralModel> generalList) {
@@ -46,13 +53,19 @@ public class ListPagerFrag extends PagerFragment {
         return titles;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater, container, savedInstanceState);
         listView = (ListView) view.findViewById(R.id.list_sheet);
-        titles = extractTitles(generalList);
-        Log.e("stared : ", generalList.size() + "");
-        adapter = new GeneralListAdapter((BaseActivity) getActivity(), generalList, visiblity, titles, R.layout.sheet_itemlinear);
+
+        if (R.id.nav_Group == ((BaseActivity) getActivity()).getNavMenu()) {
+            titles = Utils.extractGroupTitles(groupList);
+            adapter = new GroupListAdapter((BaseActivity) getActivity(), groupList, titles, ix);
+        } else {
+            titles = extractTitles(generalList);
+            adapter = new GeneralListAdapter((BaseActivity) getActivity(), generalList, visiblity, titles, R.layout.sheet_itemlinear);
+        }
         listView.setAdapter(adapter);
         return view;
     }
@@ -61,7 +74,7 @@ public class ListPagerFrag extends PagerFragment {
         return generalList;
     }
 
-    public GeneralListAdapter getAdapter() {
+    public ArrayAdapter getAdapter() {
         return adapter;
     }
 

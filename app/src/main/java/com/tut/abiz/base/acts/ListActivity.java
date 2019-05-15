@@ -44,11 +44,10 @@ public class ListActivity extends BaseActivity {
         TagVisiblity visiblity = (TagVisiblity) getIntent().getExtras().get(Consts.VISIBLITY);
         listView = (ListView) findViewById(R.id.list_sheet);
         setSelectedTable(1);
-        if (R.id.nav_Group == getNavMenu()){
+        if (R.id.nav_Group == getNavMenu()) {
             titles = extractGroupTitles(groups);
-            adapter = new GroupListAdapter(this, groups, titles);
-        }
-        else{
+            adapter = new GroupListAdapter(this, groups, titles, 1);
+        } else {
             titles = extractGeneralTitles(generalList);
             adapter = new GeneralListAdapter(this, generalList, visiblity, titles, R.layout.sheet_itemlinear);
         }

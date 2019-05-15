@@ -68,6 +68,16 @@ public class Utils {
         return fragmentPack;
     }
 
+    public static FragmentPack getFragPack(ArrayList<Group> allGroups, String title, int pageNum) {
+        ListPagerFrag pFrag = new ListPagerFrag();
+        Bundle data1 = new Bundle();
+        data1.putInt(Consts.CURRENTPAGE, pageNum);
+        data1.putInt(Consts.PAGELAYOUT, R.layout.list_frag);
+        data1.putSerializable(Consts.GROUPLIST, allGroups);
+        FragmentPack fragmentPack = new FragmentPack(title, pFrag, data1);
+        return fragmentPack;
+    }
+
     public static ArrayList<String> extractGeneralTitles(ArrayList<GeneralModel> generalList) {
         ArrayList<String> titles = new ArrayList<>();
         if (generalList == null || generalList.isEmpty())

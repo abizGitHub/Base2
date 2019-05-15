@@ -22,6 +22,7 @@ import com.tut.abiz.base.ActsInMenuAct;
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.acts.SchedulActivity;
+import com.tut.abiz.base.model.Confiq;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,7 +100,7 @@ public class SchedulService extends Service {
                 intent.getExtras().clear();
             intent.putExtra(RESULT, i++);
             startService(intent);
-            handler.postDelayed(periodicUpdate, 4700);
+            handler.postDelayed(periodicUpdate, pref.getInt(Confiq.CONNECTPERIOD, 4700));
         }
     };
 

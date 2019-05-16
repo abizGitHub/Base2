@@ -18,6 +18,8 @@
     <string name="dbView">DBView</string>
     <string name="staredList">staredList</string>
     <string name="search">search</string>
+    <string name="tab">tab</string>
+
     <string name="connected">con</string>
     <string name="wait4UpdateMessage">wait for update</string>
     <string name="canNotconnectMessage">Can not connect to internet</string>
@@ -46,6 +48,21 @@
     <string name="firstRunWelcome">خوش آمدید ، برای فعال سازی به منوی حساب کاربری بروید</string>
     <string name="invalidChars">از حروف انگلیسی یا فارسی و یا از اعداد استفاده کنید</string>
     <string name="connectingToNet">در حال اتصال ...</string>
+
+
+    <string-array name="titles">
+        <item>Hello Food!</item>
+        <item>Movie Tickets</item>
+        <item>Great Discounts</item>
+        <item>World Travel</item>
+    </string-array>
+
+    <string-array name="descriptions">
+        <item>The easiest way to order food from your favourite restaurants!</item>
+        <item>Book movie tickets for your family and friends</item>
+        <item>Best discounts on every single service we offer</item>
+        <item>Book tickets for any transportation and travel the world!</item>
+    </string-array>
 
 
 </resources>

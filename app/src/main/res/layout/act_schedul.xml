@@ -19,7 +19,7 @@
             android:keepScreenOn="true"
             android:layout_below="@+id/start_imageRotate"
             android:text="@string/search"
-            android:textColor="@color/colorSkyBlue"
+            android:textColor="@color/colorBlue3"
             android:textSize="50sp"
             android:textStyle="bold" />
 

@@ -28,6 +28,7 @@ import com.tut.abiz.base.acts.PagerActivity;
 import com.tut.abiz.base.acts.RegistrationAct;
 import com.tut.abiz.base.acts.SchedulActivity;
 import com.tut.abiz.base.acts.SearchActivity;
+import com.tut.abiz.base.acts.TabAct;
 import com.tut.abiz.base.frags.Frag1;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
@@ -229,6 +230,8 @@ public class ActsInMenuAct extends AppCompatActivity
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_registration) {
             intent = new Intent(ActsInMenuAct.this, RegistrationAct.class);
+        } else if (selectedMenuAct == R.id.nav_tab) {
+            intent = new Intent(ActsInMenuAct.this, TabAct.class);
         } else {
             intent = new Intent(ActsInMenuAct.this, activity);
         }

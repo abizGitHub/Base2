@@ -101,7 +101,8 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/icon_call" />
+                    android:tint="@color/colorBlue2"
+                    app:srcCompat="@drawable/baseline_account_box_black_18" />
             </LinearLayout>
 
             <View
@@ -132,7 +133,8 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/ic_menu_send" />
+                    android:tint="@color/colorBlue2"
+                    app:srcCompat="@drawable/baseline_lock_24" />
             </LinearLayout>
 
             <View
@@ -163,6 +165,7 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
+                    android:tint="@color/colorBlue2"
                     app:srcCompat="@drawable/icon_call" />
             </LinearLayout>
 
@@ -194,6 +197,7 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
+                    android:tint="@color/colorBlue2"
                     app:srcCompat="@drawable/icon_sms" />
             </LinearLayout>
 

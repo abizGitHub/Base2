@@ -56,4 +56,8 @@ public class CheckListener implements CompoundButton.OnCheckedChangeListener {
         context.onStarChanged(position, b);
     }
 
+    public void onCheckedChanged(boolean checked) {
+        onCheckedChanged(null, checked);
+    }
+
 }

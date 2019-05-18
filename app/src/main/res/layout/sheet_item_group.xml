@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -43,16 +44,15 @@
                 android:layout_alignParentRight="true"
                 android:layout_weight="5"
                 android:orientation="vertical">
-
-                <ToggleButton
-                    android:id="@+id/sheetOrder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/text_size_xlarge"
+                <com.tut.abiz.base.adapter.ImageV
+                    android:id="@+id/sheetStar"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:background="@drawable/star_btn"
-                    android:checked="false"
-                    android:textOff=""
-                    android:textOn="" />
+                    android:scaleType="fitXY"
+                    android:layout_centerInParent="true"
+                    android:tint="@color/colorLightGreen"
+                    app:srcCompat="@drawable/baseline_assignment_returned_black_18" />
 
                 <TextView
                     android:id="@+id/sheetOrderSub"
@@ -60,8 +60,9 @@
                     android:layout_height="@dimen/text_size_xlarge"
                     android:layout_weight="1"
                     android:text="title"
+                    android:textAlignment="center"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_vsmall" />
             </LinearLayout>
 
         </LinearLayout>

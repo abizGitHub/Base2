@@ -38,7 +38,7 @@ public class GeneralListAdapter extends ArrayAdapter {
     int sheet_itemLayout;
     TextView title, body, footL, headerL,
             headerR, footR;
-    ToggleButton star;
+    ImageV star;
     View row;
     ViewGroup layout;
     ArrayList<String> titles;
@@ -112,18 +112,23 @@ public class GeneralListAdapter extends ArrayAdapter {
             layout.removeView(footR);
             footR.setVisibility(View.INVISIBLE);
         }
-        star = (ToggleButton) row.findViewById(R.id.sheetStar);
+        star = (ImageV) row.findViewById(R.id.sheetStar);
+        layout.setOnClickListener(new LayoutClickListener(this, generalModels, titles, position));
+        ImageV star2 = (ImageV) row.findViewById(R.id.sheetStar2);
         if (visiblity.isStarVisible()) {
             star.setChecked(generalModels.get(position).getStared());
+            star.setScale(0.7f);
+            star2.setScale(0.7f);
             star.setOnCheckedChangeListener(new CheckListener(baseActivity, this, generalModels, titles, position));
             minHeight += rowHeight;
         } else {
             layout.removeView(star);
             star.setVisibility(View.INVISIBLE);
+            layout.removeView(star2);
+            star2.setVisibility(View.INVISIBLE);
         }
         if (sheet_itemLayout == R.layout.sheet_itemlinear)
             doMoreRemove();
-        layout.setOnClickListener(new LayoutClickListener(this, generalModels, titles, position));
         layout.setMinimumHeight(minHeight);
         return row;
     }

@@ -27,7 +27,7 @@ public class GroupListAdapter extends ArrayAdapter {
 
     BaseActivity baseActivity;
     ArrayList<Group> groups;
-    ToggleButton orderBtn;
+    ImageV orderBtn;
     View row;
     ViewGroup layout;
     ArrayList<String> titles;
@@ -50,7 +50,12 @@ public class GroupListAdapter extends ArrayAdapter {
         row = inflater.inflate(R.layout.sheet_item_group, parent, false);
         adapter = this;
         layout = (ViewGroup) row.findViewById(R.id.item_content);
-        orderBtn = (ToggleButton) row.findViewById(R.id.sheetOrder);
+        orderBtn = (ImageV) row.findViewById(R.id.sheetStar);
+        orderBtn.setUnCheckedImg(R.drawable.baseline_assignment_returned_black_18);
+        orderBtn.setUnCheckedColor(R.color.colorBlue1);
+        orderBtn.setCheckedImg(R.drawable.baseline_assignment_return_black_18);
+        orderBtn.setCheckedColor(R.color.colorOrange);
+        orderBtn.setScale(0.6f);
         title = (TextView) row.findViewById(R.id.sheetTitle);
         sub = (TextView) row.findViewById(R.id.sheetOrderSub);
         Group group = groups.get(position);
@@ -62,14 +67,21 @@ public class GroupListAdapter extends ArrayAdapter {
         }
         if (group.getStatus() == Group.REGISTERED) {
             sub.setText(baseActivity.getResources().getString(R.string.registered));
-            orderBtn.setChecked(false);
-            orderBtn.setVisibility(View.INVISIBLE);
+            /*orderBtn.setChecked(false);
+            orderBtn.setVisibility(View.INVISIBLE);*/
+            orderBtn.setCheckedColor(R.color.colorLightGreen);
+            orderBtn.setImageResource(R.drawable.baseline_assignment_turned_in_black_18);
+            orderBtn.setCheckedImg(R.drawable.baseline_assignment_turned_in_black_18);
+            orderBtn.setChecked(true);
+            //orderBtn.setEnabled(false);
         }
         if (group.getStatus() == Group.ORDERED) {
             orderBtn.setChecked(true);
             sub.setText(baseActivity.getResources().getString(R.string.ordered));
         }
-        orderBtn.setOnCheckedChangeListener(new OrderListener(position));
+        if (group.getStatus() != Group.REGISTERED) {
+            orderBtn.setOnCheckedChangeListener(new OrderListener(position));
+        }
         return row;
     }
 

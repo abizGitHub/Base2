@@ -10,6 +10,7 @@ import android.widget.ToggleButton;
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.adapter.GeneralListAdapter;
+import com.tut.abiz.base.adapter.ImageV;
 import com.tut.abiz.base.listener.CheckListener;
 import com.tut.abiz.base.model.GeneralModel;
 
@@ -26,7 +27,7 @@ public class ViewListItemActivity extends BaseActivity {
     int position;
     TextView title, body, footL, headerL,
             headerR, footR;
-    ToggleButton star;
+    ImageV star;
     ViewGroup layout;
 
     @Override
@@ -49,7 +50,9 @@ public class ViewListItemActivity extends BaseActivity {
         footL.setText(generalModel_.getFooterL());
         footR = (TextView) findViewById(R.id.sheetFootR);
         footR.setText(generalModel_.getFooterR());
-        star = (ToggleButton) findViewById(R.id.sheetStar);
+        star = (ImageV) findViewById(R.id.sheetStar);
+        star.setScale(0.7f);
+        ((ImageV) findViewById(R.id.sheetStar2)).setScale(0.7f);
         star.setChecked(generalModel_.getStared());
         star.setOnCheckedChangeListener(new CheckListener(this, null, generalModel_, position));
     }

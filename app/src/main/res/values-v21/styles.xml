@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ToggleButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:color">@color/colorYellow</item>
+        <item name="android:tint">@color/colorYellow</item>
+        <item name="background">@color/colorYellow</item>
+        <item name="android:centerColor">@color/colorYellow</item>
+        <item name="android:fillColor">@color/colorYellow</item>
+    </style>
+</resources>

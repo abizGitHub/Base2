@@ -67,8 +67,8 @@ public class TabAct extends BaseActivity {
     private void prepareSlides() {
         String[] titles = getResources().getStringArray(R.array.titles);
         String[] descriptions = getResources().getStringArray(R.array.descriptions);
-        int[] bgColors = new int[]{R.color.bgColor1, R.color.bgColor2,
-                R.color.bgColor3, R.color.bgColor4};
+        int[] bgColors = new int[]{R.color.colorMagnet, R.color.bgColor2,
+                R.color.bgColor3, R.color.colorOrange};
         int[] imageIds = new int[]{R.drawable.ic_food, R.drawable.ic_movie,
                 R.drawable.ic_discount, R.drawable.ic_travel};
         for (int i = 0; i < 4; i++) {

@@ -58,6 +58,8 @@ public class SchedulActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         rotateImg = (ImageView) findViewById(R.id.start_imageRotate);
+        rotateImg.setScaleX(0.5f);
+        rotateImg.setScaleY(0.5f);
         animate();
         doPrefs();
         registerReceiver(receiver, new IntentFilter(
@@ -174,8 +176,8 @@ public class SchedulActivity extends AppCompatActivity {
 
     private void animate() {
         rotateImg.animate()
-                .scaleX(0.5f)
-                .scaleY(0.5f)
+                .scaleX(1.2f)
+                .scaleY(1.2f)
                 .rotationBy(-360f)
                 .setDuration(30000);
     }

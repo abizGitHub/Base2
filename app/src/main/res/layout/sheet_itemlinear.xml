@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -35,15 +36,28 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_size_large" />
 
-            <ToggleButton
-                android:id="@+id/sheetStar"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/text_size_xlarge"
-                android:layout_weight="1"
-                android:background="@drawable/star_btn"
-                android:checked="false"
-                android:textOff="F"
-                android:textOn="N" />
+                android:layout_height="wrap_content">
+                <com.tut.abiz.base.adapter.ImageV
+                    android:id="@+id/sheetStar"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_centerInParent="true"
+                    android:tint="@color/colorBlack"
+                    app:srcCompat="@drawable/baseline_star_border_black_18" />
+                <com.tut.abiz.base.adapter.ImageV
+                    android:id="@+id/sheetStar2"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_centerInParent="true"
+                    android:tint="@color/colorBlack"
+                    app:srcCompat="@drawable/baseline_star_border_black_18" />
+            </RelativeLayout>
 
         </LinearLayout>
 

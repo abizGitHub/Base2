@@ -1,11 +1,16 @@
 package com.tut.abiz.base.acts;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tut.abiz.base.R;
@@ -14,8 +19,6 @@ import com.tut.abiz.base.adapter.GeneralPagerAdapter;
 import com.tut.abiz.base.frags.ListPagerFrag;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
-import com.tut.abiz.base.service.GeneralService;
-import com.tut.abiz.base.service.NetService;
 
 import java.util.ArrayList;
 
@@ -31,12 +34,15 @@ public class PagerActivity extends BaseActivity {
     GeneralPagerAdapter pagerAdapter;
     GeneralListAdapter generalListAdapter;
     ListPagerFrag pagerFrag;
+    TabLayout tabs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_paginator);
+        tabs = (TabLayout) findViewById(R.id.tabLayout);
         pager = (ViewPager) findViewById(R.id.pager);
+        tabs.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -46,6 +52,9 @@ public class PagerActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 setSelectedTable(pager.getCurrentItem() + 1);
+                for (int i = 0; i < tabs.getTabCount(); i++) {
+                    setIconSelected(i, i == pager.getCurrentItem());
+                }
             }
 
             @Override
@@ -63,10 +72,11 @@ public class PagerActivity extends BaseActivity {
             allFragmentPacks = service.getAllList();
         } else if (R.id.nav_staredList == getNavMenu()) {
             allFragmentPacks = service.getStaredList();
-        }else if (R.id.nav_Group == getNavMenu()) {
+        } else if (R.id.nav_Group == getNavMenu()) {
             allFragmentPacks = service.getGroupPacks();
         }
-
+        tabs.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabs.setTabMode(TabLayout.MODE_FIXED);
 
         /** Getting fragment manager */
         FragmentManager fm = getSupportFragmentManager();
@@ -75,12 +85,40 @@ public class PagerActivity extends BaseActivity {
         pagerAdapter = new GeneralPagerAdapter(fm, allFragmentPacks, this);
         /** Setting the pagerAdapter to the pager object */
         pager.setAdapter(pagerAdapter);
+        setUpTabIcons();
+    }
+
+    private void setIconSelected(int i, boolean selected) {
+        ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
+        TextView text = (TextView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabText);
+        if (selected) {
+            text.setTextColor(getResources().getColor(R.color.colorMagnet));
+            tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+            img.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+        } else {
+            text.setTextColor(getResources().getColor(R.color.colorLightGray));
+            tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            img.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
     }
 
     @Override
     protected void doStaredTasks() {
         pagerFrag = (ListPagerFrag) allFragmentPacks.get(getSelectedTable() - 1).getPagerFragment();
         generalListAdapter = (GeneralListAdapter) pagerFrag.getAdapter();
+    }
+
+    private void setUpTabIcons() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        int ix = 0;
+        for (FragmentPack fragPack : allFragmentPacks) {
+            View view = inflater.inflate(R.layout.tab_icon, null);
+            TextView text = (TextView) view.findViewById(R.id.tabText);
+            text.setText(fragPack.getPageTitle());
+            tabs.getTabAt(ix).setCustomView(view);
+            ix++;
+        }
+        setIconSelected(0, true);
     }
 
     @Override

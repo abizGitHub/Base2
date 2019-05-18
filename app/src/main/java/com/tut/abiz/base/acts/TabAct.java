@@ -52,7 +52,27 @@ public class TabAct extends BaseActivity {
             for (int i = 0; i < tabs.getTabCount(); i++)
                 tabs.getTabAt(i).setText("");
         }
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                setSelectedTable(viewpager.getCurrentItem() + 1);
+                Toast.makeText(TabAct.this, ">" + getSelectedTable(), Toast.LENGTH_SHORT).show();
+                for (int i = 0; i < tabs.getTabCount(); i++) {
+                    if (i == viewpager.getCurrentItem())
+                        tabs.getTabAt(i).getIcon().setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+                    else
+                        tabs.getTabAt(i).getIcon().clearColorFilter();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     private void setUpTabIcons() {

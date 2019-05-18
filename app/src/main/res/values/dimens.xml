@@ -11,6 +11,6 @@
     <dimen name="text_size_large">26dp</dimen>
     <dimen name="text_size_medium">19dp</dimen>
     <dimen name="text_size_small">16dp</dimen>
-    <dimen name="text_size_vsmall">9dp</dimen>
+    <dimen name="text_size_vsmall">11dp</dimen>
 
 </resources>

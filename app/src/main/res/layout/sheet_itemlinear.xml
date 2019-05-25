@@ -74,16 +74,18 @@
                 android:layout_height="@dimen/text_size_xlarge"
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
+                android:textColor="@color/colorBlack"
                 android:text="header_L"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/sheetHeaderR"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/text_size_xlarge"
                 android:layout_weight="1"
+                android:textColor="@color/colorBlack"
                 android:text="header_R"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
         <TextView

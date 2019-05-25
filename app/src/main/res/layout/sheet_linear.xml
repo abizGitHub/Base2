@@ -27,9 +27,9 @@
         android:layout_height="match_parent"
         android:layout_below="@id/appBarLayout"
         android:descendantFocusability="beforeDescendants"
+        android:paddingBottom="10dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingBottom="10dp"
         android:paddingTop="5dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -79,18 +79,18 @@
                         android:id="@+id/sheetStar"
                         android:layout_width="60dp"
                         android:layout_height="40dp"
+                        android:layout_centerInParent="true"
                         android:layout_weight="1"
                         android:scaleType="fitXY"
-                        android:layout_centerInParent="true"
                         android:tint="@color/colorBlack"
                         app:srcCompat="@drawable/baseline_star_border_black_18" />
                     <com.tut.abiz.base.adapter.ImageV
                         android:id="@+id/sheetStar2"
                         android:layout_width="60dp"
                         android:layout_height="40dp"
+                        android:layout_centerInParent="true"
                         android:layout_weight="1"
                         android:scaleType="fitXY"
-                        android:layout_centerInParent="true"
                         android:tint="@color/colorBlack"
                         app:srcCompat="@drawable/baseline_star_border_black_18" />
                 </RelativeLayout>
@@ -111,6 +111,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
                     android:text="header_L"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_size_medium" />
 
                 <TextView
@@ -119,6 +120,7 @@
                     android:layout_height="@dimen/text_size_xlarge"
                     android:layout_weight="1"
                     android:text="header_R"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_size_medium" />
             </LinearLayout>
 
@@ -131,7 +133,7 @@
                 android:gravity="end"
                 android:text="context"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorVLightGray"
                 android:textSize="@dimen/text_size_medium" />
 
             <LinearLayout

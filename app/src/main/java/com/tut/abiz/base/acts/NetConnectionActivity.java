@@ -89,7 +89,7 @@ public class NetConnectionActivity extends AppCompatActivity implements NetServi
     }
 
     @Override
-    public void onGroupListReady(ArrayList<Group> groups) {
+    public void onGroupListReady(ArrayList<Group> groups, ArrayList<Integer> registered, ArrayList<Integer> ordered) {
 
     }
 

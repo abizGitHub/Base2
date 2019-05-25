@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.tut.abiz.base.ActsInMenuAct;
@@ -100,7 +101,8 @@ public class SchedulService extends Service {
                 intent.getExtras().clear();
             intent.putExtra(RESULT, i++);
             startService(intent);
-            handler.postDelayed(periodicUpdate, pref.getInt(Confiq.CONNECTPERIOD, 4700));
+            //Log.e("alive services:", " ======== " + PostListService.alive);
+            handler.postDelayed(periodicUpdate, pref.getInt(Confiq.CONNECTPERIOD, Consts.DEFAULTCONPERIOD));
         }
     };
 

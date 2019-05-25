@@ -70,6 +70,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_weight="1"
                 android:gravity="end"
+                android:layout_marginLeft="@dimen/text_size_small"
                 android:background="@color/colorYellow"
                 android:layoutDirection="rtl"
                 android:textAlignment="textEnd" />
@@ -92,40 +93,10 @@
                 android:textAlignment="textStart">
 
                 <RadioButton
-                    android:id="@+id/radio6"
+                    android:id="@+id/radio1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_size_xlarge"
-                    android:button="@null"
-                    android:drawableRight="@android:drawable/btn_radio"
-                    android:text=""
-                    android:visibility="invisible" />
-
-                <RadioButton
-                    android:id="@+id/radio5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_size_xlarge"
-                    android:button="@null"
-                    android:drawableRight="@android:drawable/btn_radio"
-                    android:text=""
-                    android:visibility="invisible" />
-
-                <RadioButton
-                    android:id="@+id/radio4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_size_xlarge"
-                    android:button="@null"
-                    android:drawableRight="@android:drawable/btn_radio"
-                    android:text=""
-                    android:visibility="invisible" />
-
-                <RadioButton
-                    android:id="@+id/radio3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
@@ -135,17 +106,47 @@
                     android:id="@+id/radio2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
                     android:visibility="invisible" />
 
                 <RadioButton
-                    android:id="@+id/radio1"
+                    android:id="@+id/radio3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/text_size_xlarge"
+                    android:layout_marginLeft="@dimen/text_size_large"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_size_large"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_size_large"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:text=""
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:id="@+id/radio6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""

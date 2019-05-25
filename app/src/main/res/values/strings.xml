@@ -48,6 +48,7 @@
     <string name="firstRunWelcome">خوش آمدید ، برای فعال سازی به منوی حساب کاربری بروید</string>
     <string name="invalidChars">از حروف انگلیسی یا فارسی و یا از اعداد استفاده کنید</string>
     <string name="connectingToNet">در حال اتصال ...</string>
+    <string name="accountSuccessRevived">حساب کاربری با موفقیت بازیابی شد</string>
 
 
     <string-array name="titles">

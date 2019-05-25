@@ -18,6 +18,7 @@ import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,7 +51,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + USERACCOUNT + " (USERNAME TEXT,PASSWORD TEXT,EMAIL TEXT,PHONE TEXT)");
+        db.execSQL("CREATE TABLE " + USERACCOUNT + " (ID INTEGER,USERNAME TEXT,PASSWORD TEXT,EMAIL TEXT,PHONE TEXT)");
         db.execSQL("CREATE TABLE " + PAGESTITLE + " (TABLE_ID INTEGER PRIMARY KEY,NAME TEXT)");
         db.execSQL("CREATE TABLE " + GROUP + " (ID INTEGER,TABLE_ID INTEGER,NAME TEXT,STATUS INTEGER)");
         db.execSQL("CREATE TABLE " + MODELMAP +
@@ -106,7 +107,9 @@ public class DbHelper extends SQLiteOpenHelper {
         result += db.insert(PAGESTITLE, null, values);
         values = new ContentValues();
         values.put(Confiq.USERID, Consts.NEWUSERID);
-        values.put(Confiq.USERNAME, Consts.NEWUSERNAME);
+        long randSerial1 = 7 * ((long) new Random().nextInt(99999));
+        long randSerial2 = 13 * ((long) new Random().nextInt(9999));
+        values.put(Confiq.USERNAME, Consts.NEWUSERNAME + "-" + randSerial1 + "-" + randSerial2);
         values.put(Confiq.HASUSERPERMISSION, 0);
         result += db.insert(USERCONFIQ, null, values);
         db.close();
@@ -242,6 +245,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public ArrayList<GeneralModel> getAllGeneralFrom(int ix) {
         HashMap<Integer, HashMap<Integer, String>> modelMapHash = getColumnHash(ix);
+        TagVisiblity tag = getTagVisiblity(ix);
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<GeneralModel> generalModels = new ArrayList<GeneralModel>();
         Cursor res = db.rawQuery("SELECT * FROM " + GENERALTABLEPREFIX + ix, null);
@@ -257,7 +261,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 generalModel.setFooterR(res.getString(GeneralModel.FOOTER_R));
                 generalModel.setFooterL(res.getString(GeneralModel.FOOTER_L));
                 generalModel.setStared(res.getInt(GeneralModel.STAR) == 1);
-                generalModel.applyModelMap(modelMapHash);
+                generalModel.applyModelMap(modelMapHash, tag);
                 generalModels.add(generalModel);
             }
         db.close();
@@ -265,6 +269,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<GeneralModel> getAllStaredGeneralFrom(int ix) {
+        TagVisiblity tag = getTagVisiblity(ix);
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<GeneralModel> generalModels = new ArrayList<GeneralModel>();
         Cursor res = db.rawQuery("SELECT * FROM " + GENERALTABLEPREFIX + ix + " WHERE STARED ='1'", null);
@@ -280,7 +285,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 generalModel.setFooterR(res.getString(GeneralModel.FOOTER_R));
                 generalModel.setFooterL(res.getString(GeneralModel.FOOTER_L));
                 generalModel.setStared(res.getInt(GeneralModel.STAR) == 1);
-                generalModel.applyModelMap(getColumnHash(ix));
+                generalModel.applyModelMap(getColumnHash(ix), tag);
                 generalModels.add(generalModel);
             }
         db.close();
@@ -344,7 +349,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         ArrayList<TagVisiblity> visiblityList = new ArrayList<>();
         for (int i = 0; i < lastIds.size(); i++) {
-            visiblityList.addAll(getTagVisiblity(i + 1));
+            visiblityList.add(getTagVisiblity(i + 1));
         }
         confiq.setTagVisiblity(visiblityList);
         return confiq;
@@ -373,14 +378,13 @@ public class DbHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public ArrayList<TagVisiblity> getTagVisiblity(int tableId) {
-        ArrayList<TagVisiblity> list = new ArrayList<>();
+    public TagVisiblity getTagVisiblity(int tableId) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TAGVISIBLITY + " WHERE TABLE_ID=" + tableId;
         Cursor res = db.rawQuery(query, null);
+        TagVisiblity visiblity = new TagVisiblity(tableId);
         if (res != null && res.getCount() > 0)
             while (res.moveToNext()) {
-                TagVisiblity visiblity = new TagVisiblity(tableId);
                 //visiblity.setTableId(tableId);
                 visiblity.setTitleVisible(res.getInt(GeneralModel.TITLE) == 1);
                 visiblity.setHeaderRVisible(res.getInt(GeneralModel.HEADER_R) == 1);
@@ -390,16 +394,15 @@ public class DbHelper extends SQLiteOpenHelper {
                 visiblity.setFooterRVisible(res.getInt(GeneralModel.FOOTER_R) == 1);
                 visiblity.setStarVisible(res.getInt(GeneralModel.STAR) == 1);
 
-                visiblity.setTitleString(res.getInt(GeneralModel.TITLE + 7) == 1);
-                visiblity.setHeaderRString(res.getInt(GeneralModel.HEADER_R + 7) == 1);
-                visiblity.setHeaderLString(res.getInt(GeneralModel.HEADER_L + 7) == 1);
-                visiblity.setBodyString(res.getInt(GeneralModel.BODY + 7) == 1);
-                visiblity.setFooterRString(res.getInt(GeneralModel.FOOTER_R + 7) == 1);
-                visiblity.setFooterLString(res.getInt(GeneralModel.FOOTER_L + 7) == 1);
-                list.add(visiblity);
+                visiblity.setTitleString(res.getInt(GeneralModel.TITLE + 7));
+                visiblity.setHeaderRString(res.getInt(GeneralModel.HEADER_R + 7));
+                visiblity.setHeaderLString(res.getInt(GeneralModel.HEADER_L + 7));
+                visiblity.setBodyString(res.getInt(GeneralModel.BODY + 7));
+                visiblity.setFooterRString(res.getInt(GeneralModel.FOOTER_R + 7));
+                visiblity.setFooterLString(res.getInt(GeneralModel.FOOTER_L + 7));
             }
         db.close();
-        return list;
+        return visiblity;
     }
 
     public boolean insertTagVisiblitys(ArrayList<TagVisiblity> tagVisiblity) {
@@ -409,17 +412,17 @@ public class DbHelper extends SQLiteOpenHelper {
         for (TagVisiblity vis : tagVisiblity) {
             values.put("TABLE_ID", vis.getTableId());
             values.put("V" + GeneralModel.STAR, vis.isStarVisible() ? 1 : 0);
-            values.put("S" + GeneralModel.TITLE, vis.isTitleString() ? 1 : 0);
+            values.put("S" + GeneralModel.TITLE, vis.getTitleString());
             values.put("V" + GeneralModel.TITLE, vis.isTitleVisible() ? 1 : 0);
-            values.put("S" + GeneralModel.BODY, vis.isBodyString() ? 1 : 0);
+            values.put("S" + GeneralModel.BODY, vis.getBodyString());
             values.put("V" + GeneralModel.BODY, vis.isBodyVisible() ? 1 : 0);
-            values.put("S" + GeneralModel.HEADER_R, vis.isHeaderRString() ? 1 : 0);
+            values.put("S" + GeneralModel.HEADER_R, vis.getHeaderRString());
             values.put("V" + GeneralModel.HEADER_R, vis.isHeaderRVisible() ? 1 : 0);
-            values.put("S" + GeneralModel.HEADER_L, vis.isHeaderLString() ? 1 : 0);
+            values.put("S" + GeneralModel.HEADER_L, vis.getHeaderLString());
             values.put("V" + GeneralModel.HEADER_L, vis.isHeaderLVisible() ? 1 : 0);
-            values.put("S" + GeneralModel.FOOTER_R, vis.isFooterRString() ? 1 : 0);
+            values.put("S" + GeneralModel.FOOTER_R, vis.getFooterRString());
             values.put("V" + GeneralModel.FOOTER_R, vis.isFooterRVisible() ? 1 : 0);
-            values.put("S" + GeneralModel.FOOTER_L, vis.isFooterLString() ? 1 : 0);
+            values.put("S" + GeneralModel.FOOTER_L, vis.getFooterLString());
             values.put("V" + GeneralModel.FOOTER_L, vis.isFooterLVisible() ? 1 : 0);
             result = db.insert(TAGVISIBLITY, null, values);
             values.clear();
@@ -441,8 +444,13 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void setUserNameId(Long userId, String userName, Boolean hasUserPermision) {
-
+    public void updateUserId(Long userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Confiq.USERID, userId);
+        values.put("USERID", userId);
+        db.update(USERCONFIQ, values, null, null);
+        db.close();
     }
 
     public void updateTagVisiblity(ArrayList<TagVisiblity> tagVisiblity) {
@@ -471,44 +479,45 @@ public class DbHelper extends SQLiteOpenHelper {
     public ArrayList<GeneralModel> getAllGeneralFrom(int ix, String inWord, TagVisiblity vis) {
         HashMap<Integer, HashMap<Integer, String>> modelMapHash = getColumnHash(ix);
         ArrayList<GeneralModel> generalModels = new ArrayList<GeneralModel>();
+        TagVisiblity tag = getTagVisiblity(ix);
         String query = "SELECT * FROM " + GENERALTABLEPREFIX + ix + " WHERE 0 = 1 ";
         //TITLE TEXT,HEADER_R TEXT,HEADER_L TEXT,BODY TEXT,FOOTER_R TEXT,FOOTER_L TEXT
         ArrayList<Integer> modelMapIntVal;
         Utils utils = Utils.o().startQuery();
-        if (vis.isTitleString())
+        if (vis.getTitleString() == 0)
             query += " OR " + GeneralModel.TITLE$ + " LIKE '%" + inWord + "%'";
         else {
-            modelMapIntVal = getModelMapColumnIx(ix, GeneralModel.TITLE, inWord);
+            modelMapIntVal = getModelMapColumnIx(ix, vis.getTitleString(), inWord);
             utils.addQuery(GeneralModel.TITLE$, modelMapIntVal);
         }
-        if (vis.isHeaderLString())
+        if (vis.getHeaderLString() == 0)
             query += " OR " + GeneralModel.HEADERL$ + " LIKE '%" + inWord + "%'";
         else {
-            modelMapIntVal = getModelMapColumnIx(ix, GeneralModel.HEADER_L, inWord);
+            modelMapIntVal = getModelMapColumnIx(ix, vis.getHeaderLString(), inWord);
             utils.addQuery(GeneralModel.HEADERL$, modelMapIntVal);
         }
-        if (vis.isHeaderRString())
+        if (vis.getHeaderRString() == 0)
             query += " OR " + GeneralModel.HEADERR$ + " LIKE '%" + inWord + "%'";
         else {
-            modelMapIntVal = getModelMapColumnIx(ix, GeneralModel.HEADER_R, inWord);
+            modelMapIntVal = getModelMapColumnIx(ix, vis.getHeaderRString(), inWord);
             utils.addQuery(GeneralModel.HEADERR$, modelMapIntVal);
         }
-        if (vis.isBodyString())
+        if (vis.getBodyString() == 0)
             query += " OR " + GeneralModel.BODY$ + " LIKE '%" + inWord + "%'";
         else {
-            modelMapIntVal = getModelMapColumnIx(ix, GeneralModel.BODY, inWord);
+            modelMapIntVal = getModelMapColumnIx(ix, vis.getBodyString(), inWord);
             utils.addQuery(GeneralModel.BODY$, modelMapIntVal);
         }
-        if (vis.isFooterLString())
+        if (vis.getFooterLString() == 0)
             query += " OR " + GeneralModel.FOOTERL$ + " LIKE '%" + inWord + "%'";
         else {
-            modelMapIntVal = getModelMapColumnIx(ix, GeneralModel.FOOTER_L, inWord);
+            modelMapIntVal = getModelMapColumnIx(ix, vis.getFooterLString(), inWord);
             utils.addQuery(GeneralModel.FOOTERL$, modelMapIntVal);
         }
-        if (vis.isFooterRString())
+        if (vis.getFooterRString() == 0)
             query += " OR " + GeneralModel.FOOTERR$ + " LIKE '%" + inWord + "%'";
         else {
-            modelMapIntVal = getModelMapColumnIx(ix, GeneralModel.FOOTER_R, inWord);
+            modelMapIntVal = getModelMapColumnIx(ix, vis.getFooterRString(), inWord);
             utils.addQuery(GeneralModel.FOOTERR$, modelMapIntVal);
         }
         if (utils.getQuery().contains("IN"))
@@ -527,7 +536,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 generalModel.setFooterR(res.getString(GeneralModel.FOOTER_R));
                 generalModel.setFooterL(res.getString(GeneralModel.FOOTER_L));
                 generalModel.setStared(res.getInt(GeneralModel.STAR) == 1);
-                generalModel.applyModelMap(modelMapHash);
+                generalModel.applyModelMap(modelMapHash, tag);
                 generalModels.add(generalModel);
             }
         db.close();
@@ -547,8 +556,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean updateGroups(ArrayList<Group> grs) {
-        clearTable(GROUP);
+    public boolean updateGroups(ArrayList<Group> grs, int tableIx) {
+        clearTable(GROUP, "WHERE TABLE_ID=" + tableIx);
         SQLiteDatabase db = this.getWritableDatabase();
         long result = -1;
         ContentValues values = new ContentValues();
@@ -564,11 +573,16 @@ public class DbHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    private void clearTable(String tableName, String where) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE  FROM " + tableName + " " + where);
+        db.close();
+    }
+
     public boolean changeStateOfGroup(Integer id, int state, int tableIx) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Consts.STATUS, state);
-        values.put("TABLE_ID", state);
         long result = db.update(GROUP, values, "ID=? AND TABLE_ID=?", new String[]{id.toString(), String.valueOf(tableIx)});
         db.close();
         return result != -1;
@@ -610,11 +624,13 @@ public class DbHelper extends SQLiteOpenHelper {
         UserAccount userAccount = new UserAccount();
         Cursor cursor = db.rawQuery("SELECT * FROM " + USERACCOUNT, null);
         if (cursor != null && cursor.moveToNext()) {
-            userAccount.setUserName(cursor.getString(0));
-            userAccount.setPassword(cursor.getString(1));
-            userAccount.setEmail(cursor.getString(2));
-            userAccount.setPhone(cursor.getString(3));
+            userAccount.setId(cursor.getLong(0));
+            userAccount.setUserName(cursor.getString(1));
+            userAccount.setPassword(cursor.getString(2));
+            userAccount.setEmail(cursor.getString(3));
+            userAccount.setPhone(cursor.getString(4));
         } else {
+            userAccount.setId(-1);
             userAccount.setUserName("");
             userAccount.setPassword("");
             userAccount.setEmail("");
@@ -628,6 +644,7 @@ public class DbHelper extends SQLiteOpenHelper {
         clearTable(USERACCOUNT);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("ID", id);
         values.put("USERNAME", userAccount.getUserName());
         values.put("PASSWORD", userAccount.getPassword());
         values.put("EMAIL", userAccount.getEmail());
@@ -644,6 +661,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void updateUserAccount(UserAccount userAccount) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("ID", userAccount.getId());
         values.put("PASSWORD", userAccount.getPassword());
         values.put("EMAIL", userAccount.getEmail());
         values.put("PHONE", userAccount.getPhone());

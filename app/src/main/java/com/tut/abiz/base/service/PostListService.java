@@ -18,7 +18,11 @@ import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.model.UserAccount;
 import com.tut.abiz.base.util.Utils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by abiz on 5/8/2019.
@@ -26,7 +30,7 @@ import java.util.ArrayList;
 
 public class PostListService extends IntentService implements NetServiceListener {
 
-    static int created = 0, dead = 0;
+    static int alive = 0;
     public static final String NOTIFICATION = "PostListService";
     public static final String UPDATEDCOUNT = "updated_Count";
     public static final String RESULT = "result";
@@ -45,8 +49,8 @@ public class PostListService extends IntentService implements NetServiceListener
 
 
     public PostListService() {
-        super("-haha-");
-        created++;
+        super("-PostListService-");
+        alive++;
         dbHelper = new DbHelper(this);
     }
 
@@ -66,7 +70,7 @@ public class PostListService extends IntentService implements NetServiceListener
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        wait4Server = pref.getInt(Confiq.WAIT4SERVER, 20);
+        wait4Server = pref.getInt(Confiq.WAIT4SERVER, Consts.DEFAULTWAIT4SERVER);
         Confiq confiqLocal = dbHelper.getConfiq();
         if (pref.getBoolean(Consts.SENDDETAICONFIG, true))
             confiqRemote = doPostConfig(Consts.SERVERADDRESS + Consts.ADDRESSCONFIQ, confiqLocal);
@@ -86,18 +90,26 @@ public class PostListService extends IntentService implements NetServiceListener
         int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
         if (confiqRemote != null)
             for (int j = 1; j < tableCount + 1; j++) {
-                ArrayList<Integer> orderedGroups = dbHelper.getGroupsByStatus(j, Group.ORDERED);
                 boolean newGroup = false;
                 if (confiqRemote.getLastGroupIds() != null && confiqRemote.getLastGroupIds().size() > 1) {
                     newGroup = confiqRemote.getLastGroupIds().get(j - 1) > confiqLocal.getLastGroupIds().get(j - 1);
                 }
-                if (newGroup || orderedGroups.size() > 0 || (confiqRemote.getUpdateGroup() != null && confiqRemote.getUpdateGroup())) {
-                    ArrayList<Integer> registeredGroups = dbHelper.getGroupsByStatus(j, Group.REGISTERED);
-                    ArrayList<Group> groups = doPostGroups(orderedGroups, registeredGroups, j);
+                if (newGroup || isGroupMenuOpened() || (confiqRemote.getUpdateGroup() != null && confiqRemote.getUpdateGroup())) {
+                    ArrayList<Integer> orderedGroups = dbHelper.getGroupsByStatus(j, Group.ORDERED);
+                    //ArrayList<Integer> registeredGroups = dbHelper.getGroupsByStatus(j, Group.REGISTERED);
+                    if (confiqLocal.getUserId() != Consts.NEWUSERID) {
+                        if (orderedGroups.size() > 0)
+                            doOrderGroup(orderedGroups, confiqLocal, j);
+                        else
+                            doDeleteOrder(j, confiqLocal);
+                    }
+                    ArrayList<Group> groups = doPostGroups(j, confiqLocal);
                     if (groups != null && groups.size() > 0)
-                        dbHelper.updateGroups(groups);
+                        dbHelper.updateGroups(groups, j);
                 }
             }
+        if (isGroupMenuOpened())
+            setGroupMenuClosed();
         if (pref.getBoolean(Consts.USERACCOUNTEDITED, true)) {
             Integer response = doPostUserAccount(dbHelper.getUserAccount());
             if (response != null && response == Consts.USERREGISTERED)
@@ -115,6 +127,54 @@ public class PostListService extends IntentService implements NetServiceListener
 
     }
 
+    private void doDeleteOrder(int j, Confiq confiq) {
+        PostListTask postListTask = new PostListTask(this);
+        JSONObject json = JsonUtil.parseConfiq(confiq);
+        try {
+            json.put(Consts.TABLEID, j);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSDELORDERGROUP, json);
+        postListTask.execute(PostListTask.DELORDERGROUP);
+    }
+
+    private void doOrderGroup(ArrayList<Integer> orderedGroups, Confiq confiq, int j) {
+        PostListTask postListTask = new PostListTask(this);
+        JSONObject json = JsonUtil.parseGroups(orderedGroups, Group.ORDERED$, JsonUtil.parseConfiq(confiq));
+        try {
+            json.put(Consts.TABLEID, j);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSORDERGROUP, json);
+        postListTask.execute(PostListTask.ORDERGROUP);
+        wait4List = true;
+        waitCount = 0;
+        forceStop = false;
+        while (wait4List) {
+            try {
+                waitCount++;
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Log.e(">>??", e.getMessage());
+                e.printStackTrace();
+            }
+            if (waitCount > (wait4Server / 100)) {
+                wait4List = false;
+                forceStop = true;
+            }
+        }
+    }
+
+    private void setGroupMenuClosed() {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUGROUPOPENED, false).apply();
+    }
+
+    private boolean isGroupMenuOpened() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getBoolean(Consts.MENUGROUPOPENED, false);
+    }
+
     private Integer doPostUserAccount(UserAccount userAccount) {
         PostListTask postListTask = new PostListTask(this);
         postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSUPDATEUSER, JsonUtil.parseUserAccount(userAccount));
@@ -130,7 +190,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 Log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
-            if (waitCount > wait4Server) {
+            if (waitCount > (wait4Server / 100)) {
                 wait4List = false;
                 forceStop = true;
             }
@@ -138,9 +198,9 @@ public class PostListService extends IntentService implements NetServiceListener
         return updateAccount;
     }
 
-    private ArrayList<Group> doPostGroups(ArrayList<Integer> orderedGroups, ArrayList<Integer> registeredGroups, int tableId) {
+    private ArrayList<Group> doPostGroups(int tableId, Confiq confiq) {
         PostListTask postListTask = new PostListTask(this);
-        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSGROUP + "/" + tableId, JsonUtil.parseGroups(orderedGroups, registeredGroups));
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSGROUP + "/" + tableId, JsonUtil.parseConfiq(confiq));
         postListTask.execute(PostListTask.GETGROUP);
         wait4List = true;
         waitCount = 0;
@@ -153,7 +213,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 Log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
-            if (waitCount > wait4Server) {
+            if (waitCount > (wait4Server / 100)) {
                 wait4List = false;
                 forceStop = true;
             }
@@ -166,19 +226,20 @@ public class PostListService extends IntentService implements NetServiceListener
         ArrayList<Integer> updateCount = new ArrayList<>();
         int tableCount = pref.getInt(Consts.TABLECOUNT, 2);
         ArrayList<Long> lastIds = confiqLocal.getLastIds();
-        for (int ix = 1; ix < tableCount + 1; ix++) {
-            Log.e("ix:" + ix + ">remote lastID:", confiqRemote.getLastIds().get(ix - 1) +
-                    " , local lastID:" + confiqLocal.getLastIds().get(ix - 1));
-            if (confiqRemote != null && confiqRemote.getLastIds().get(ix - 1) > confiqLocal.getLastIds().get(ix - 1)) {
-                ArrayList<GeneralModel> generalModels = doPostList(Consts.SERVERADDRESS + "/gm/" + ix + "/" + lastIds.get(ix - 1), confiqLocal);
-                if (generalModels != null) {
-                    dbHelper.insertGMs(generalModels, ix);
-                    updateCount.add(generalModels.size());
+        if (confiqRemote.getLastIds() != null)
+            for (int ix = 1; ix < tableCount + 1; ix++) {
+                Log.e("ix:" + ix + ">remote lastID:", confiqRemote.getLastIds().get(ix - 1) +
+                        " , local lastID:" + confiqLocal.getLastIds().get(ix - 1));
+                if (confiqRemote != null && confiqRemote.getLastIds().get(ix - 1) > confiqLocal.getLastIds().get(ix - 1)) {
+                    ArrayList<GeneralModel> generalModels = doPostList(Consts.SERVERADDRESS + "/gm/" + ix + "/" + lastIds.get(ix - 1), confiqLocal);
+                    if (generalModels != null) {
+                        dbHelper.insertGMs(generalModels, ix);
+                        updateCount.add(generalModels.size());
+                    } else
+                        updateCount.add(0);
                 } else
                     updateCount.add(0);
-            } else
-                updateCount.add(0);
-        }
+            }
         return updateCount;
     }
 
@@ -196,7 +257,7 @@ public class PostListService extends IntentService implements NetServiceListener
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (waitCount > wait4Server) {
+            if (waitCount > (wait4Server / 100)) {
                 wait4List = false;
                 forceStop = true;
             }
@@ -219,7 +280,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 Log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
-            if (waitCount > wait4Server) {
+            if (waitCount > (wait4Server / 100)) {
                 forceStop = true;
                 wait4List = false;
             }
@@ -236,12 +297,13 @@ public class PostListService extends IntentService implements NetServiceListener
 
     @Override
     public void onDestroy() {
-        dead++;
+        alive--;
         super.onDestroy();
     }
 
     private void applyNewUserSetting(Confiq confiqLocal, Confiq confiqRemote) {
-
+        if (confiqLocal.getUserId() == Consts.NEWUSERID && confiqRemote.getUserId() != null && confiqRemote.getUserId() != Consts.NEWUSERID)
+            dbHelper.updateUserId(confiqRemote.getUserId());
         if (confiqRemote.getHaveNewChange() != null && confiqRemote.getHaveNewChange()) {
             if (confiqRemote.getLastTablesName() != null && confiqRemote.getLastTablesName().size() > 0) {
                 boolean shouldRename = confiqLocal.getLastTablesName().size() != confiqRemote.getLastTablesName().size();
@@ -342,7 +404,32 @@ public class PostListService extends IntentService implements NetServiceListener
     }
 
     @Override
-    public void onGroupListReady(ArrayList<Group> groups) {
+    public void onGroupListReady(ArrayList<Group> groups, ArrayList<Integer> registered, ArrayList<Integer> ordered) {
+        HashMap<Integer, Group> map = null;
+        if (registered != null && registered.size() > 0) {
+            map = new HashMap<>();
+            for (Group group : groups) {
+                map.put(group.getId(), group);
+            }
+            for (Integer r : registered) {
+                Group group = map.get(r);
+                if (group != null)
+                    group.setStatus(Group.REGISTERED);
+            }
+        }
+        if (ordered != null && ordered.size() > 0) {
+            if (map == null) {
+                map = new HashMap<>();
+                for (Group group : groups) {
+                    map.put(group.getId(), group);
+                }
+            }
+            for (Integer or : ordered) {
+                Group group = map.get(or);
+                if (group != null)
+                    group.setStatus(Group.ORDERED);
+            }
+        }
         this.groups = groups;
         wait4List = false;
     }

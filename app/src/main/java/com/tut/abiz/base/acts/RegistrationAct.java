@@ -69,8 +69,12 @@ public class RegistrationAct extends BaseActivity {
         progressDialog.setMessage("Please Wait....");
         progressDialog.setCanceledOnTouchOutside(false);
         userAccount = getDbHelper().getUserAccount();
+        if (userAccount.getId() < 1) {
+            Long userId = getDbHelper().getBriefConfiq().getUserId();
+            userAccount.setId(userId);
+        }
         boolean permitted = getDbHelper().hasUserPermission();
-        userAlreadyRegistered = (userAccount.getUserName() != null && userAccount.getUserName().length() > 3);
+        userAlreadyRegistered = isUserAccountRegistered();
         setUserTextActivated(permitted);
         setUserTextRegistered(userAlreadyRegistered);
         fillForm();
@@ -154,7 +158,10 @@ public class RegistrationAct extends BaseActivity {
         int[] status = doRegisterInNet(userAccount);
 
         if (status[0] == Consts.USERREGISTERED) {
+            userAccount.setId(status[1]);
             getDbHelper().insertUserAccount(userAccount, status[1]);
+            setUserAccountRegitered(true);
+            setGroupMenuOpened(true);
             userAlreadyRegistered = true;
             setUserAccountEdited(true);
             message = getResources().getString(R.string.accountSuccessReg);
@@ -164,6 +171,16 @@ public class RegistrationAct extends BaseActivity {
         }
         if (status[0] == Consts.CANTREGISTERE) {
             message = getResources().getString(R.string.canNotRegister);
+        }
+        if (status[0] == Consts.USERNAMEREVIVED) {
+            userAccount.setId(status[1]);
+            getDbHelper().insertUserAccount(userAccount, status[1]);
+            getDbHelper().updateUserId((long) status[1]);
+            setUserAccountRegitered(true);
+            setGroupMenuOpened(true);
+            userAlreadyRegistered = true;
+            setUserAccountEdited(true);
+            message = getResources().getString(R.string.accountSuccessRevived);
         }
         return new String[]{status[0] + "", message};
     }
@@ -270,7 +287,8 @@ public class RegistrationAct extends BaseActivity {
                     protected void onPostExecute(String s) {
                         dismisProgressDial();
                         showMessageDialog(s);
-                        if (registered == Consts.USERREGISTERED) {
+                        if (registered == Consts.USERREGISTERED || registered == Consts.USERNAMEREVIVED) {
+                            RegistrationAct.this.setGroupMenuOpened(true);
                             setUserTextActivated(true);
                             setUserTextRegistered(true);
                         }

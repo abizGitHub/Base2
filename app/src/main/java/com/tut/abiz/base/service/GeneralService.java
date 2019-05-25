@@ -120,9 +120,9 @@ public class GeneralService {
         model.setBody(confiq.toString());
         list.add(model);
 
-        ArrayList<TagVisiblity> tagVisiblity = dbHelper.getTagVisiblity(1);
-        tagVisiblity.addAll(dbHelper.getTagVisiblity(2));
-        tagVisiblity.addAll(dbHelper.getTagVisiblity(3));
+        ArrayList<TagVisiblity> tagVisiblity = new ArrayList<>();
+        tagVisiblity.add(dbHelper.getTagVisiblity(1));
+        tagVisiblity.add(dbHelper.getTagVisiblity(2));
         for (TagVisiblity vis : tagVisiblity) {
             model = new GeneralModel();
             model.setTitle("tagVis-" + vis.getTableId());
@@ -130,11 +130,21 @@ public class GeneralService {
             list.add(model);
         }
 
+        GeneralModel mdl = new GeneralModel();
+        mdl.setTitle("connectPeriod and wait for server");
+        StringBuffer buffer = new StringBuffer("connectPeriod : ");
+        buffer.append(pref.getInt(Confiq.CONNECTPERIOD, Consts.DEFAULTCONPERIOD));
+        buffer.append("\n wait for server : ");
+        buffer.append(pref.getInt(Confiq.WAIT4SERVER, Consts.DEFAULTWAIT4SERVER));
+        mdl.setBody(buffer.toString());
+        list.add(mdl);
+
         ArrayList<Group> groups = dbHelper.getAllGroups(1);
         groups.addAll(dbHelper.getAllGroups(2));
         groups.addAll(dbHelper.getAllGroups(3));
+        groups.addAll(dbHelper.getAllGroups(4));
         for (Group group : groups) {
-            GeneralModel mdl = new GeneralModel();
+            mdl = new GeneralModel();
             mdl.setTitle("group-" + group.getTableId());
             mdl.setBody(group.getId() + "-" + group.getName() + "-status:" + group.getStatus());
             list.add(mdl);
@@ -143,8 +153,9 @@ public class GeneralService {
         ArrayList<ModelMap> modelMap = dbHelper.getModelMap(1);
         modelMap.addAll(dbHelper.getModelMap(2));
         modelMap.addAll(dbHelper.getModelMap(3));
+        modelMap.addAll(dbHelper.getModelMap(4));
         for (ModelMap map : modelMap) {
-            GeneralModel mdl = new GeneralModel();
+            mdl = new GeneralModel();
             mdl.setTitle("modelMap-id:" + map.getId());
             mdl.setBody(map.toString());
             list.add(mdl);

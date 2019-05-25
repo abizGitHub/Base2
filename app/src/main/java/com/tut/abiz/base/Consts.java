@@ -24,7 +24,7 @@ public class Consts {
     public static final int MONAQ = 1;
     public static final int MOZAY = 2;
 
-    public static final int NEWUSERID = 1;
+    public static final int NEWUSERID = -666;
     public static final String NEWUSERNAME = "newUser";
     public static final String SERVERADDRESS = "http://10.0.2.2:8085/rest";
 
@@ -53,14 +53,21 @@ public class Consts {
     public static final String EMAIL = "EMAIL";
     public static final String USERACCOUNTEDITED = "USERACCOUNTEDITED";
     public static final String TABLEID = "TABLE_ID";
+    public static final int DEFAULTCONPERIOD = 4000;// ms
+    public static final int DEFAULTWAIT4SERVER = 4000;// ms
+    public static final String MENUGROUPOPENED = "groupMenuOpened";
+    public static final int USERNAMEREVIVED = 419087; // sabte mojadad
     public static int USERREGISTERED = 34209;
     public static int USERNAMERESERVED = 78615;
     public static int CANTREGISTERE = 10209;
+    public static String USERREGISTERED$ = "userAcntReged";
 
     public static final String ADDRESSCONFIQ = "/gm/getConfiq";
     public static final String ADDRESSREGUSER = "/userAccount/registerUser";
     public static final String ADDRESSUPDATEUSER = "/userAccount/updateUser";
     public static final String ADDRESSGROUP = "/userAccount/groups";
+    public static final String ADDRESSORDERGROUP = "/userAccount/orderGroup";
+    public static final String ADDRESSDELORDERGROUP = "/userAccount/deleteOrderGroup";
 
     public static final String SENDDETAICONFIG = "sendDetailConfiq";
 

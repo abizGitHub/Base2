@@ -120,26 +120,26 @@ public class GeneralModel implements Serializable {
         this.footerR = footerR;
     }
 
-    public void applyModelMap(HashMap<Integer, HashMap<Integer, String>> columnHash) {
+    public void applyModelMap(HashMap<Integer, HashMap<Integer, String>> columnHash, TagVisiblity tag) {
         if (columnHash.isEmpty())
             return;
         try {
-            HashMap<Integer, String> intValueHash = columnHash.get(TITLE);
+            HashMap<Integer, String> intValueHash = columnHash.get(tag.getTitleString());
             if (intValueHash != null && !intValueHash.isEmpty() && this.getTitle() != null)
                 this.setTitle(intValueHash.get(Integer.parseInt(this.getTitle())));
-            intValueHash = columnHash.get(HEADER_R);
+            intValueHash = columnHash.get(tag.getHeaderRString());
             if (intValueHash != null && !intValueHash.isEmpty() && this.getHeaderR() != null)
                 this.setHeaderR(intValueHash.get(Integer.parseInt(this.getHeaderR())));
-            intValueHash = columnHash.get(HEADER_L);
+            intValueHash = columnHash.get(tag.getHeaderLString());
             if (intValueHash != null && !intValueHash.isEmpty() && this.getHeaderL() != null)
                 this.setHeaderL(intValueHash.get(Integer.parseInt(this.getHeaderL())));
-            intValueHash = columnHash.get(BODY);
+            intValueHash = columnHash.get(tag.getBodyString());
             if (intValueHash != null && !intValueHash.isEmpty() && this.getBody() != null)
                 this.setBody(intValueHash.get(Integer.parseInt(this.getBody())));
-            intValueHash = columnHash.get(FOOTER_R);
+            intValueHash = columnHash.get(tag.getFooterRString());
             if (intValueHash != null && !intValueHash.isEmpty() && this.getFooterR() != null)
                 this.setFooterR(intValueHash.get(Integer.parseInt(this.getFooterR())));
-            intValueHash = columnHash.get(FOOTER_L);
+            intValueHash = columnHash.get(tag.getFooterLString());
             if (intValueHash != null && !intValueHash.isEmpty() && this.getFooterL() != null)
                 this.setFooterL(intValueHash.get(Integer.parseInt(this.getFooterL())));
         } catch (Exception e) {

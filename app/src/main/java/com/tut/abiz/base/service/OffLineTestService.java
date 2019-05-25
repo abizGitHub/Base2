@@ -30,6 +30,10 @@ public class OffLineTestService {
     static ArrayList<Long> lastIds;
     static HashMap<Integer, Group> groupsHash;
     static ArrayList<Integer> reqOrderGroup, reqRegisterGroup;
+    static int REPLACESER1 = 201;
+    static int REPLACESER2 = 13;
+    static int REPLACESER3 = 47;
+    static int REPLACESER4 = 95;
 
     static {
         generalModelHash = new HashMap<>();
@@ -54,7 +58,7 @@ public class OffLineTestService {
             for (int j = 0; j < 150; j++) {
                 ModelMap map = new ModelMap();
                 map.setId(j + 1 + 1000 * tableId);
-                map.setColumnIx(GeneralModel.HEADER_R);
+                map.setColumnIx(REPLACESER1);
                 map.setIntValue(j + 1);
                 map.setTableId(tableId);
                 map.setStringValue(tableId + GeneralModel.HEADERR$ + "-iv-" + j);
@@ -63,7 +67,7 @@ public class OffLineTestService {
             for (int j = 0; j < 150; j++) {
                 ModelMap map = new ModelMap();
                 map.setId(j + 10000 + 1000 * tableId);
-                map.setColumnIx(GeneralModel.HEADER_L);
+                map.setColumnIx(REPLACESER2);
                 map.setIntValue(j + 1);
                 map.setTableId(tableId);
                 map.setStringValue(tableId + GeneralModel.HEADERL$ + "-iv-" + j);
@@ -72,7 +76,7 @@ public class OffLineTestService {
             for (int j = 0; j < 102; j++) {
                 ModelMap map = new ModelMap();
                 map.setId(j + 50000 + 1000 * tableId);
-                map.setColumnIx(GeneralModel.FOOTER_L);
+                map.setColumnIx(REPLACESER3);
                 map.setIntValue(j + 1);
                 map.setTableId(tableId);
                 map.setStringValue(tableId + GeneralModel.FOOTERL$ + "-iv-" + j);
@@ -95,11 +99,6 @@ public class OffLineTestService {
     }
 
     public static JSONObject postData(String url, JSONObject sentJson) {
-        try {
-            Thread.sleep(5333);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (url.contains("Confiq")) {
             Confiq reqCnf = JsonUtil.extractConfiq(sentJson);
             return returnMockConfiq(reqCnf);
@@ -282,11 +281,11 @@ public class OffLineTestService {
         tv.setTitleVisible(true);
         tv.setFooterLVisible(true);
         tv.setHeaderRVisible(true);
-        tv.setTitleString(true);
-        tv.setBodyString(true);
-        tv.setHeaderRString(false);
-        tv.setHeaderLString(false);
-        tv.setFooterLString(false);
+        tv.setTitleString(0);
+        tv.setBodyString(0);
+        tv.setHeaderRString(REPLACESER2);
+        tv.setHeaderLString(REPLACESER3);
+        tv.setFooterLString(REPLACESER1);
         tv.doStarVisible(true);
         return tv;
     }

@@ -43,6 +43,7 @@ public class PagerActivity extends BaseActivity {
         tabs = (TabLayout) findViewById(R.id.tabLayout);
         pager = (ViewPager) findViewById(R.id.pager);
         tabs.setupWithViewPager(pager);
+        tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorLightGray));
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override

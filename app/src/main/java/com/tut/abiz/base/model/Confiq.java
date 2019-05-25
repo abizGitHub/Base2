@@ -1,6 +1,9 @@
 package com.tut.abiz.base.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by abiz on 4/17/2019.
@@ -96,6 +99,9 @@ public class Confiq {
     }
 
     public void setTagVisiblity(ArrayList<TagVisiblity> tagVisiblity) {
+        if (tagVisiblity != null && tagVisiblity.size() > 0 &&
+                tagVisiblity.get(0).getTableId() > tagVisiblity.get(1).getTableId())
+            Collections.reverse(tagVisiblity);
         this.tagVisiblity = tagVisiblity;
     }
 

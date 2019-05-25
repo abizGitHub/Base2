@@ -20,7 +20,7 @@ public interface NetServiceListener {
 
     public void onConfiqReady(Confiq confiq);
 
-    public void onGroupListReady(ArrayList<Group> groups);
+    public void onGroupListReady(ArrayList<Group> groups, ArrayList<Integer> registered, ArrayList<Integer> ordered);
 
     public void onUpdateAccountReady(int response);
 

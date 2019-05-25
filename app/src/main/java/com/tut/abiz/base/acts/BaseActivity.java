@@ -59,6 +59,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (getNavMenu() == R.id.nav_Group)
+                    getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUGROUPOPENED, true).apply();
                 finish();
             }
         });
@@ -170,6 +172,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setUserAccountEdited(boolean b) {
         getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.USERACCOUNTEDITED, b).apply();
+    }
+
+    public void setGroupMenuOpened(boolean b) {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUGROUPOPENED, b).apply();
+    }
+
+    public void setUserAccountRegitered(boolean b) {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.USERREGISTERED$, b).apply();
+    }
+
+    public boolean isUserAccountRegistered() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getBoolean(Consts.USERREGISTERED$, false);
     }
 
     public TagVisiblity getTagVisiblity(int tableIx) {

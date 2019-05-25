@@ -30,12 +30,12 @@ public class Utils {
         visiblity.setFooterRVisible(visiblityPref.getBoolean(GeneralModel.FOOTERR$ + ix, false));
         visiblity.setStarVisible(visiblityPref.getBoolean(GeneralModel.STAR$ + ix, false));
 
-        visiblity.setTitleString(isStringPref.getBoolean(GeneralModel.TITLE$ + ix, true));
-        visiblity.setBodyString(isStringPref.getBoolean(GeneralModel.BODY$ + ix, true));
-        visiblity.setHeaderRString(isStringPref.getBoolean(GeneralModel.HEADERR$ + ix, true));
-        visiblity.setHeaderLString(isStringPref.getBoolean(GeneralModel.HEADERL$ + ix, true));
-        visiblity.setFooterLString(isStringPref.getBoolean(GeneralModel.FOOTERL$ + ix, true));
-        visiblity.setFooterRString(isStringPref.getBoolean(GeneralModel.FOOTERR$ + ix, true));
+        visiblity.setTitleString(isStringPref.getInt(GeneralModel.TITLE$ + ix, 0));
+        visiblity.setBodyString(isStringPref.getInt(GeneralModel.BODY$ + ix, 0));
+        visiblity.setHeaderRString(isStringPref.getInt(GeneralModel.HEADERR$ + ix, 0));
+        visiblity.setHeaderLString(isStringPref.getInt(GeneralModel.HEADERL$ + ix, 0));
+        visiblity.setFooterLString(isStringPref.getInt(GeneralModel.FOOTERL$ + ix, 0));
+        visiblity.setFooterRString(isStringPref.getInt(GeneralModel.FOOTERR$ + ix, 0));
 
         return visiblity;
     }
@@ -49,12 +49,12 @@ public class Utils {
         visiblityPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLVisible()).apply();
         visiblityPref.edit().putBoolean(GeneralModel.STAR$ + tableIx, vis.isStarVisible()).apply();
 
-        isStringPref.edit().putBoolean(GeneralModel.TITLE$ + tableIx, vis.isTitleString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.BODY$ + tableIx, vis.isBodyString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.HEADERR$ + tableIx, vis.isHeaderRString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.HEADERL$ + tableIx, vis.isHeaderLString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.FOOTERR$ + tableIx, vis.isFooterRString()).apply();
-        isStringPref.edit().putBoolean(GeneralModel.FOOTERL$ + tableIx, vis.isFooterLString()).apply();
+        isStringPref.edit().putInt(GeneralModel.TITLE$ + tableIx, vis.getTitleString()).apply();
+        isStringPref.edit().putInt(GeneralModel.BODY$ + tableIx, vis.getBodyString()).apply();
+        isStringPref.edit().putInt(GeneralModel.HEADERR$ + tableIx, vis.getHeaderRString()).apply();
+        isStringPref.edit().putInt(GeneralModel.HEADERL$ + tableIx, vis.getHeaderLString()).apply();
+        isStringPref.edit().putInt(GeneralModel.FOOTERR$ + tableIx, vis.getFooterRString()).apply();
+        isStringPref.edit().putInt(GeneralModel.FOOTERL$ + tableIx, vis.getFooterLString()).apply();
     }
 
     public static FragmentPack getFragPack(ArrayList<GeneralModel> generalList, String title, TagVisiblity visiblity, int pageNum) {

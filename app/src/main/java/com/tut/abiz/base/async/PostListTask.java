@@ -38,7 +38,8 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     JSONObject sentJson;
 
     public static String GETCONGIQ = "getConfiq", GETLIST = "getList",
-            GETGROUP = "getGroup", REGISTERUSER = "registerUser", EDITUSER = "editUser";
+            GETGROUP = "getGroup", REGISTERUSER = "registerUser",
+            EDITUSER = "editUser", ORDERGROUP = "orderGroup", DELORDERGROUP = "deleteOrderGroup";
 
     public PostListTask(NetServiceListener netService) {
         this.netService = netService;
@@ -69,9 +70,13 @@ public class PostListTask extends AsyncTask<String, Void, String> {
             } else if (strings[0].equals(GETLIST)) {
                 netService.onGeneralListReady(extractList(jsonObject));
             } else if (strings[0].equals(GETGROUP)) {
-                netService.onGroupListReady(extractGroups(jsonObject));
+                netService.onGroupListReady(extractGroups(jsonObject), JsonUtil.extractGroupIds(jsonObject, Group.REGISTERED$), JsonUtil.extractGroupIds(jsonObject, Group.ORDERED$));
             } else if (strings[0].equals(EDITUSER)) {
                 netService.onUpdateAccountReady(extractRegResponse(jsonObject));
+            } else if (strings[0].equals(ORDERGROUP)) {
+                //
+            } else if (strings[0].equals(DELORDERGROUP)) {
+                //
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -81,7 +86,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
             } else if (strings[0].equals(GETLIST)) {
                 netService.onGeneralListReady(null);
             } else if (strings[0].equals(GETGROUP)) {
-                netService.onGroupListReady(null);
+                netService.onGroupListReady(null, null, null);
             } else if (strings[0].equals(REGISTERUSER)) {
                 netService.onUpdateAccountReady(Consts.CANTREGISTERE);
             }
@@ -103,7 +108,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
         String resp = readResponse(httpResponse);
         if (resp.trim().isEmpty())
             return new JSONObject();
-        Log.e("response:",resp);
+        Log.e("response:", resp);
         return new JSONObject(resp);
     }
 
@@ -126,7 +131,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     }
 
     private Confiq extractConfiq(JSONObject json) throws JSONException {
-        if (json == null)
+        if (json == null || json.isNull("confiq"))
             return null;
         return JsonUtil.extractConfiq(json.getJSONObject("confiq"));
     }

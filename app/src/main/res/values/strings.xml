@@ -51,7 +51,9 @@
     <string name="invalidChars">از حروف انگلیسی یا فارسی و یا از اعداد استفاده کنید</string>
     <string name="connectingToNet">در حال اتصال ...</string>
     <string name="accountSuccessRevived">حساب کاربری با موفقیت بازیابی شد</string>
-
+    <string name="accountNotRegistered">حساب کاربری شما فعال نیست</string>
+    <string name="viewAnnounce">مشاهده آگهی</string>
+    <string name="contactWithUs"> ارتباط با ما</string>
 
     <string-array name="titles">
         <item>Hello Food!</item>

@@ -17,7 +17,7 @@
         <item
             android:id="@+id/nav_message"
             android:icon="@drawable/ic_food"
-            android:title="@string/message" />
+            android:title="@string/contactWithUs" />
         <item
             android:id="@+id/nav_net"
             android:icon="@drawable/ic_menu_camera"

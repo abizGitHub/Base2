@@ -1,9 +1,11 @@
 package com.tut.abiz.base.acts;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,9 +14,6 @@ import android.widget.ArrayAdapter;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
-import com.tut.abiz.base.adapter.GeneralListAdapter;
-import com.tut.abiz.base.frags.ListPagerFrag;
-import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.DbHelper;
@@ -23,7 +22,6 @@ import com.tut.abiz.base.service.NetService;
 import com.tut.abiz.base.util.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by abiz on 5/1/2019.
@@ -196,5 +194,22 @@ public abstract class BaseActivity extends AppCompatActivity {
                 getSharedPreferences(Consts.ISSTRINGPREF, MODE_PRIVATE));
     }
 
-
+    public void startDialog(String command) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(command);
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.understood), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        }, 300);
+    }
 }

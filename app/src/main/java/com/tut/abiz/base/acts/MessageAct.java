@@ -46,11 +46,11 @@ public class MessageAct extends BaseActivity {
         messageET = (EditText) findViewById(R.id.messageEdit);
         sendBtn = (ImageButton) findViewById(R.id.chatSendButton);
 
-        TextView meLabel = (TextView) findViewById(R.id.meLbl);
+        /*TextView meLabel = (TextView) findViewById(R.id.meLbl);
         TextView companionLabel = (TextView) findViewById(R.id.friendLabel);
         RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-        companionLabel.setText("My Buddy");
-
+        //companionLabel.setText("My Buddy");
+         */
         loadChatHistory();
 
         sendBtn.setOnClickListener(new View.OnClickListener() {

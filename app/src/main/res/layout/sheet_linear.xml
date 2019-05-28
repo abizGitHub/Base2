@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_weight="0.3"
-                    android:text="viewImage" />
+                    android:text="@string/viewAnnounce" />
             </RelativeLayout>
         </LinearLayout>
     </FrameLayout>

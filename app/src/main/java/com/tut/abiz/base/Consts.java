@@ -69,6 +69,7 @@ public class Consts {
     public static final String ADDRESSGROUP = "/userAccount/groups";
     public static final String ADDRESSORDERGROUP = "/userAccount/orderGroup";
     public static final String ADDRESSDELORDERGROUP = "/userAccount/deleteOrderGroup";
+    public static final String ADDRESSIMG = "/files/1105-4377-6091-8714";
 
     public static final String ADDRESSSENDMESSAGE = "/msg/send";
     public static final String ADDRESSRECEIVEMESSAGE = "/msg/receive";

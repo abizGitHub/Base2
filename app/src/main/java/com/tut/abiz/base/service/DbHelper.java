@@ -11,6 +11,7 @@ import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
+import com.tut.abiz.base.model.Message;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.model.UserAccount;
@@ -38,7 +39,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String TAGVISIBLITY = "tagVisiblity";
     public static final String GROUP = "group0";
     public static final String USERACCOUNT = "userAccountT";
-
+    public static final String MESSAGE = "messageT";
 
     private HashMap<Integer, ArrayList<ModelMap>> modelMapListHash;
     private HashMap<Integer, HashMap<Integer, HashMap<Integer, String>>> modelMapHashs; // tableIX > columnIx > intVal > string
@@ -52,6 +53,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + USERACCOUNT + " (ID INTEGER,USERNAME TEXT,PASSWORD TEXT,EMAIL TEXT,PHONE TEXT)");
+        db.execSQL("CREATE TABLE " + MESSAGE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,BODY TEXT,TYPE NUMBER,DELIVERED NUMBER,REGISTERDATE TEXT,MSGID NUMBER)");
         db.execSQL("CREATE TABLE " + PAGESTITLE + " (TABLE_ID INTEGER PRIMARY KEY,NAME TEXT)");
         db.execSQL("CREATE TABLE " + GROUP + " (ID INTEGER,TABLE_ID INTEGER,NAME TEXT,STATUS INTEGER)");
         db.execSQL("CREATE TABLE " + MODELMAP +
@@ -346,7 +348,12 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         confiq.setLastGroupIds(lastGroupIds);
-
+        cursor = db.rawQuery("SELECT MAX(MSGID) FROM " + MESSAGE + " WHERE TYPE=" + Message.RECEIPT, null);
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToNext())
+            confiq.setLastMsgId(cursor.getLong(0));
+        else
+            confiq.setLastMsgId(0L);
+        cursor.close();
         ArrayList<TagVisiblity> visiblityList = new ArrayList<>();
         for (int i = 0; i < lastIds.size(); i++) {
             visiblityList.add(getTagVisiblity(i + 1));
@@ -713,8 +720,92 @@ public class DbHelper extends SQLiteOpenHelper {
                 lastIds.add(cursor.getLong(0));
             }
         }
+        cursor = db.rawQuery("SELECT MAX(MSGID) FROM " + MESSAGE + " WHERE TYPE=" + Message.RECEIPT, null);
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToNext())
+            confiq.setLastMsgId(cursor.getLong(0));
+        else
+            confiq.setLastMsgId(0L);
+        cursor.close();
         cursor.close();
         confiq.setLastIds(lastIds);
         return confiq;
     }
+
+    public ArrayList<Message> getAllMessages() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Message> messages = new ArrayList<>(); //(ID INTEGER,BODY TEXT,TYPE NUMBER,DELIVERED NUMBER,REGISTERDATE TEXT)
+        Cursor res = db.rawQuery("SELECT * FROM " + MESSAGE + " ORDER BY ID ASC", null);
+        if (res != null && res.getCount() > 0)
+            while (res.moveToNext()) {
+                Message message = new Message();
+                message.setId(res.getLong(0));
+                message.setBody(res.getString(1));
+                message.setType(res.getInt(2));
+                message.setDelivered(res.getInt(3) == 1);
+                message.setRegisterDate(res.getString(4));
+                message.setMsgId(res.getLong(5));
+                messages.add(message);
+            }
+        db.close();
+        return messages;
+    }
+
+    public ArrayList<Message> getMessagesByType(int type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Message> messages = new ArrayList<>(); //(ID INTEGER,BODY TEXT,TYPE NUMBER,DELIVERED NUMBER,REGISTERDATE TEXT)
+        Cursor res = db.rawQuery("SELECT * FROM " + MESSAGE + " WHERE TYPE ='" + type + "' ORDER BY ID ASC", null);
+        if (res != null && res.getCount() > 0)
+            while (res.moveToNext()) {
+                Message message = new Message();
+                message.setId(res.getLong(0));
+                message.setBody(res.getString(1));
+                message.setType(res.getInt(2));
+                message.setDelivered(res.getInt(3) == 1);
+                message.setRegisterDate(res.getString(4));
+                messages.add(message);
+            }
+        db.close();
+        return messages;
+    }
+
+    public boolean insertMessage(Message ms, int type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("BODY", ms.getBody());
+        values.put("DELIVERED", false);
+        values.put("TYPE", type);
+        values.put("MSGID", ms.getMsgId());
+        values.put("REGISTERDATE", ms.getRegisterDate());
+        long result = db.insert(MESSAGE, null, values);
+        db.close();
+        return result != -1;
+    }
+
+    public void setMessageDelivered(Long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("DELIVERED", true);
+        db.update(MESSAGE, values, "ID=?", new String[]{id.toString()});
+        db.close();
+    }
+
+    public ArrayList<Message> getUnDeliveredMessages() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Message> messages = new ArrayList<>(); //(ID INTEGER,BODY TEXT,TYPE NUMBER,DELIVERED NUMBER,REGISTERDATE TEXT)
+        Cursor res = db.rawQuery("SELECT * FROM " + MESSAGE + " WHERE TYPE ='" + Message.SENT +
+                "' AND DELIVERED <> 1 ORDER BY ID ASC", null);
+        if (res != null && res.getCount() > 0)
+            while (res.moveToNext()) {
+                Message message = new Message();
+                message.setId(res.getLong(0));
+                message.setBody(res.getString(1));
+                message.setType(res.getInt(2));
+                message.setDelivered(res.getInt(3) == 1);
+                message.setRegisterDate(res.getString(4));
+                messages.add(message);
+            }
+        db.close();
+        return messages;
+    }
+
 }

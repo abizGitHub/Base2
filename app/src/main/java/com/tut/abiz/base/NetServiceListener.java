@@ -3,6 +3,7 @@ package com.tut.abiz.base;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
+import com.tut.abiz.base.model.Message;
 
 import java.util.ArrayList;
 
@@ -24,4 +25,7 @@ public interface NetServiceListener {
 
     public void onUpdateAccountReady(int response);
 
+    public void onSendMsgReady(ArrayList<Integer> list);
+
+    public void onReceiptMsgReady(ArrayList<Message> messages);
 }

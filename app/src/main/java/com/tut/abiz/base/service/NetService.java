@@ -14,6 +14,7 @@ import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
+import com.tut.abiz.base.model.Message;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.util.Utils;
 
@@ -107,6 +108,16 @@ public class NetService implements NetServiceListener {
 
     @Override
     public void onUpdateAccountReady(int response) {
+
+    }
+
+    @Override
+    public void onSendMsgReady(ArrayList<Integer> list) {
+
+    }
+
+    @Override
+    public void onReceiptMsgReady(ArrayList<Message> messages) {
 
     }
 

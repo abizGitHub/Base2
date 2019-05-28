@@ -59,6 +59,9 @@
         <activity
             android:name=".acts.TabAct"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acts.MessageAct"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

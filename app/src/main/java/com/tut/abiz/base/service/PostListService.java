@@ -14,6 +14,7 @@ import com.tut.abiz.base.async.PostListTask;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
+import com.tut.abiz.base.model.Message;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.model.UserAccount;
 import com.tut.abiz.base.util.Utils;
@@ -46,7 +47,8 @@ public class PostListService extends IntentService implements NetServiceListener
     Integer updateAccount;
     int wait4Server;
     boolean forceStop = false;
-
+    private ArrayList<Message> recMessages;
+    private ArrayList<Integer> deliveredMsgIds;
 
     public PostListService() {
         super("-PostListService-");
@@ -77,10 +79,12 @@ public class PostListService extends IntentService implements NetServiceListener
         else
             confiqRemote = doPostConfig(Consts.SERVERADDRESS + Consts.ADDRESSCONFIQ, dbHelper.getBriefConfiq());
         if (confiqRemote != null)
-            if (i % 2 == 0) {
+            if (i % 3 == 0) {
                 applyNewUserSetting(confiqLocal, confiqRemote);
                 applyNewModelMap(confiqRemote);
                 applyNewTagVisiblity(confiqRemote, confiqLocal);
+            } else if (i % 3 == 2) {
+                applyMessages(confiqLocal);
             } else {
                 ArrayList<Integer> updateCount = applyNewGmList(confiqLocal, confiqRemote);
                 publishResults(updateCount, SchedulService.SERVERCONECTED);
@@ -125,6 +129,78 @@ public class PostListService extends IntentService implements NetServiceListener
         if (confiqRemote != null && confiqRemote.getConnectPeriod() != null)
             pref.edit().putInt(Confiq.CONNECTPERIOD, confiqRemote.getConnectPeriod()).apply();
 
+    }
+
+    private void applyMessages(Confiq confiqLocal) {
+        if (confiqRemote.getLastMsgId() != null && confiqLocal.getLastMsgId() != null && confiqRemote.getLastMsgId() > confiqLocal.getLastMsgId()) {
+            doGetMessages(confiqLocal);
+            if (recMessages != null && !recMessages.isEmpty())
+                for (Message message : recMessages) {
+                    dbHelper.insertMessage(message, Message.RECEIPT);
+                }
+            recMessages = null;
+        }
+        ArrayList<Message> messages = dbHelper.getUnDeliveredMessages();
+        if (messages != null && !messages.isEmpty()) {
+            doPostMessages(messages, confiqLocal);
+            if (deliveredMsgIds != null && !deliveredMsgIds.isEmpty())
+                for (Integer msgId : deliveredMsgIds) {
+                    dbHelper.setMessageDelivered(msgId.longValue());
+                }
+            deliveredMsgIds = null;
+        }
+    }
+
+    private void doPostMessages(ArrayList<Message> messages, Confiq confiqLocal) {
+        PostListTask postListTask = new PostListTask(this);
+        JSONObject json = JsonUtil.parseConfiq(confiqLocal);
+        try {
+            json.put(Consts.MESSAGELIST, JsonUtil.parseMsgs(messages));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSSENDMESSAGE, json);
+        postListTask.execute(PostListTask.SENDMSG);
+        wait4List = true;
+        waitCount = 0;
+        forceStop = false;
+        while (wait4List) {
+            try {
+                waitCount++;
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Log.e(">>??", e.getMessage());
+                e.printStackTrace();
+            }
+            if (waitCount > (wait4Server / 100)) {
+                wait4List = false;
+                forceStop = true;
+            }
+        }
+
+    }
+
+    private void doGetMessages(Confiq confiqLocal) {
+        PostListTask postListTask = new PostListTask(this);
+        JSONObject json = JsonUtil.parseConfiq(confiqLocal);
+        postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSRECEIVEMESSAGE, json);
+        postListTask.execute(PostListTask.RECEIVEMSG);
+        wait4List = true;
+        waitCount = 0;
+        forceStop = false;
+        while (wait4List) {
+            try {
+                waitCount++;
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Log.e(">>??", e.getMessage());
+                e.printStackTrace();
+            }
+            if (waitCount > (wait4Server / 100)) {
+                wait4List = false;
+                forceStop = true;
+            }
+        }
     }
 
     private void doDeleteOrder(int j, Confiq confiq) {
@@ -438,6 +514,18 @@ public class PostListService extends IntentService implements NetServiceListener
     public void onUpdateAccountReady(int response) {
         wait4List = false;
         updateAccount = response;
+    }
+
+    @Override
+    public void onSendMsgReady(ArrayList<Integer> list) {
+        deliveredMsgIds = list;
+        wait4List = false;
+    }
+
+    @Override
+    public void onReceiptMsgReady(ArrayList<Message> messages) {
+        recMessages = messages;
+        wait4List = false;
     }
 
 }

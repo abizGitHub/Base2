@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="beforeDescendants"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_background_selector"
+        android:descendantFocusability="afterDescendants"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp">
+
+        <TextView
+            android:id="@+id/sheetBody"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/text_size_xlarge"
+            android:layout_weight="7"
+            android:background="@color/colorAccent"
+            android:gravity="end"
+            android:text="context"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_size_medium" />
+
+        <LinearLayout
+            android:id="@+id/sheetTitle_S"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.tut.abiz.base.adapter.ImageV
+                    android:id="@+id/sheetStar"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:tint="@color/colorBlack"
+                    app:srcCompat="@drawable/baseline_star_border_black_18" />
+
+                <com.tut.abiz.base.adapter.ImageV
+                    android:id="@+id/sheetStar2"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:tint="@color/colorBlack"
+                    app:srcCompat="@drawable/baseline_star_border_black_18" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    <com.tut.abiz.base.adapter.ImageV
+        android:id="@+id/sheetStar3"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:tint="@color/colorBlack"
+        app:srcCompat="@drawable/baseline_star_border_black_18" />
+
+</FrameLayout>

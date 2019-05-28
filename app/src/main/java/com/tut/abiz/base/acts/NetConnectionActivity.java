@@ -18,6 +18,7 @@ import com.tut.abiz.base.adapter.GeneralListAdapter;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
+import com.tut.abiz.base.model.Message;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.service.NetService;
 
@@ -95,6 +96,16 @@ public class NetConnectionActivity extends AppCompatActivity implements NetServi
 
     @Override
     public void onUpdateAccountReady(int response) {
+
+    }
+
+    @Override
+    public void onSendMsgReady(ArrayList<Integer> list) {
+
+    }
+
+    @Override
+    public void onReceiptMsgReady(ArrayList<Message> messages) {
 
     }
 

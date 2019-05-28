@@ -1,6 +1,7 @@
 package com.tut.abiz.base;
 
 import android.app.AlertDialog;
+import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import com.tut.abiz.base.acts.Act1;
 import com.tut.abiz.base.acts.Act2;
 import com.tut.abiz.base.acts.Act3;
 import com.tut.abiz.base.acts.ListActivity;
+import com.tut.abiz.base.acts.MessageAct;
 import com.tut.abiz.base.acts.NetConnectionActivity;
 import com.tut.abiz.base.acts.PagerActivity;
 import com.tut.abiz.base.acts.RegistrationAct;
@@ -233,6 +235,8 @@ public class ActsInMenuAct extends AppCompatActivity
             intent = new Intent(ActsInMenuAct.this, RegistrationAct.class);
         } else if (selectedMenuAct == R.id.nav_tab) {
             intent = new Intent(ActsInMenuAct.this, TabAct.class);
+        } else if (selectedMenuAct == R.id.nav_message) {
+            intent = new Intent(ActsInMenuAct.this, MessageAct.class);
         } else {
             intent = new Intent(ActsInMenuAct.this, activity);
         }

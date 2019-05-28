@@ -2,8 +2,6 @@ package com.tut.abiz.base.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by abiz on 4/17/2019.
@@ -26,6 +24,7 @@ public class Confiq {
     public static final String LASTGROUPIDS = "lastGroupIds";
     public static final String WAIT4SERVER = "wait4Server";
     public static final String CONNECTPERIOD = "connectPeriod";
+    public static String LASTMSGID = "lastMsgId";
 
     String userName;
     Long userId;
@@ -45,6 +44,7 @@ public class Confiq {
     Boolean sendDetail;
     Integer wait4Server;
     Integer connectPeriod;
+    Long lastMsgId;
 
     public String getUserName() {
         return userName;
@@ -192,5 +192,13 @@ public class Confiq {
 
     public void setConnectPeriod(Integer connectPeriod) {
         this.connectPeriod = connectPeriod;
+    }
+
+    public Long getLastMsgId() {
+        return lastMsgId;
+    }
+
+    public void setLastMsgId(Long lastMsgIsd) {
+        this.lastMsgId = lastMsgIsd;
     }
 }

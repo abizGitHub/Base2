@@ -39,7 +39,8 @@ public class PostListTask extends AsyncTask<String, Void, String> {
 
     public static String GETCONGIQ = "getConfiq", GETLIST = "getList",
             GETGROUP = "getGroup", REGISTERUSER = "registerUser",
-            EDITUSER = "editUser", ORDERGROUP = "orderGroup", DELORDERGROUP = "deleteOrderGroup";
+            EDITUSER = "editUser", ORDERGROUP = "orderGroup", DELORDERGROUP = "deleteOrderGroup",
+            SENDMSG = "sendMsg", RECEIVEMSG = "receiveMsg";
 
     public PostListTask(NetServiceListener netService) {
         this.netService = netService;
@@ -77,6 +78,10 @@ public class PostListTask extends AsyncTask<String, Void, String> {
                 //
             } else if (strings[0].equals(DELORDERGROUP)) {
                 //
+            } else if (strings[0].equals(SENDMSG)) {
+                netService.onSendMsgReady(JsonUtil.extractReceiptMsgIds(jsonObject));
+            } else if (strings[0].equals(RECEIVEMSG)) {
+                netService.onReceiptMsgReady(JsonUtil.extractReceiptMsg(jsonObject));
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -101,8 +106,10 @@ public class PostListTask extends AsyncTask<String, Void, String> {
 
     public JSONObject postData() throws IOException, JSONException {
         HttpPost httpPost = new HttpPost(url);
-        httpPost.setHeader("last", "e1ro");
-        StringEntity entity = new StringEntity(sentJson.toString());
+        //httpPost.setHeader("contentType", "text/plain;charset=UTF-8");
+        StringEntity entity = new StringEntity(sentJson.toString(),"UTF-8");// this must be "UTF-8" , others not important
+        //entity.setContentType("text/plain; charset=UTF-8");
+        //entity.setContentEncoding("UTF-8");
         httpPost.setEntity(entity);
         HttpResponse httpResponse = httpClient.execute(httpPost);
         String resp = readResponse(httpResponse);

@@ -12,6 +12,7 @@ import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.FragmentPack;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
+import com.tut.abiz.base.model.Message;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.util.Utils;
@@ -138,7 +139,13 @@ public class GeneralService {
         buffer.append(pref.getInt(Confiq.WAIT4SERVER, Consts.DEFAULTWAIT4SERVER));
         mdl.setBody(buffer.toString());
         list.add(mdl);
-
+        ArrayList<Message> messages = dbHelper.getAllMessages();
+        for (Message message : messages) {
+            mdl = new GeneralModel();
+            mdl.setBody("msgId:" + message.getMsgId() + "-" + message.getBody() + "-" + message.getRegisterDate());
+            mdl.setTitle("id:" + message.getId() + "-type:" + message.getType() + "-delivered:" + message.getDelivered());
+            list.add(mdl);
+        }
         ArrayList<Group> groups = dbHelper.getAllGroups(1);
         groups.addAll(dbHelper.getAllGroups(2));
         groups.addAll(dbHelper.getAllGroups(3));

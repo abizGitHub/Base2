@@ -4,6 +4,7 @@ import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
+import com.tut.abiz.base.model.Message;
 import com.tut.abiz.base.model.ModelMap;
 import com.tut.abiz.base.model.TagVisiblity;
 import com.tut.abiz.base.model.UserAccount;
@@ -95,6 +96,10 @@ public class JsonUtil {
         }
         try {
             confiq.setConnectPeriod(json.getInt(Confiq.CONNECTPERIOD));
+        } catch (Exception e) {
+        }
+        try {
+            confiq.setLastMsgId(json.getLong(Confiq.LASTMSGID));
         } catch (Exception e) {
         }
         try {
@@ -384,6 +389,10 @@ public class JsonUtil {
         } catch (JSONException e) {
         }
         try {
+            json.put(Confiq.LASTMSGID, confiq.getLastMsgId());
+        } catch (JSONException e) {
+        }
+        try {
             json.put(Confiq.WAIT4SERVER, confiq.getWait4Server());
         } catch (JSONException e) {
         }
@@ -505,4 +514,53 @@ public class JsonUtil {
         return json;
     }
 
+    public static JSONArray parseMsgs(ArrayList<Message> messages) {
+        JSONArray array = new JSONArray();
+        for (Message message : messages) {
+            array.put(parseMsg(message));
+        }
+        return array;
+    }
+
+    private static JSONObject parseMsg(Message message) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put(Consts.ID, message.getId());
+            json.put("BODY", message.getBody());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    public static ArrayList<Message> extractReceiptMsg(JSONObject json) {
+        ArrayList<Message> list = new ArrayList<>();
+        try {
+            JSONArray array = json.getJSONArray(Consts.MESSAGELIST);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject object = (JSONObject) array.get(i);
+                Message msg = new Message();
+                msg.setMsgId(object.getLong("MSGID"));
+                msg.setBody(object.getString("BODY"));
+                list.add(msg);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static ArrayList<Integer> extractReceiptMsgIds(JSONObject json) {
+        ArrayList<Integer> list = new ArrayList<>();
+        if (json.length() > 0)
+            try {
+                JSONArray array = json.getJSONArray(Message.MSGIDS);
+                for (int i = 0; i < array.length(); i++) {
+                    list.add(array.getInt(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        return list;
+    }
 }

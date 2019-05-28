@@ -57,6 +57,7 @@ public class Consts {
     public static final int DEFAULTWAIT4SERVER = 4000;// ms
     public static final String MENUGROUPOPENED = "groupMenuOpened";
     public static final int USERNAMEREVIVED = 419087; // sabte mojadad
+    public static final String MESSAGELIST = "messageList";
     public static int USERREGISTERED = 34209;
     public static int USERNAMERESERVED = 78615;
     public static int CANTREGISTERE = 10209;
@@ -68,6 +69,9 @@ public class Consts {
     public static final String ADDRESSGROUP = "/userAccount/groups";
     public static final String ADDRESSORDERGROUP = "/userAccount/orderGroup";
     public static final String ADDRESSDELORDERGROUP = "/userAccount/deleteOrderGroup";
+
+    public static final String ADDRESSSENDMESSAGE = "/msg/send";
+    public static final String ADDRESSRECEIVEMESSAGE = "/msg/receive";
 
     public static final String SENDDETAICONFIG = "sendDetailConfiq";
 

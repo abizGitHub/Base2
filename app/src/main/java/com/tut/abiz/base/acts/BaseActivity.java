@@ -36,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     NetService netService;
     GeneralService service;
     public static boolean offline = false;
+    static int prevPage = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,23 +74,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         String current = getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.CURRENTACTIVITY, "");
         getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putString(Consts.LASTACTIVITY, current).apply();
         getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putString(Consts.CURRENTACTIVITY, this.getClass().getName()).apply();
-        boolean notify = hasNewChange();
+        boolean notify = hasNewChange() || (prevPage == R.id.nav_staredList);
         int position = getStaredPosition();
-        if (notify && position > -1) {
-            doStaredTasks();
-            //ListPagerFrag pagerFrag = (ListPagerFrag) allFragmentPacks.get(getSelectedTable() - 1).getPagerFragment();
-            if (getGeneralList() != null)
-                getGeneralList().get(position).setStared(getIsStared());
-            if (!getIsStared())
-                if (getNavMenu() == R.id.nav_staredList && ViewListItemActivity.class.getName().equals(getLastActivityName())) {
-                    getGeneralList().remove(position);
-                    getGeneralTitles().remove(position);
-                }
-            if (getListAdapter() != null)
-                getListAdapter().notifyDataSetChanged();
-            clearNewChange();
+        try {
+            if (notify && position > -1) {
+                doStaredTasks();
+                //ListPagerFrag pagerFrag = (ListPagerFrag) allFragmentPacks.get(getSelectedTable() - 1).getPagerFragment();
+                if (getGeneralList() != null)
+                    getGeneralList().get(position).setStared(getIsStared());
+                if (!getIsStared())
+                    if (getNavMenu() == R.id.nav_staredList && ViewListItemActivity.class.getName().equals(getLastActivityName())) {
+                        getGeneralList().remove(position);
+                        getGeneralTitles().remove(position);
+                    }
+                if (getListAdapter() != null)
+                    getListAdapter().notifyDataSetChanged();
+                clearNewChange();
+            }
+        } catch (Exception e) {
+
         }
+        prevPage = R.id.nav_staredList;
     }
+
 
     protected abstract void doStaredTasks();
 
@@ -214,4 +221,5 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }, 300);
     }
+
 }

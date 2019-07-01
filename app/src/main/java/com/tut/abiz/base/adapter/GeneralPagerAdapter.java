@@ -1,14 +1,8 @@
 package com.tut.abiz.base.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
-import android.view.View;
-
-import com.tut.abiz.base.Consts;
-import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.frags.PagerFragment;
 import com.tut.abiz.base.model.FragmentPack;
 

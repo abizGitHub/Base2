@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +48,7 @@ public class ActsInMenuAct extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     HashMap<Integer, Class<? extends AppCompatActivity>> actsMap;
     Integer selectedMenuAct;
-    Fragment homeFragment;
+    Frag1 homeFragment;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
     NavigationView navigationView;
@@ -76,6 +76,7 @@ public class ActsInMenuAct extends BaseActivity
         homeFragment = new Frag1();
         service = new GeneralService(this);
         testList = service.getTestGeneralList();
+        setSelectedTable(1);
         ImageButton searchButton = (ImageButton) findViewById(R.id.search_btn);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,29 +146,47 @@ public class ActsInMenuAct extends BaseActivity
         onSelectMenu(R.id.nav_frag1, getResources().getString(R.string.farg1));
     }
 
-    @Override
     protected void doStaredTasks() {
-
+        homeFragment.doStaredTasks();
     }
 
     @Override
     protected ArrayAdapter getListAdapter() {
-        return null;
+        return homeFragment.getListAdapter();
     }
 
     @Override
     protected ArrayList<String> getGeneralTitles() {
-        return null;
+        return homeFragment.getGeneralTitles();
     }
 
     @Override
     protected ArrayList<GeneralModel> getGeneralList() {
-        return null;
+        return homeFragment.getGeneralList();
     }
 
     @Override
     public void onStarChanged(int position, boolean checked) {
+    }
 
+    public void setNewChange() {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.HASNEWCHANGE, true).apply();
+    }
+
+    public boolean hasNewChange() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getBoolean(Consts.HASNEWCHANGE, false);
+    }
+
+    public int getStaredPosition() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getInt(Consts.STAREDPOSITION, -1);
+    }
+
+    public void clearNewChange() {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().remove(Consts.HASNEWCHANGE).apply();
+    }
+
+    public String getLastActivityName() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.LASTACTIVITY, "");
     }
 
     @Override
@@ -223,6 +242,12 @@ public class ActsInMenuAct extends BaseActivity
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.setDrawerListener(toggle);
             toggle.syncState();
+            try {
+                setSelectedTable(1);
+                //homeFragment.doStarResume();
+            } catch (Exception e) {
+                Log.e("??", "sssttrr");
+            }
             return;
         }
         Intent intent;

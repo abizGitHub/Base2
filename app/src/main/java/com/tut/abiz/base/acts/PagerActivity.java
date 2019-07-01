@@ -90,16 +90,16 @@ public class PagerActivity extends BaseActivity {
     }
 
     private void setIconSelected(int i, boolean selected) {
-        ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
+        //ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
         TextView text = (TextView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabText);
         if (selected) {
             text.setTextColor(getResources().getColor(R.color.colorMagnet));
             tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorLightGray));
-            img.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+            //img.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
         } else {
             text.setTextColor(getResources().getColor(R.color.colorLightGray));
             tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            img.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            //img.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
     }
 
@@ -112,8 +112,12 @@ public class PagerActivity extends BaseActivity {
     private void setUpTabIcons() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int ix = 0;
+        View view;
         for (FragmentPack fragPack : allFragmentPacks) {
-            View view = inflater.inflate(R.layout.tab_icon, null);
+            if (ix == 0)
+                view = inflater.inflate(R.layout.tab_icon, null);
+            else
+                view = inflater.inflate(R.layout.tab_icon_up, null);
             TextView text = (TextView) view.findViewById(R.id.tabText);
             text.setText(fragPack.getPageTitle());
             tabs.getTabAt(ix).setCustomView(view);

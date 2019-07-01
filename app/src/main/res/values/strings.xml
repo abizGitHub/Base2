@@ -16,7 +16,7 @@
     <string name="netGetList">netGetList</string>
     <string name="postList">PostList</string>
     <string name="dbView">DBView</string>
-    <string name="staredList">staredList</string>
+    <string name="staredList">ستاره دار ها</string>
     <string name="search">search</string>
     <string name="tab">tab</string>
     <string name="message">message</string>
@@ -28,7 +28,7 @@
     <string name="understood">understood</string>
     <string name="Case">مورد</string>
     <string name="hasUpdated">بروزرسانی شد</string>
-    <string name="group">group</string>
+    <string name="group">گروه ها</string>
 
     <string name="ordered">سفارش شده</string>
     <string name="registered">ثبت شده</string>
@@ -54,6 +54,7 @@
     <string name="accountNotRegistered">حساب کاربری شما فعال نیست</string>
     <string name="viewAnnounce">مشاهده آگهی</string>
     <string name="contactWithUs"> ارتباط با ما</string>
+    <string name="mainPage">صفحه اصلی</string>
 
     <string-array name="titles">
         <item>Hello Food!</item>

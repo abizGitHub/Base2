@@ -83,7 +83,7 @@ public class PagerActivity extends BaseActivity {
         FragmentManager fm = getSupportFragmentManager();
 
         /** Instantiating FragmentPagerAdapter */
-        pagerAdapter = new GeneralPagerAdapter(fm, allFragmentPacks, this);
+        pagerAdapter = new GeneralPagerAdapter(fm, allFragmentPacks);
         /** Setting the pagerAdapter to the pager object */
         pager.setAdapter(pagerAdapter);
         setUpTabIcons();

@@ -26,7 +26,7 @@ public class GeneralPagerAdapter extends FragmentPagerAdapter {
     /**
      * Constructor of the class
      */
-    public GeneralPagerAdapter(FragmentManager fm, ArrayList<FragmentPack> fragmentPacks, BaseActivity baseActivity) {
+    public GeneralPagerAdapter(FragmentManager fm, ArrayList<FragmentPack> fragmentPacks) {
         super(fm);
         this.fragmentPacks = fragmentPacks;
         PAGE_COUNT = fragmentPacks.size();

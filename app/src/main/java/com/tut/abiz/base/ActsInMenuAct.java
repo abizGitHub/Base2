@@ -1,10 +1,8 @@
 package com.tut.abiz.base;
 
 import android.app.AlertDialog;
-import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -17,13 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tut.abiz.base.acts.Act1;
 import com.tut.abiz.base.acts.Act2;
 import com.tut.abiz.base.acts.Act3;
+import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.acts.ListActivity;
 import com.tut.abiz.base.acts.MessageAct;
 import com.tut.abiz.base.acts.NetConnectionActivity;
@@ -35,7 +34,6 @@ import com.tut.abiz.base.acts.TabAct;
 import com.tut.abiz.base.frags.Frag1;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
-import com.tut.abiz.base.service.DbHelper;
 import com.tut.abiz.base.service.GeneralService;
 import com.tut.abiz.base.service.SchedulService;
 
@@ -46,7 +44,7 @@ import java.util.HashMap;
  * Created by abiz on 4/14/2019.
  */
 
-public class ActsInMenuAct extends AppCompatActivity
+public class ActsInMenuAct extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     HashMap<Integer, Class<? extends AppCompatActivity>> actsMap;
     Integer selectedMenuAct;
@@ -92,7 +90,7 @@ public class ActsInMenuAct extends AppCompatActivity
 
     }
 
-    private void startDialog(String command) {
+    public void startDialog(String command) {
         //Toast.makeText(this, getIntent().getExtras().getString(SchedulService.DOCONNECT), Toast.LENGTH_SHORT).show();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);//, R.drawable.background_dialog);
 
@@ -148,6 +146,31 @@ public class ActsInMenuAct extends AppCompatActivity
     }
 
     @Override
+    protected void doStaredTasks() {
+
+    }
+
+    @Override
+    protected ArrayAdapter getListAdapter() {
+        return null;
+    }
+
+    @Override
+    protected ArrayList<String> getGeneralTitles() {
+        return null;
+    }
+
+    @Override
+    protected ArrayList<GeneralModel> getGeneralList() {
+        return null;
+    }
+
+    @Override
+    public void onStarChanged(int position, boolean checked) {
+
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
@@ -193,7 +216,8 @@ public class ActsInMenuAct extends AppCompatActivity
         selectedMenuAct = fragId;
         Class<? extends AppCompatActivity> activity = actsMap.get(selectedMenuAct);
         if (selectedMenuAct == R.id.nav_frag1) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, homeFragment).commit();
+            if (getSupportFragmentManager().getFragments() == null)
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, homeFragment).commit();
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -247,5 +271,9 @@ public class ActsInMenuAct extends AppCompatActivity
         //getSupportActionBar().setTitle(title);
     }
 
+    @Override
+    public int getNavMenu() {
+        return 0;
+    }
 }
 

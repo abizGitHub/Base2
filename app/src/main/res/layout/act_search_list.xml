@@ -60,6 +60,7 @@
                     android:layout_height="match_parent"
                     android:layout_below="@id/search_btn"
                     android:layout_weight="1"
+                    android:textColor="@color/colorWhite"
                     android:text="@string/search" />
             </LinearLayout>
 
@@ -71,7 +72,7 @@
                 android:layout_weight="1"
                 android:gravity="end"
                 android:layout_marginLeft="@dimen/text_size_small"
-                android:background="@color/colorYellow"
+                android:background="@color/colorVLightGray"
                 android:layoutDirection="rtl"
                 android:textAlignment="textEnd" />
         </LinearLayout>
@@ -94,7 +95,7 @@
 
                 <RadioButton
                     android:id="@+id/radio1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
@@ -104,7 +105,7 @@
 
                 <RadioButton
                     android:id="@+id/radio2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
@@ -114,7 +115,7 @@
 
                 <RadioButton
                     android:id="@+id/radio3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
@@ -162,7 +163,7 @@
             android:layout_below="@id/scro"
             android:layout_marginLeft="@dimen/list_sides_margin"
             android:layout_marginRight="@dimen/list_sides_margin"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorVLightGray"
             android:dividerHeight="@dimen/list_sides_margin" />
 
     </RelativeLayout>

@@ -58,7 +58,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
                     android:text="title"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorDarkRed"
                     android:textSize="@dimen/text_size_large" />
 <!--
                 <ToggleButton
@@ -129,11 +129,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_size_xlarge"
                 android:layout_weight="7"
-                android:background="@color/colorAccent"
                 android:gravity="end"
                 android:text="context"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorVLightGray"
+                android:textColor="@color/colorDarkBrown"
                 android:textSize="@dimen/text_size_medium" />
 
             <LinearLayout
@@ -149,9 +148,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
-                    android:background="@color/colorYellow"
                     android:text="footer_L"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorOrange"
                     android:textSize="@dimen/text_size_small" />
 
                 <TextView
@@ -160,9 +158,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_weight="1"
-                    android:background="@color/colorYellow"
                     android:text="footer_R"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorDarkGreen"
                     android:textSize="@dimen/text_size_small" />
 
             </LinearLayout>
@@ -175,6 +172,7 @@
                     android:id="@+id/viewImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorDarkBrown"
                     android:layout_centerHorizontal="true"
                     android:layout_weight="0.3"
                     android:text="@string/viewAnnounce" />

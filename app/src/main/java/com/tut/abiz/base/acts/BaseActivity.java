@@ -2,6 +2,7 @@ package com.tut.abiz.base.acts;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
@@ -65,6 +66,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             });
             getSupportActionBar().setTitle(navTitle);
+            toolbar.setTitleTextColor(Color.WHITE);
+            toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_white_24);
         }
     }
 

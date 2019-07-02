@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tut.abiz.base.Consts;
@@ -40,17 +41,16 @@ public class Frag1 extends Fragment {
     GeneralListAdapter generalListAdapter;
     ListPagerFrag pagerFrag;
     TabLayout tabs;
-    private int navMenu;
     NetService netService;
     GeneralService service;
     BaseActivity activity;
+    View iconDown, iconUp, iconDownOn, iconUpOn;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_paginator, container, false);
         activity = (BaseActivity) getActivity();
-        navMenu = getActivity().getIntent().getExtras().getInt(Consts.NAVPAGER);
         service = new GeneralService(getActivity());
         netService = new NetService(null, getActivity());
         tabs = (TabLayout) view.findViewById(R.id.tabLayout);
@@ -75,9 +75,10 @@ public class Frag1 extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        allFragmentPacks = service.getAllList();
         tabs.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabs.setTabMode(TabLayout.MODE_FIXED);
+
+        allFragmentPacks = service.getAllList();
         FragmentManager fm = getActivity().getSupportFragmentManager();
         pagerAdapter = new GeneralPagerAdapter(fm, allFragmentPacks);
         pager.setAdapter(pagerAdapter);
@@ -92,11 +93,13 @@ public class Frag1 extends Fragment {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int ix = 0;
         View view;
+        iconDown = inflater.inflate(R.layout.tab_icon, null);
+        iconUp = inflater.inflate(R.layout.tab_icon_up, null);
         for (FragmentPack fragPack : allFragmentPacks) {
             if (ix == 0)
-                view = inflater.inflate(R.layout.tab_icon, null);
+                view = iconUp;
             else
-                view = inflater.inflate(R.layout.tab_icon_up, null);
+                view = iconDown;
             TextView text = (TextView) view.findViewById(R.id.tabText);
             text.setText(fragPack.getPageTitle());
             tabs.getTabAt(ix).setCustomView(view);
@@ -108,7 +111,16 @@ public class Frag1 extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //doStarResume();
+        if (pagerFrag != null && getGeneralList() != null) {
+            for (int ix = 0; ix < allFragmentPacks.size(); ix++) {
+                ArrayList<GeneralModel> gList = service.getAllGeneralFrom(ix + 1);
+                if (gList != null)
+                    for (int i = 0; i < gList.size(); i++) {
+                        boolean stared = gList.get(i).getStared();
+                        ((ListPagerFrag) allFragmentPacks.get(ix).getPagerFragment()).getGeneralList().get(i).setStared(stared);
+                    }
+            }
+        }
     }
 
     public void doStarResume() {
@@ -119,7 +131,6 @@ public class Frag1 extends Fragment {
         int position = activity.getStaredPosition();
         if (notify && position > -1) {
             doStaredTasks();
-            //ListPagerFrag pagerFrag = (ListPagerFrag) allFragmentPacks.get(getSelectedTable() - 1).getPagerFragment();
             if (getGeneralList() != null)
                 getGeneralList().get(position).setStared(getIsStared());
             if (!getIsStared())
@@ -159,19 +170,17 @@ public class Frag1 extends Fragment {
     }
 
     private void setIconSelected(int i, boolean selected) {
-        //ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
+        ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
         TextView text = (TextView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabText);
         if (selected) {
-            text.setTextColor(getResources().getColor(R.color.colorMagnet));
-            tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorLightGray));
-            //img.setBackground(getResources().getDrawable(R.drawable.));
-            //img.setColorFilter(0xff00ffff, PorterDuff.Mode.MULTIPLY );
-            //img.clearColorFilter();
+            text.setTextColor(getResources().getColor(R.color.colorWhite));
+            img.setBackgroundResource(R.drawable.baseline_account_balance_white_48);
         } else {
-            text.setTextColor(getResources().getColor(R.color.colorLightGray));
-            tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            //img.setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY );
-            //img.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            img.setBackgroundResource(R.drawable.baseline_account_balance_black_48);
+            if (i == 0)
+                text.setTextColor(getResources().getColor(R.color.colorDarkRed));
+            else
+                text.setTextColor(getResources().getColor(R.color.colorDarkGreen));
         }
     }
 

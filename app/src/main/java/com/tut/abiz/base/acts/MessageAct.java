@@ -64,7 +64,7 @@ public class MessageAct extends BaseActivity {
                 chatMessage.setBody(messageText);
                 chatMessage.setRegisterDate(DateFormat.getDateTimeInstance().format(new Date()));
                 chatMessage.setType(Message.SENT);
-                messageET.setText(getResources().getString(R.string.usernameReserved));
+                messageET.setText("");
                 displayMessage(chatMessage);
                 getDbHelper().insertMessage(chatMessage, Message.SENT);
             }

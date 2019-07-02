@@ -3,9 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_netGetList"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/netGetList" />
+            android:id="@+id/nav_frag1"
+            android:icon="@drawable/baseline_home_24"
+            android:title="@string/mainPage" />
+        <item
+            android:id="@+id/nav_staredList"
+            android:icon="@drawable/baseline_star_black_24"
+            android:title="@string/staredList" />
         <item
             android:id="@+id/nav_Group"
             android:icon="@drawable/baseline_list_alt_black_48"
@@ -27,9 +31,9 @@
             android:icon="@drawable/ic_food"
             android:title="@string/tab" />
         <item
-            android:id="@+id/nav_frag1"
-            android:icon="@drawable/baseline_home_24"
-            android:title="@string/mainPage" />
+            android:id="@+id/nav_netGetList"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/netGetList" />
         <item
             android:id="@+id/nav_list"
             android:icon="@drawable/ic_menu_slideshow"
@@ -58,10 +62,6 @@
                 android:id="@+id/nav_postList"
                 android:icon="@drawable/ic_menu_camera"
                 android:title="@string/postList" />
-            <item
-                android:id="@+id/nav_staredList"
-                android:icon="@drawable/baseline_star_black_24"
-                android:title="@string/staredList" />
             <item
                 android:id="@+id/nav_dbView"
                 android:icon="@drawable/ic_menu_camera"

@@ -164,7 +164,8 @@ public class GeneralListAdapter extends ArrayAdapter {
             intent.putExtra(Consts.NAVPAGER, baseActivity.getNavMenu());
             intent.putExtra(Consts.TITLES, titles.get(position));
             intent.putExtra(Consts.CURRENTPAGE, baseActivity.getSelectedTable());
-            intent.putExtra(Consts.NAVTITLE, baseActivity.getNavTitle() + " detail");
+            String string = baseActivity.getResources().getString(R.string.detail);
+            intent.putExtra(Consts.NAVTITLE, (baseActivity.getNavTitle() == null ? " " : baseActivity.getNavTitle() + " - ") + string);
             baseActivity.startActivity(intent);
         }
     }

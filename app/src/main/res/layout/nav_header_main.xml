@@ -15,21 +15,39 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_height="80dp"
+        android:scaleX="1.1"
+        android:scaleY="1.1"
         app:srcCompat="@drawable/sun3" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Abiz z.co"
+        android:text="@string/barzin"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/colorDarkRed"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="getFreeApps@abiz.com" />
+        android:textSize="10sp"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:textColor="@color/colorDarkBrown"
+        android:text="@string/samane" />
+    <TextView
+        android:id="@+id/site"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:text="@string/companySite"
+        android:textColor="@color/colorGreen"
+        android:textSize="8sp"
+        android:textStyle="italic" />
 
 </LinearLayout>

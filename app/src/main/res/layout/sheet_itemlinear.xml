@@ -93,11 +93,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/text_size_xlarge"
             android:layout_weight="7"
-            android:background="@color/colorAccent"
             android:gravity="end"
             android:text="context"
             android:textAlignment="textEnd"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/text_size_medium" />
 
         <LinearLayout
@@ -113,9 +112,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
-                android:background="@color/colorYellow"
                 android:text="footer_L"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorOrange"
                 android:textSize="@dimen/text_size_small" />
 
             <TextView
@@ -124,9 +122,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_weight="1"
-                android:background="@color/colorYellow"
                 android:text="footer_R"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorDarkRed"
                 android:textSize="@dimen/text_size_small" />
 
         </LinearLayout>

@@ -15,17 +15,20 @@
     <string name="pagerList">pagerList</string>
     <string name="netGetList">netGetList</string>
     <string name="postList">PostList</string>
-    <string name="dbView">DBView</string>
+    <string name="dbView">جستجو</string>
     <string name="staredList">ستاره دار ها</string>
-    <string name="search">search</string>
+    <string name="search">جستجو</string>
+    <string name="barzin">برزین</string>
+    <string name="samane">سامانه مزایدات و مناقصات</string>
     <string name="tab">tab</string>
     <string name="message">message</string>
+    <string name="companySite">www.BarzinTejarat.ir</string>
 
 
     <string name="connected">con</string>
-    <string name="wait4UpdateMessage">wait for update</string>
-    <string name="canNotconnectMessage">Can not connect to internet</string>
-    <string name="understood">understood</string>
+    <string name="wait4UpdateMessage">درحال بروزرسانی...</string>
+    <string name="canNotconnectMessage">اشکال در اتصال به اینترنت</string>
+    <string name="understood">متوجه شدم</string>
     <string name="Case">مورد</string>
     <string name="hasUpdated">بروزرسانی شد</string>
     <string name="group">گروه ها</string>
@@ -55,6 +58,7 @@
     <string name="viewAnnounce">مشاهده آگهی</string>
     <string name="contactWithUs"> ارتباط با ما</string>
     <string name="mainPage">صفحه اصلی</string>
+    <string name="detail">جزئیات</string>
 
     <string-array name="titles">
         <item>Hello Food!</item>

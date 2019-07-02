@@ -90,16 +90,17 @@ public class PagerActivity extends BaseActivity {
     }
 
     private void setIconSelected(int i, boolean selected) {
-        //ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
+        ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
         TextView text = (TextView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabText);
         if (selected) {
-            text.setTextColor(getResources().getColor(R.color.colorMagnet));
-            tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorLightGray));
-            //img.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+            text.setTextColor(getResources().getColor(R.color.colorWhite));
+            img.setBackgroundResource(R.drawable.baseline_account_balance_white_48);
         } else {
-            text.setTextColor(getResources().getColor(R.color.colorLightGray));
-            tabs.getTabAt(i).getCustomView().setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            //img.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            img.setBackgroundResource(R.drawable.baseline_account_balance_black_48);
+            if (i == 0)
+                text.setTextColor(getResources().getColor(R.color.colorDarkRed));
+            else
+                text.setTextColor(getResources().getColor(R.color.colorDarkGreen));
         }
     }
 
@@ -115,9 +116,9 @@ public class PagerActivity extends BaseActivity {
         View view;
         for (FragmentPack fragPack : allFragmentPacks) {
             if (ix == 0)
-                view = inflater.inflate(R.layout.tab_icon, null);
-            else
                 view = inflater.inflate(R.layout.tab_icon_up, null);
+            else
+                view = inflater.inflate(R.layout.tab_icon, null);
             TextView text = (TextView) view.findViewById(R.id.tabText);
             text.setText(fragPack.getPageTitle());
             tabs.getTabAt(ix).setCustomView(view);

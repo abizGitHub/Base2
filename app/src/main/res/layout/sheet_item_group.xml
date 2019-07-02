@@ -51,7 +51,7 @@
                     android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:layout_centerInParent="true"
-                    android:tint="@color/colorLightGreen"
+                    android:tint="@color/colorDarkGreen"
                     app:srcCompat="@drawable/baseline_assignment_returned_black_18" />
 
                 <TextView

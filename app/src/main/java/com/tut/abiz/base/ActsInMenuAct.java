@@ -110,7 +110,7 @@ public class ActsInMenuAct extends BaseActivity
                 });
 */
 
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.understood), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -205,7 +205,7 @@ public class ActsInMenuAct extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

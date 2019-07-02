@@ -68,9 +68,9 @@ public class ActsInMenuAct extends BaseActivity
         setSupportActionBar(toolbar);
         actsMap = new HashMap<>();
         actsMap.put(R.id.nav_frag1, Act1.class);
-        actsMap.put(R.id.nav_frag2, Act2.class);
+        /*actsMap.put(R.id.nav_frag2, Act2.class);
         actsMap.put(R.id.nav_frag3, Act3.class);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        */drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         homeFragment = new Frag1();
@@ -251,7 +251,7 @@ public class ActsInMenuAct extends BaseActivity
             return;
         }
         Intent intent;
-        if (selectedMenuAct == R.id.nav_list) {
+        /*if (selectedMenuAct == R.id.nav_list) {
             intent = new Intent(ActsInMenuAct.this, ListActivity.class);
             intent.putExtra(Consts.GENERALLIST, testList);
             TagVisiblity visiblity = new TagVisiblity(-1).
@@ -260,13 +260,13 @@ public class ActsInMenuAct extends BaseActivity
                     doHeaderRVisible(true).
                     doStarVisible(true);
             intent.putExtra(Consts.VISIBLITY, visiblity);
-        } else if (selectedMenuAct == R.id.nav_dbView) {
+        } else*/ if (selectedMenuAct == R.id.nav_dbView) {
             intent = new Intent(ActsInMenuAct.this, ListActivity.class);
             TagVisiblity visiblity = new TagVisiblity(-1).
                     doBodyVisible(true).
                     doTitleVisible(true);
             intent.putExtra(Consts.VISIBLITY, visiblity);
-        } else if (selectedMenuAct == R.id.nav_paginator) {
+        } /*else if (selectedMenuAct == R.id.nav_paginator) {
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_pagerList) {
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
@@ -274,7 +274,9 @@ public class ActsInMenuAct extends BaseActivity
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_postList) {
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
-        } else if (selectedMenuAct == R.id.nav_staredList) {
+        } else if (selectedMenuAct == R.id.nav_tab) {
+            intent = new Intent(ActsInMenuAct.this, TabAct.class);
+        }*/ else if (selectedMenuAct == R.id.nav_staredList) {
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_net) {
             intent = new Intent(ActsInMenuAct.this, NetConnectionActivity.class);
@@ -282,8 +284,6 @@ public class ActsInMenuAct extends BaseActivity
             intent = new Intent(ActsInMenuAct.this, PagerActivity.class);
         } else if (selectedMenuAct == R.id.nav_registration) {
             intent = new Intent(ActsInMenuAct.this, RegistrationAct.class);
-        } else if (selectedMenuAct == R.id.nav_tab) {
-            intent = new Intent(ActsInMenuAct.this, TabAct.class);
         } else if (selectedMenuAct == R.id.nav_message) {
             intent = new Intent(ActsInMenuAct.this, MessageAct.class);
         } else {

@@ -62,7 +62,7 @@ public class PagerActivity extends BaseActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        if (R.id.nav_pagerList == getNavMenu())
+        /*if (R.id.nav_pagerList == getNavMenu())
             allFragmentPacks = service.getAllNetGetFrag();
         else if (R.id.nav_paginator == getNavMenu())
             allFragmentPacks = service.getAllFragPacks();
@@ -71,7 +71,7 @@ public class PagerActivity extends BaseActivity {
             allFragmentPacks = netService.getAllNetList();
         } else if (R.id.nav_postList == getNavMenu()) {
             allFragmentPacks = service.getAllList();
-        } else if (R.id.nav_staredList == getNavMenu()) {
+        } else */if (R.id.nav_staredList == getNavMenu()) {
             allFragmentPacks = service.getStaredList();
         } else if (R.id.nav_Group == getNavMenu()) {
             allFragmentPacks = service.getGroupPacks();

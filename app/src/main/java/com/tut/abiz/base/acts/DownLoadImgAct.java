@@ -110,10 +110,10 @@ public class DownLoadImgAct extends BaseActivity {
                         output.close();
                         Toast.makeText(DownLoadImgAct.this, "saved in " + DOWNLOAD_DIR + "/" + imageName, Toast.LENGTH_SHORT).show();
                     } catch (FileNotFoundException e) {
-                        Log.e("<<", e.getMessage());
+                        //log.e("<<", e.getMessage());
                         e.printStackTrace();
                     } catch (IOException e) {
-                        Log.e("<<", e.getMessage());
+                        //log.e("<<", e.getMessage());
                         e.printStackTrace();
                     }
                 } else

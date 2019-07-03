@@ -90,12 +90,12 @@ public class DbHelper extends SQLiteOpenHelper {
                 "S" + GeneralModel.FOOTER_R + " INTEGER," + // 12
                 "S" + GeneralModel.FOOTER_L + " INTEGER)"  // 13
         );
-        Log.e("db", "--------------- DB created -------------------");
+        //log.e("db", "--------------- DB created -------------------");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i2) {
-        Log.e("db", "--------------- DB upgraded -------------------");
+        //log.e("db", "--------------- DB upgraded -------------------");
     }
 
     public boolean initPageNames(SQLiteDatabase db) {
@@ -529,7 +529,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         if (utils.getQuery().contains("IN"))
             query += " OR " + utils.getQuery();
-        Log.e("search:", query);
+        //log.e("search:", query);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery(query, null);
         if (res != null && res.getCount() > 0)
@@ -726,8 +726,13 @@ public class DbHelper extends SQLiteOpenHelper {
         else
             confiq.setLastMsgId(0L);
         cursor.close();
-        cursor.close();
         confiq.setLastIds(lastIds);
+        cursor = db.rawQuery("SELECT MAX(ID) FROM " + MODELMAP, null);
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToNext())
+            confiq.setLastModelMapId(cursor.getLong(0));
+        else
+            confiq.setLastModelMapId(0L);
+        cursor.close();
         return confiq;
     }
 

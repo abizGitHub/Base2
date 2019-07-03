@@ -15,9 +15,9 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:scaleX="1.1"
-        android:scaleY="1.1"
+        android:layout_height="75dp"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
         app:srcCompat="@drawable/sun3" />
 
     <TextView

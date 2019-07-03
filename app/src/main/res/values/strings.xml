@@ -27,7 +27,7 @@
 
     <string name="connected">con</string>
     <string name="wait4UpdateMessage">درحال بروزرسانی...</string>
-    <string name="canNotconnectMessage">اشکال در اتصال به اینترنت</string>
+    <string name="canNotconnectMessage">برای دریافت آخرین آگهی ها دستگاه شما باید متصل به اینترنت باشد</string>
     <string name="understood">متوجه شدم</string>
     <string name="Case">مورد</string>
     <string name="hasUpdated">بروزرسانی شد</string>
@@ -52,7 +52,7 @@
     <string name="unRegistered">ثبت نشده</string>
     <string name="firstRunWelcome">خوش آمدید ، برای فعال سازی به منوی حساب کاربری بروید</string>
     <string name="invalidChars">از حروف انگلیسی یا فارسی و یا از اعداد استفاده کنید</string>
-    <string name="connectingToNet">در حال اتصال ...</string>
+    <string name="connectingToNet">در حال اتصال به سامانه ...</string>
     <string name="accountSuccessRevived">حساب کاربری با موفقیت بازیابی شد</string>
     <string name="accountNotRegistered">حساب کاربری شما فعال نیست</string>
     <string name="viewAnnounce">مشاهده آگهی</string>

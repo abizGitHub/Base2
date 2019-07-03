@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/appBarLayout"
         android:layout_gravity="start"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimary"
         android:layoutDirection="rtl"
         android:orientation="vertical">
 
@@ -70,11 +70,11 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_weight="1"
-                android:gravity="end"
+                android:gravity="start"
                 android:layout_marginLeft="@dimen/text_size_small"
                 android:background="@color/colorVLightGray"
                 android:layoutDirection="rtl"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textStart" />
         </LinearLayout>
 
         <HorizontalScrollView
@@ -99,6 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
+                    android:textColor="@color/colorWhite"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
                     android:visibility="invisible" />
@@ -111,6 +112,7 @@
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
+                    android:textColor="@color/colorWhite"
                     android:visibility="invisible" />
 
                 <RadioButton
@@ -121,6 +123,7 @@
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
+                    android:textColor="@color/colorWhite"
                     android:visibility="invisible" />
 
                 <RadioButton
@@ -131,6 +134,7 @@
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
+                    android:textColor="@color/colorWhite"
                     android:visibility="invisible" />
 
                 <RadioButton
@@ -141,6 +145,7 @@
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
+                    android:textColor="@color/colorWhite"
                     android:visibility="invisible" />
 
                 <RadioButton
@@ -151,6 +156,7 @@
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
+                    android:textColor="@color/colorWhite"
                     android:visibility="invisible" />
 
             </RadioGroup>

@@ -103,7 +103,7 @@ public class SchedulActivity extends AppCompatActivity {
                     startActivity(act);
                     phase = DOCONNECT;
                 }
-                Log.e("net->", bundle.getString(PostListService.RESULT));
+                //log.e("net->", bundle.getString(PostListService.RESULT));
             }
         }
 

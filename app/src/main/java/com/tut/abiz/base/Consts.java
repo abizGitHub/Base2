@@ -26,8 +26,8 @@ public class Consts {
 
     public static final int NEWUSERID = -666;
     public static final String NEWUSERNAME = "newUser";
-    public static final String SERVERADDRESS = "http://10.0.2.2:8085/rest";
-
+    //public static final String SERVERADDRESS = "http://10.0.2.2:8085/rest";
+    public static final String SERVERADDRESS = "http://46.21.147.88:8085/WSBase/rest";
     public static final String ID = "ID";
     public static final String SHEREDPREF = "sharedPrf";
     public static final String VISIBLITYPREF = "visiblityPrf";
@@ -53,8 +53,8 @@ public class Consts {
     public static final String EMAIL = "EMAIL";
     public static final String USERACCOUNTEDITED = "USERACCOUNTEDITED";
     public static final String TABLEID = "TABLE_ID";
-    public static final int DEFAULTCONPERIOD = 4000;// ms
-    public static final int DEFAULTWAIT4SERVER = 4000;// ms
+    public static final int DEFAULTCONPERIOD = 10000;// ms
+    public static final int DEFAULTWAIT4SERVER = 10000;// ms
     public static final String MENUGROUPOPENED = "groupMenuOpened";
     public static final int USERNAMEREVIVED = 419087; // sabte mojadad
     public static final String MESSAGELIST = "messageList";
@@ -76,4 +76,8 @@ public class Consts {
 
     public static final String SENDDETAICONFIG = "sendDetailConfiq";
 
+    public static String ORDEREDGROUP = "orderedGroup";
+    public static String DELGROUP = "delGroup";
+    public static String SENTMESSAGE = "sentMessage";
+    public static String MENUMESSAGEOPENED = "menuMessageOpened";
 }

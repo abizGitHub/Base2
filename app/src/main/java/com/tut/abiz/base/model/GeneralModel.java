@@ -143,7 +143,7 @@ public class GeneralModel implements Serializable {
             if (intValueHash != null && !intValueHash.isEmpty() && this.getFooterL() != null)
                 this.setFooterL(intValueHash.get(Integer.parseInt(this.getFooterL())));
         } catch (Exception e) {
-            Log.e("applyMdlMp", e.getMessage());
+            //log.e("applyMdlMp", e.getMessage());
         }
     }
 

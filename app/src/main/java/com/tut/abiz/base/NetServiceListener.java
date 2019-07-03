@@ -1,5 +1,7 @@
 package com.tut.abiz.base;
 
+import android.content.Context;
+
 import com.tut.abiz.base.model.Confiq;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.Group;
@@ -28,4 +30,10 @@ public interface NetServiceListener {
     public void onSendMsgReady(ArrayList<Integer> list);
 
     public void onReceiptMsgReady(ArrayList<Message> messages);
+
+    Context getContext();
+
+    void onGroupOrderDone();
+
+    void onGroupDelDone();
 }

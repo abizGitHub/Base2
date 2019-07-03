@@ -1,5 +1,6 @@
 package com.tut.abiz.base.acts;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
@@ -106,6 +107,21 @@ public class NetConnectionActivity extends AppCompatActivity implements NetServi
 
     @Override
     public void onReceiptMsgReady(ArrayList<Message> messages) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
+    }
+
+    @Override
+    public void onGroupOrderDone() {
+
+    }
+
+    @Override
+    public void onGroupDelDone() {
 
     }
 

@@ -124,7 +124,7 @@ public class OffLineTestService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Log.e("updatedUser:", user.getUserName() + "," + user.getPassword() + "," + user.getPhone() + "," + user.getEmail());
+        //log.e("updatedUser:", user.getUserName() + "," + user.getPassword() + "," + user.getPhone() + "," + user.getEmail());
         try {
             jsonObject.put("response", Consts.USERREGISTERED);
         } catch (JSONException e) {
@@ -141,7 +141,7 @@ public class OffLineTestService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Log.e("register:", user.getUserName() + "," + user.getPassword() + "," + user.getPhone() + "," + user.getEmail());
+        //log.e("register:", user.getUserName() + "," + user.getPassword() + "," + user.getPhone() + "," + user.getEmail());
         try {
             jsonObject.put("response", Consts.USERREGISTERED);
             jsonObject.put("id", 17360439);
@@ -176,7 +176,7 @@ public class OffLineTestService {
     private static void applyOrderGroup() {
         for (Integer id : reqOrderGroup) {
             //if (new Random().nextBoolean())
-            //Log.e(" order Gr>","-----------     " + id);
+            ////log.e(" order Gr>","-----------     " + id);
             groupsHash.get(id).setStatus(Group.REGISTERED);
         }
         for (Integer id : reqRegisterGroup) {
@@ -223,8 +223,8 @@ public class OffLineTestService {
 
     private static JSONObject returnMockConfiq(Confiq reqCnf) {
         JSONObject jsonResponse = new JSONObject();
-        // Log.e("req-ids> ", reqCnf.getLastIds().get(0) + "," + reqCnf.getLastIds().get(1));
-        // Log.e("last-ids> ", lastIds.get(0) + "," + lastIds.get(1));
+        // //log.e("req-ids> ", reqCnf.getLastIds().get(0) + "," + reqCnf.getLastIds().get(1));
+        // //log.e("last-ids> ", lastIds.get(0) + "," + lastIds.get(1));
         try {
             Confiq confiq = getConfig();
             confiq.setLastIds(lastIds);

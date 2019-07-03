@@ -30,7 +30,7 @@ public class BrowsePageTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
-        Log.e("started>", url);
+        //log.e("started>", url);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BrowsePageTask extends AsyncTask<String, Void, String> {
                 urlConnection.disconnect();
             }
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
+            //log.e("ERROR", e.getMessage(), e);
             response = e.getMessage();
             if (urlConnection != null)
                 urlConnection.disconnect();
@@ -64,7 +64,7 @@ public class BrowsePageTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         netServiceListener.onTextResponseReady(response);
-        Log.e("finished>", url);
+        //log.e("finished>", url);
     }
 
     @Override

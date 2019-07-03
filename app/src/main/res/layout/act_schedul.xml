@@ -39,7 +39,7 @@
             android:gravity="center"
             android:keepScreenOn="true"
             android:text="@string/samane"
-            android:textColor="@color/colorDarkBrown"
+            android:textColor="@color/colorOrange"
             android:layout_below="@id/fullscreen_content"
             android:textSize="20sp"
             android:textStyle="italic" />

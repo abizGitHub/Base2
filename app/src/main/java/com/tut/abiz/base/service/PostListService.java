@@ -1,6 +1,7 @@
 package com.tut.abiz.base.service;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
@@ -78,13 +79,21 @@ public class PostListService extends IntentService implements NetServiceListener
             confiqRemote = doPostConfig(Consts.SERVERADDRESS + Consts.ADDRESSCONFIQ, confiqLocal);
         else
             confiqRemote = doPostConfig(Consts.SERVERADDRESS + Consts.ADDRESSCONFIQ, dbHelper.getBriefConfiq());
+        //Toast.makeText(getContext(), Consts.SERVERADDRESS + Consts.ADDRESSCONFIQ + ">" + confiqLocal.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), "rec>" + confiqRemote.toString(), Toast.LENGTH_LONG).show();
         if (confiqRemote != null)
             if (i % 3 == 0) {
                 applyNewUserSetting(confiqLocal, confiqRemote);
                 applyNewModelMap(confiqRemote);
                 applyNewTagVisiblity(confiqRemote, confiqLocal);
             } else if (i % 3 == 2) {
-                applyMessages(confiqLocal);
+                if (isMessageMenuOpened()) {
+                    applyMessages(confiqLocal);
+                    setMessageMenuClosed();
+                } else {
+                    i++;
+                    return;
+                }
             } else {
                 ArrayList<Integer> updateCount = applyNewGmList(confiqLocal, confiqRemote);
                 publishResults(updateCount, SchedulService.SERVERCONECTED);
@@ -119,7 +128,7 @@ public class PostListService extends IntentService implements NetServiceListener
             if (response != null && response == Consts.USERREGISTERED)
                 pref.edit().putBoolean(Consts.USERACCOUNTEDITED, false).apply();
         }
-        if (forceStop) {
+        if (forceStop || confiqRemote == null) {
             publishResults(null, SchedulService.SERVERNOTRESPOND);
         }
         if (confiqRemote != null && confiqRemote.getSendDetail() != null)
@@ -152,6 +161,15 @@ public class PostListService extends IntentService implements NetServiceListener
     }
 
     private void doPostMessages(ArrayList<Message> messages, Confiq confiqLocal) {
+        boolean haveNewMsg = false;
+        for (Message message : messages) {
+            if (!getSentMessage().contains("[" + message.getId() + "]")) {
+                haveNewMsg = true;
+                break;
+            }
+        }
+        if (!haveNewMsg)
+            return;
         PostListTask postListTask = new PostListTask(this);
         JSONObject json = JsonUtil.parseConfiq(confiqLocal);
         try {
@@ -169,7 +187,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 waitCount++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                Log.e(">>??", e.getMessage());
+                //log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
             if (waitCount > (wait4Server / 100)) {
@@ -177,7 +195,13 @@ public class PostListService extends IntentService implements NetServiceListener
                 forceStop = true;
             }
         }
-
+        if (!forceStop) {
+            StringBuffer buffer = new StringBuffer();
+            for (Message message : messages) {
+                buffer.append("[").append(message.getId()).append("]");
+            }
+            setSentMessage(buffer.toString() + getSentMessage());
+        }
     }
 
     private void doGetMessages(Confiq confiqLocal) {
@@ -193,7 +217,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 waitCount++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                Log.e(">>??", e.getMessage());
+                //log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
             if (waitCount > (wait4Server / 100)) {
@@ -204,6 +228,8 @@ public class PostListService extends IntentService implements NetServiceListener
     }
 
     private void doDeleteOrder(int j, Confiq confiq) {
+        if (getDelGroup().contains("[" + j + "]"))
+            return;
         PostListTask postListTask = new PostListTask(this);
         JSONObject json = JsonUtil.parseConfiq(confiq);
         try {
@@ -213,9 +239,34 @@ public class PostListService extends IntentService implements NetServiceListener
         }
         postListTask.setUrlAndMessage(Consts.SERVERADDRESS + Consts.ADDRESSDELORDERGROUP, json);
         postListTask.execute(PostListTask.DELORDERGROUP);
+        while (wait4List) {
+            try {
+                waitCount++;
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                //log.e(">>??", e.getMessage());
+                e.printStackTrace();
+            }
+            if (waitCount > (wait4Server / 100)) {
+                wait4List = false;
+                forceStop = true;
+            }
+        }
+        if (!forceStop) {
+            setDelGroup("[" + j + "]" + getDelGroup());
+        }
     }
 
     private void doOrderGroup(ArrayList<Integer> orderedGroups, Confiq confiq, int j) {
+        boolean haveNewGroup = false;
+        for (Integer orderedGroup : orderedGroups) {
+            if (!getOrderedGroup().contains("[" + j + "-" + orderedGroup + "]")) {
+                haveNewGroup = true;
+                break;
+            }
+        }
+        if (!haveNewGroup)
+            return;
         PostListTask postListTask = new PostListTask(this);
         JSONObject json = JsonUtil.parseGroups(orderedGroups, Group.ORDERED$, JsonUtil.parseConfiq(confiq));
         try {
@@ -233,13 +284,20 @@ public class PostListService extends IntentService implements NetServiceListener
                 waitCount++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                Log.e(">>??", e.getMessage());
+                //log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
             if (waitCount > (wait4Server / 100)) {
                 wait4List = false;
                 forceStop = true;
             }
+        }
+        if (!forceStop) {
+            StringBuffer buffer = new StringBuffer();
+            for (Integer orderedGroup : orderedGroups) {
+                buffer.append("[").append(j).append("-").append(orderedGroup.toString()).append("]");
+            }
+            setOrderedGroup(buffer.toString() + getOrderedGroup());
         }
     }
 
@@ -249,6 +307,38 @@ public class PostListService extends IntentService implements NetServiceListener
 
     private boolean isGroupMenuOpened() {
         return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getBoolean(Consts.MENUGROUPOPENED, false);
+    }
+
+    private void setMessageMenuClosed() {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUMESSAGEOPENED, false).apply();
+    }
+
+    private boolean isMessageMenuOpened() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getBoolean(Consts.MENUMESSAGEOPENED, false);
+    }
+
+    private void setOrderedGroup(String orderedGroup) {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putString(Consts.ORDEREDGROUP, orderedGroup).apply();
+    }
+
+    private String getOrderedGroup() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.ORDEREDGROUP, "");
+    }
+
+    private void setSentMessage(String msg) {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putString(Consts.SENTMESSAGE, msg).apply();
+    }
+
+    private String getSentMessage() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.SENTMESSAGE, "");
+    }
+
+    private void setDelGroup(String delGroup) {
+        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putString(Consts.DELGROUP, delGroup).apply();
+    }
+
+    private String getDelGroup() {
+        return getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.DELGROUP, "");
     }
 
     private Integer doPostUserAccount(UserAccount userAccount) {
@@ -263,7 +353,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 waitCount++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                Log.e(">>??", e.getMessage());
+                //log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
             if (waitCount > (wait4Server / 100)) {
@@ -286,7 +376,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 waitCount++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                Log.e(">>??", e.getMessage());
+                //log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
             if (waitCount > (wait4Server / 100)) {
@@ -304,8 +394,8 @@ public class PostListService extends IntentService implements NetServiceListener
         ArrayList<Long> lastIds = confiqLocal.getLastIds();
         if (confiqRemote.getLastIds() != null)
             for (int ix = 1; ix < tableCount + 1; ix++) {
-                Log.e("ix:" + ix + ">remote lastID:", confiqRemote.getLastIds().get(ix - 1) +
-                        " , local lastID:" + confiqLocal.getLastIds().get(ix - 1));
+                //log.e("ix:" + ix + ">remote lastID:", confiqRemote.getLastIds().get(ix - 1) +
+                       // " , local lastID:" + confiqLocal.getLastIds().get(ix - 1));
                 if (confiqRemote != null && confiqRemote.getLastIds().get(ix - 1) > confiqLocal.getLastIds().get(ix - 1)) {
                     ArrayList<GeneralModel> generalModels = doPostList(Consts.SERVERADDRESS + "/gm/" + ix + "/" + lastIds.get(ix - 1), confiqLocal);
                     if (generalModels != null) {
@@ -353,7 +443,7 @@ public class PostListService extends IntentService implements NetServiceListener
                 waitCount++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                Log.e(">>??", e.getMessage());
+                //log.e(">>??", e.getMessage());
                 e.printStackTrace();
             }
             if (waitCount > (wait4Server / 100)) {
@@ -525,6 +615,21 @@ public class PostListService extends IntentService implements NetServiceListener
     @Override
     public void onReceiptMsgReady(ArrayList<Message> messages) {
         recMessages = messages;
+        wait4List = false;
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void onGroupOrderDone() {
+        wait4List = false;
+    }
+
+    @Override
+    public void onGroupDelDone() {
         wait4List = false;
     }
 

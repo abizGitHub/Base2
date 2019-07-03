@@ -50,7 +50,7 @@ public class SchedulService extends Service {
     public static String ISINBACK = "is_In_Back";
     public static String SERVERNOTRESPOND = "server_not_respond";
     public static String SERVERCONECTED = "server_connected";
-
+    public static int CONNECTCOUNT = 0;
     ConnectivityManager conMan;
     boolean connectedToNet;
     SharedPreferences pref;
@@ -83,7 +83,7 @@ public class SchedulService extends Service {
         piIntent = PendingIntent.getActivity(this, (int) new Date().getTime(), resultIntent, 0);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_menu_gallery)
+                .setSmallIcon(R.drawable.baseline_wb_sunny_white_24)
                 //.setContentTitle("START")
                 .setStyle(bigTextStyle)
                 .setContentIntent(piIntent);
@@ -100,9 +100,12 @@ public class SchedulService extends Service {
             if (intent.getExtras() != null)
                 intent.getExtras().clear();
             intent.putExtra(RESULT, i++);
+            if (CONNECTCOUNT > 60)
+                CONNECTCOUNT = 0;
+            CONNECTCOUNT++;
             startService(intent);
-            //Log.e("alive services:", " ======== " + PostListService.alive);
-            handler.postDelayed(periodicUpdate, pref.getInt(Confiq.CONNECTPERIOD, Consts.DEFAULTCONPERIOD));
+            ////log.e("alive services:", " ======== " + PostListService.alive);
+            handler.postDelayed(periodicUpdate, pref.getInt(Confiq.CONNECTPERIOD, Consts.DEFAULTCONPERIOD) + CONNECTCOUNT++);
         }
     };
 
@@ -134,6 +137,9 @@ public class SchedulService extends Service {
         conMan = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = conMan.getActiveNetworkInfo();
         connectedToNet = (info != null && info.isAvailable() && info.isConnected());
+        /*String s = ">" + info + "," + (info == null ? "!" : info.isAvailable()) + "," +(info == null ? "!" : info.isConnected());
+        Toast.makeText(getBaseContext(), s, Toast.LENGTH_LONG).show();
+        */
         return connectedToNet;
     }
 

@@ -98,9 +98,9 @@ public class PagerActivity extends BaseActivity {
         } else {
             img.setBackgroundResource(R.drawable.baseline_account_balance_black_48);
             if (i == 0)
-                text.setTextColor(getResources().getColor(R.color.colorDarkRed));
+                text.setTextColor(getResources().getColor(R.color.colorRed));
             else
-                text.setTextColor(getResources().getColor(R.color.colorDarkGreen));
+                text.setTextColor(getResources().getColor(R.color.colorGreen));
         }
     }
 

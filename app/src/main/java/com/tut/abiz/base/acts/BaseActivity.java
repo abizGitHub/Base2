@@ -62,6 +62,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (getNavMenu() == R.id.nav_Group)
                         getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUGROUPOPENED, true).apply();
+                    if (getNavMenu() == R.id.nav_message)
+                        getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUMESSAGEOPENED, true).apply();
                     finish();
                 }
             });
@@ -69,6 +71,15 @@ public abstract class BaseActivity extends AppCompatActivity {
             toolbar.setTitleTextColor(Color.WHITE);
             toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_white_24);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getNavMenu() == R.id.nav_Group)
+            getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUGROUPOPENED, true).apply();
+        if (getNavMenu() == R.id.nav_message)
+            getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.MENUMESSAGEOPENED, true).apply();
+        super.onBackPressed();
     }
 
     @Override
@@ -128,7 +139,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public int getSelectedTable() {
-        Log.e(" - page : ", selectedTable + "");
+        //log.e(" - page : ", selectedTable + "");
         return selectedTable;
     }
 

@@ -42,7 +42,7 @@ public class GetListTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Log.e("started>", url);
+        //log.e("started>", url);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GetListTask extends AsyncTask<String, Void, String> {
             HttpEntity entity = GetData();
             response = getASCIIContentFromEntity(entity);
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
+            //log.e("ERROR", e.getMessage(), e);
             response = e.getMessage();
             cancel(true);
         }
@@ -66,17 +66,17 @@ public class GetListTask extends AsyncTask<String, Void, String> {
                 try {
                     generalModel = new GeneralModel(json1);
                 } catch (JSONException e) {
-                    Log.e("ERROR", e.getMessage(), e);
+                    //log.e("ERROR", e.getMessage(), e);
                     response = e.getMessage();
                 }
                 gms.add(generalModel);
             }
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
+            //log.e("ERROR", e.getMessage(), e);
             response = e.getMessage();
         }
         netServiceListener.onGeneralListReady(gms);
-        Log.e("finished>", url);
+        //log.e("finished>", url);
         return response;
     }
 
@@ -103,7 +103,7 @@ public class GetListTask extends AsyncTask<String, Void, String> {
         try {
             in = entity.getContent();
         } catch (IOException e) {
-            Log.e("ERROR", e.getMessage(), e);
+            //log.e("ERROR", e.getMessage(), e);
             response = e.getMessage();
         }
         StringBuffer out = new StringBuffer();
@@ -113,7 +113,7 @@ public class GetListTask extends AsyncTask<String, Void, String> {
             try {
                 n = in.read(b);
             } catch (Exception e) {
-                Log.e("ERROR", e.getMessage(), e);
+                //log.e("ERROR", e.getMessage(), e);
                 response = e.getMessage();
             }
             if (n > 0) out.append(new String(b, 0, n));

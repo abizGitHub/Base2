@@ -39,10 +39,12 @@ public class NetService implements NetServiceListener {
     DbHelper dbHelper;
     Confiq confiqRemote;
     SharedPreferences pref, visiblityPref, isStringPref;
+    Context context;
 
     public NetService(NetServiceListener netServiceListener, Context context) {
         listener = netServiceListener;
         dbHelper = new DbHelper(context);
+        this.context = context;
         pref = context.getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE);
         visiblityPref = context.getSharedPreferences(Consts.VISIBLITYPREF, MODE_PRIVATE);
         isStringPref = context.getSharedPreferences(Consts.ISSTRINGPREF, MODE_PRIVATE);
@@ -118,6 +120,21 @@ public class NetService implements NetServiceListener {
 
     @Override
     public void onReceiptMsgReady(ArrayList<Message> messages) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
+    @Override
+    public void onGroupOrderDone() {
+
+    }
+
+    @Override
+    public void onGroupDelDone() {
 
     }
 

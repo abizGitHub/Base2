@@ -246,7 +246,7 @@ public class ActsInMenuAct extends BaseActivity
                 setSelectedTable(1);
                 //homeFragment.doStarResume();
             } catch (Exception e) {
-                Log.e("??", "sssttrr");
+                //log.e("??", "sssttrr");
             }
             return;
         }

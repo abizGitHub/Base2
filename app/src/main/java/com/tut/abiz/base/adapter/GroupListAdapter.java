@@ -59,7 +59,7 @@ public class GroupListAdapter extends ArrayAdapter {
         title = (TextView) row.findViewById(R.id.sheetTitle);
         sub = (TextView) row.findViewById(R.id.sheetOrderSub);
         Group group = groups.get(position);
-        //Log.e("id : " + group.getId() + " > ", group.getStatus() + "");
+        ////log.e("id : " + group.getId() + " > ", group.getStatus() + "");
         title.setText(group.getName());
         if (group.getStatus() == Group.UNREGISTERED) {
             orderBtn.setChecked(false);

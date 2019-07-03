@@ -2,6 +2,7 @@ package com.tut.abiz.base.async;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.NetServiceListener;
@@ -55,7 +56,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Log.e("started>", url);
+        //log.e("started>", url);
     }
 
     @Override
@@ -75,9 +76,9 @@ public class PostListTask extends AsyncTask<String, Void, String> {
             } else if (strings[0].equals(EDITUSER)) {
                 netService.onUpdateAccountReady(extractRegResponse(jsonObject));
             } else if (strings[0].equals(ORDERGROUP)) {
-                //
+                netService.onGroupOrderDone();
             } else if (strings[0].equals(DELORDERGROUP)) {
-                //
+                netService.onGroupDelDone();
             } else if (strings[0].equals(SENDMSG)) {
                 netService.onSendMsgReady(JsonUtil.extractReceiptMsgIds(jsonObject));
             } else if (strings[0].equals(RECEIVEMSG)) {
@@ -85,7 +86,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-            Log.e("doInBackground", e.getMessage());
+            //log.e("doInBackground", e.getMessage());
             if (strings[0].equals(GETCONGIQ)) {
                 netService.onConfiqReady(null);
             } else if (strings[0].equals(GETLIST)) {
@@ -96,7 +97,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
                 netService.onUpdateAccountReady(Consts.CANTREGISTERE);
             }
         }
-        Log.e("finished>", url);
+        //log.e("finished>", url);
         return "done";
     }
 
@@ -107,7 +108,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
     public JSONObject postData() throws IOException, JSONException {
         HttpPost httpPost = new HttpPost(url);
         //httpPost.setHeader("contentType", "text/plain;charset=UTF-8");
-        StringEntity entity = new StringEntity(sentJson.toString(),"UTF-8");// this must be "UTF-8" , others not important
+        StringEntity entity = new StringEntity(sentJson.toString(), "UTF-8");// this must be "UTF-8" , others not important
         //entity.setContentType("text/plain; charset=UTF-8");
         //entity.setContentEncoding("UTF-8");
         httpPost.setEntity(entity);
@@ -115,7 +116,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
         String resp = readResponse(httpResponse);
         if (resp.trim().isEmpty())
             return new JSONObject();
-        Log.e("response:", resp);
+        //log.e("response:", resp);
         return new JSONObject(resp);
     }
 
@@ -132,7 +133,7 @@ public class PostListTask extends AsyncTask<String, Void, String> {
             }
             return_text = sb.toString();
         } catch (Exception e) {
-            Log.e("started>", url);
+            //log.e("started>", url);
         }
         return return_text;
     }

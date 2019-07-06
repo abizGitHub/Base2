@@ -152,7 +152,7 @@ public class Frag1 {
         ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
         TextView text = (TextView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabText);
         if (selected) {
-            text.setTextColor(activity.getResources().getColor(R.color.colorWhite));
+            //text.setTextColor(activity.getResources().getColor(R.color.colorWhite));
             img.setBackgroundResource(R.drawable.baseline_account_balance_white_48);
         } else {
             img.setBackgroundResource(R.drawable.baseline_account_balance_black_48);

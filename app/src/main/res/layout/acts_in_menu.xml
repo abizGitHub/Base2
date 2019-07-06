@@ -38,6 +38,19 @@
                         android:layout_marginRight="@dimen/text_size_xlarge"
                         android:background="@android:color/transparent"
                         android:src="@android:drawable/ic_menu_search" />
+
+                    <TextView
+                        android:id="@+id/waitForUpdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@id/search_btn"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="@dimen/text_size_xlarge"
+                        android:gravity="end"
+                        android:textColor="@color/colorWhite"
+                        android:text=""
+                        android:textAlignment="textEnd" />
+
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
@@ -46,9 +59,9 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            app:tabGravity="center"
-            android:background="@color/colorPrimary"
             android:layout_below="@id/appBarLayout"
+            android:background="@color/colorPrimary"
+            app:tabGravity="center"
             app:tabMode="fixed" />
 
         <android.support.v4.view.ViewPager

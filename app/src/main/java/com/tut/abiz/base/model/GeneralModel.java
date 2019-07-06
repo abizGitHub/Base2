@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created with IntelliJ IDEA.
@@ -150,7 +151,12 @@ public class GeneralModel implements Serializable {
     public void fillMock() {
         int rnd = new Random().nextInt(100);
         setTitle("title-" + rnd);
-        setBody("body-" + rnd);
+        String s = "";
+        for (int i = 0; i < 99; i++) {
+            s += UUID.randomUUID();
+            s += "-xxx-";
+        }
+        setBody(s);
         setHeaderL("headerL-" + rnd);
         setHeaderR("headerR-" + rnd);
         setFooterL("footerL-" + rnd);

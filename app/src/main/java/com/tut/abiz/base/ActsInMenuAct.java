@@ -1,7 +1,6 @@
 package com.tut.abiz.base;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tut.abiz.base.acts.Act1;
@@ -54,12 +52,13 @@ public class ActsInMenuAct extends BaseActivity
     Toolbar toolbar;
     GeneralService service;
     ArrayList<GeneralModel> testList;
-    FrameLayout frameLayout;
+    TextView waitForUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acts_in_menu);
+        waitForUpdate = (TextView) findViewById(R.id.waitForUpdate);
         if (getIntent() == null || getIntent().getExtras() == null)
             SchedulActivity.phase = SchedulService.DOCONNECT;
         else
@@ -90,50 +89,35 @@ public class ActsInMenuAct extends BaseActivity
     }
 
     public void startDialog(String command) {
-        //Toast.makeText(this, getIntent().getExtras().getString(SchedulService.DOCONNECT), Toast.LENGTH_SHORT).show();
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);//, R.drawable.background_dialog);
-
-        if (command.equals(SchedulService.CONNECTED))
-            alertDialogBuilder.setMessage(getResources().getString(R.string.wait4UpdateMessage));
-        else
+        if (command.equals(SchedulService.CONNECTED)) {
+            waitForUpdate.setText(getResources().getString(R.string.wait4UpdateMessage));
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    waitForUpdate.setText("");
+                }
+            }, 6000);
+        } else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);//, R.drawable.background_dialog);
             alertDialogBuilder.setMessage(getResources().getString(R.string.canNotconnectMessage));
-/*
-alertDialogBuilder.setPositiveButton(getResources().getString(R.string.understood),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        //Toast.makeText(ActsInMenuAct.this, "You clicked yes button", Toast.LENGTH_LONG).show();
-                    }
-                });
-*/
+            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.understood), new DialogInterface.OnClickListener() {
 
-        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.understood), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            final AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    alertDialog.show();
+                }
+            }, 300);
+        }
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //finish();
-            }
-        });
-
-/*
-        alertDialogBuilder.setNeutralButton("Neutral",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Toast.makeText(ActsInMenuAct.this, "You clicked Neutral button", Toast.LENGTH_LONG).show();
-                    }
-                });
-*/
-
-        final AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.setCanceledOnTouchOutside(false);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        }, 300);
     }
 
 

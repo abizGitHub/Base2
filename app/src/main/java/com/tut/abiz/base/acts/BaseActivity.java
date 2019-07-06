@@ -36,18 +36,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     private String navTitle;
     NetService netService;
     GeneralService service;
-    public static boolean offline = true;
+    public static boolean offline = false;
     static int prevPage = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DbHelper(this);
-        navMenu = getIntent().getExtras().getInt(Consts.NAVPAGER);
-        navTitle = getIntent().getExtras().getString(Consts.NAVTITLE);
-        service = new GeneralService(this);
-        netService = new NetService(null, this);
-        setSelectedTable(getIntent().getExtras().getInt(Consts.CURRENTPAGE));
+        if (getIntent().getExtras() != null) {
+            navMenu = getIntent().getExtras().getInt(Consts.NAVPAGER, R.id.nav_frag1);
+            navTitle = getIntent().getExtras().getString(Consts.NAVTITLE, "");
+            service = new GeneralService(this);
+            netService = new NetService(null, this);
+            setSelectedTable(getIntent().getExtras().getInt(Consts.CURRENTPAGE, 1));
+        } else {
+            navMenu = R.id.nav_frag1;
+            navTitle = "";
+            service = new GeneralService(this);
+            netService = new NetService(null, this);
+            setSelectedTable(1);
+        }
     }
 
     @Override

@@ -51,50 +51,45 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/sheetTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/text_size_xlarge"
-                    android:layout_alignParentLeft="true"
-                    android:layout_weight="1"
-                    android:text="title"
-                    android:textColor="@color/colorDarkRed"
-                    android:textSize="@dimen/text_size_large" />
-<!--
-                <ToggleButton
-                    android:id="@+id/sheetStar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/text_size_xlarge"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/star_btn"
-                    android:tint="@color/colorBlue2"
-                    android:checked="false"
-                    android:textOff=""
-                    android:textOn="" />-->
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <com.tut.abiz.base.adapter.ImageV
-                        android:id="@+id/sheetStar"
-                        android:layout_width="60dp"
-                        android:layout_height="40dp"
-                        android:layout_centerInParent="true"
-                        android:layout_weight="1"
-                        android:scaleType="fitXY"
-                        android:tint="@color/colorBlack"
-                        app:srcCompat="@drawable/baseline_star_border_black_18" />
+
                     <com.tut.abiz.base.adapter.ImageV
                         android:id="@+id/sheetStar2"
                         android:layout_width="60dp"
                         android:layout_height="40dp"
                         android:layout_centerInParent="true"
                         android:layout_weight="1"
+                        android:scaleX="0.6"
+                        android:scaleY="0.6"
                         android:scaleType="fitXY"
                         android:tint="@color/colorBlack"
                         app:srcCompat="@drawable/baseline_star_border_black_18" />
-                </RelativeLayout>
 
+                    <com.tut.abiz.base.adapter.ImageV
+                        android:id="@+id/sheetStar"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        android:scaleX="0.6"
+                        android:scaleY="0.6"
+                        android:scaleType="fitXY"
+                        android:tint="@color/colorYellow"
+                        app:srcCompat="@drawable/baseline_star_black_18" />
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/sheetTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/text_size_xlarge"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:text="title"
+                    android:textColor="@color/colorDarkRed"
+                    android:textSize="@dimen/text_size_medium" />
             </LinearLayout>
 
             <LinearLayout
@@ -112,7 +107,7 @@
                     android:layout_weight="1"
                     android:text="header_L"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_medium" />
+                    android:textSize="@dimen/text_size_small" />
 
                 <TextView
                     android:id="@+id/sheetHeaderR"
@@ -120,20 +115,25 @@
                     android:layout_height="@dimen/text_size_xlarge"
                     android:layout_weight="1"
                     android:text="header_R"
+                    android:textDirection="rtl"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_medium" />
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/sheetBody"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_size_xlarge"
-                android:layout_weight="7"
-                android:gravity="end"
-                android:text="context"
-                android:textAlignment="textEnd"
-                android:textColor="@color/colorDarkBrown"
-                android:textSize="@dimen/text_size_medium" />
+                android:layout_weight="71">
+                <TextView
+                    android:id="@+id/sheetBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/text_size_xlarge"
+                    android:gravity="end"
+                    android:text="context"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorDarkBrown"
+                    android:textSize="@dimen/text_size_small" />
+            </ScrollView>
 
             <LinearLayout
                 android:id="@+id/sheetFootRL"
@@ -159,6 +159,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_weight="1"
                     android:text="footer_R"
+                    android:textDirection="rtl"
                     android:textColor="@color/colorDarkGreen"
                     android:textSize="@dimen/text_size_small" />
 
@@ -172,9 +173,9 @@
                     android:id="@+id/viewImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorDarkBrown"
                     android:layout_centerHorizontal="true"
                     android:layout_weight="0.3"
+                    android:background="@color/colorDarkBrown"
                     android:text="@string/viewAnnounce" />
             </RelativeLayout>
         </LinearLayout>

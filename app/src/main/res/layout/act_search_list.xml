@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
@@ -23,7 +22,8 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/srchRel"
         android:layout_below="@id/appBarLayout"
         android:layout_gravity="start"
         android:background="@color/colorPrimary"
@@ -67,10 +67,11 @@
             <EditText
                 android:id="@+id/search_word"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_weight="1"
                 android:gravity="start"
+                android:textSize="@dimen/text_size_large"
                 android:layout_marginLeft="@dimen/text_size_small"
                 android:background="@color/colorVLightGray"
                 android:layoutDirection="rtl"
@@ -128,7 +129,7 @@
 
                 <RadioButton
                     android:id="@+id/radio4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
@@ -162,15 +163,23 @@
             </RadioGroup>
         </HorizontalScrollView>
 
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/srchRel"
+        android:background="@color/colorVLightGray"
+        android:orientation="vertical">
+
         <ListView
             android:id="@+id/list_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/scro"
-            android:layout_marginLeft="@dimen/list_sides_margin"
-            android:layout_marginRight="@dimen/list_sides_margin"
-            android:background="@color/colorVLightGray"
-            android:dividerHeight="@dimen/list_sides_margin" />
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:dividerHeight="-10dp" />
 
     </RelativeLayout>
 

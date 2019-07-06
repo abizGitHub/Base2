@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private String navTitle;
     NetService netService;
     GeneralService service;
-    public static boolean offline = false;
+    public static boolean offline = true;
     static int prevPage = 0;
 
     @Override

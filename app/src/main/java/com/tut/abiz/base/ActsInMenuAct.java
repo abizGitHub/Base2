@@ -1,6 +1,7 @@
 package com.tut.abiz.base;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,17 +12,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.tut.abiz.base.acts.Act1;
-import com.tut.abiz.base.acts.Act2;
-import com.tut.abiz.base.acts.Act3;
 import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.acts.ListActivity;
 import com.tut.abiz.base.acts.MessageAct;
@@ -30,7 +30,6 @@ import com.tut.abiz.base.acts.PagerActivity;
 import com.tut.abiz.base.acts.RegistrationAct;
 import com.tut.abiz.base.acts.SchedulActivity;
 import com.tut.abiz.base.acts.SearchActivity;
-import com.tut.abiz.base.acts.TabAct;
 import com.tut.abiz.base.frags.Frag1;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
@@ -55,6 +54,7 @@ public class ActsInMenuAct extends BaseActivity
     Toolbar toolbar;
     GeneralService service;
     ArrayList<GeneralModel> testList;
+    FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +68,7 @@ public class ActsInMenuAct extends BaseActivity
         setSupportActionBar(toolbar);
         actsMap = new HashMap<>();
         actsMap.put(R.id.nav_frag1, Act1.class);
-        /*actsMap.put(R.id.nav_frag2, Act2.class);
-        actsMap.put(R.id.nav_frag3, Act3.class);
-        */drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         homeFragment = new Frag1();
@@ -88,7 +86,7 @@ public class ActsInMenuAct extends BaseActivity
                 startActivity(intent);
             }
         });
-
+        homeFragment.onCreateView(this);
     }
 
     public void startDialog(String command) {
@@ -100,8 +98,7 @@ public class ActsInMenuAct extends BaseActivity
         else
             alertDialogBuilder.setMessage(getResources().getString(R.string.canNotconnectMessage));
 /*
-
-        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.understood),
+alertDialogBuilder.setPositiveButton(getResources().getString(R.string.understood),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -144,6 +141,7 @@ public class ActsInMenuAct extends BaseActivity
     protected void onResume() {
         super.onResume();
         onSelectMenu(R.id.nav_frag1, getResources().getString(R.string.farg1));
+        homeFragment.onResume();
     }
 
     protected void doStaredTasks() {
@@ -235,8 +233,6 @@ public class ActsInMenuAct extends BaseActivity
         selectedMenuAct = fragId;
         Class<? extends AppCompatActivity> activity = actsMap.get(selectedMenuAct);
         if (selectedMenuAct == R.id.nav_frag1) {
-            if (getSupportFragmentManager().getFragments() == null)
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, homeFragment).commit();
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -260,7 +256,8 @@ public class ActsInMenuAct extends BaseActivity
                     doHeaderRVisible(true).
                     doStarVisible(true);
             intent.putExtra(Consts.VISIBLITY, visiblity);
-        } else*/ if (selectedMenuAct == R.id.nav_dbView) {
+        } else*/
+        if (selectedMenuAct == R.id.nav_dbView) {
             intent = new Intent(ActsInMenuAct.this, ListActivity.class);
             TagVisiblity visiblity = new TagVisiblity(-1).
                     doBodyVisible(true).

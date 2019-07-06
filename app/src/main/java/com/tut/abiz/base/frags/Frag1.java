@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by abiz on 4/11/201
  */
 
-public class Frag1 extends Fragment {
+public class Frag1 {
 
     ArrayList<FragmentPack> allFragmentPacks;
     ViewPager pager;
@@ -44,19 +45,18 @@ public class Frag1 extends Fragment {
     NetService netService;
     GeneralService service;
     BaseActivity activity;
-    View iconDown, iconUp, iconDownOn, iconUpOn;
+    View iconDown, iconUp;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_paginator, container, false);
-        activity = (BaseActivity) getActivity();
-        service = new GeneralService(getActivity());
-        netService = new NetService(null, getActivity());
-        tabs = (TabLayout) view.findViewById(R.id.tabLayout);
-        pager = (ViewPager) view.findViewById(R.id.pager);
+    public void onCreateView(final BaseActivity activity) {
+        //View view = inflater.inflate(R.layout.frag_paginator, container, false);
+        //activity = (BaseActivity) getActivity();
+        this.activity = activity;
+        service = new GeneralService(activity);
+        netService = new NetService(null, activity);
+        tabs = (TabLayout) activity.findViewById(R.id.tabLayout);
+        pager = (ViewPager) activity.findViewById(R.id.pager);
         tabs.setupWithViewPager(pager);
-        tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorLightGray));
+        tabs.setSelectedTabIndicatorColor(activity.getResources().getColor(R.color.colorLightGray));
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -65,7 +65,7 @@ public class Frag1 extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                ((BaseActivity) getActivity()).setSelectedTable(pager.getCurrentItem() + 1);
+                activity.setSelectedTable(pager.getCurrentItem() + 1);
                 for (int i = 0; i < tabs.getTabCount(); i++) {
                     setIconSelected(i, i == pager.getCurrentItem());
                 }
@@ -79,18 +79,15 @@ public class Frag1 extends Fragment {
         tabs.setTabMode(TabLayout.MODE_FIXED);
 
         allFragmentPacks = service.getAllList();
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm = activity.getSupportFragmentManager();
         pagerAdapter = new GeneralPagerAdapter(fm, allFragmentPacks);
         pager.setAdapter(pagerAdapter);
         setUpTabIcons();
-
-        //View view = inflater.inflate(R.layout.frag_first, container, false);
-        return view;
     }
 
 
     private void setUpTabIcons() {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int ix = 0;
         View view;
         iconDown = inflater.inflate(R.layout.tab_icon, null);
@@ -108,39 +105,21 @@ public class Frag1 extends Fragment {
         setIconSelected(0, true);
     }
 
-    @Override
     public void onResume() {
-        super.onResume();
         if (pagerFrag != null && getGeneralList() != null) {
             for (int ix = 0; ix < allFragmentPacks.size(); ix++) {
                 ArrayList<GeneralModel> gList = service.getAllGeneralFrom(ix + 1);
                 if (gList != null)
+
                     for (int i = 0; i < gList.size(); i++) {
                         boolean stared = gList.get(i).getStared();
-                        ((ListPagerFrag) allFragmentPacks.get(ix).getPagerFragment()).getGeneralList().get(i).setStared(stared);
+                        try {
+                            ((ListPagerFrag) allFragmentPacks.get(ix).getPagerFragment()).getGeneralList().get(i).setStared(stared);
+                        } catch (Exception e) {
+                            Log.e("www", "eee");
+                        }
                     }
             }
-        }
-    }
-
-    public void doStarResume() {
-        String current = getActivity().getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getString(Consts.CURRENTACTIVITY, "");
-        getActivity().getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putString(Consts.LASTACTIVITY, current).apply();
-        getActivity().getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putString(Consts.CURRENTACTIVITY, this.getClass().getName()).apply();
-        boolean notify = activity.hasNewChange();
-        int position = activity.getStaredPosition();
-        if (notify && position > -1) {
-            doStaredTasks();
-            if (getGeneralList() != null)
-                getGeneralList().get(position).setStared(getIsStared());
-            if (!getIsStared())
-                if (activity.getNavMenu() == R.id.nav_staredList && ViewListItemActivity.class.getName().equals(activity.getLastActivityName())) {
-                    getGeneralList().remove(position);
-                    getGeneralTitles().remove(position);
-                }
-            if (getListAdapter() != null)
-                getListAdapter().notifyDataSetChanged();
-            activity.clearNewChange();
         }
     }
 
@@ -157,30 +136,30 @@ public class Frag1 extends Fragment {
     }
 
     public void doStaredTasks() {
-        pagerFrag = (ListPagerFrag) allFragmentPacks.get(((BaseActivity) getActivity()).getSelectedTable() - 1).getPagerFragment();
+        pagerFrag = (ListPagerFrag) allFragmentPacks.get(activity.getSelectedTable() - 1).getPagerFragment();
         generalListAdapter = (GeneralListAdapter) pagerFrag.getAdapter();
     }
 
     public boolean getIsStared() {
-        return getActivity().getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getBoolean(Consts.STARED, false);
+        return activity.getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).getBoolean(Consts.STARED, false);
     }
 
     public void setIsStared(boolean b) {
-        getActivity().getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.STARED, b).apply();
+        activity.getSharedPreferences(Consts.SHEREDPREF, MODE_PRIVATE).edit().putBoolean(Consts.STARED, b).apply();
     }
 
     private void setIconSelected(int i, boolean selected) {
         ImageView img = (ImageView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabIcon);
         TextView text = (TextView) tabs.getTabAt(i).getCustomView().findViewById(R.id.tabText);
         if (selected) {
-            text.setTextColor(getResources().getColor(R.color.colorWhite));
+            text.setTextColor(activity.getResources().getColor(R.color.colorWhite));
             img.setBackgroundResource(R.drawable.baseline_account_balance_white_48);
         } else {
             img.setBackgroundResource(R.drawable.baseline_account_balance_black_48);
             if (i == 0)
-                text.setTextColor(getResources().getColor(R.color.colorRed));
+                text.setTextColor(activity.getResources().getColor(R.color.colorRed));
             else
-                text.setTextColor(getResources().getColor(R.color.colorGreen));
+                text.setTextColor(activity.getResources().getColor(R.color.colorGreen));
         }
     }
 

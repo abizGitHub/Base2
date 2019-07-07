@@ -64,6 +64,8 @@ public class ListPagerFrag extends PagerFragment {
             adapter = new GeneralListAdapter((BaseActivity) getActivity(), generalList, visiblity, titles, R.layout.sheet_itemlinear);
         }
         listView.setAdapter(adapter);
+        //listView.setDividerHeight(0);
+        //listView.setDivider(null);
         return view;
     }
 

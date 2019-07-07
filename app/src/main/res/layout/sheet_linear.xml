@@ -58,24 +58,24 @@
 
                     <com.tut.abiz.base.adapter.ImageV
                         android:id="@+id/sheetStar2"
-                        android:layout_width="60dp"
+                        android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_centerInParent="true"
                         android:layout_weight="1"
-                        android:scaleX="0.6"
-                        android:scaleY="0.6"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
                         android:scaleType="fitXY"
                         android:tint="@color/colorBlack"
                         app:srcCompat="@drawable/baseline_star_border_black_18" />
 
                     <com.tut.abiz.base.adapter.ImageV
                         android:id="@+id/sheetStar"
-                        android:layout_width="60dp"
+                        android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_centerInParent="true"
                         android:layout_weight="1"
-                        android:scaleX="0.6"
-                        android:scaleY="0.6"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
                         android:scaleType="fitXY"
                         android:tint="@color/colorYellow"
                         app:srcCompat="@drawable/baseline_star_black_18" />
@@ -85,8 +85,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/text_size_xlarge"
                     android:layout_weight="1"
-                    android:gravity="end"
-                    android:textAlignment="textEnd"
+                    android:layoutDirection="rtl"
+                    android:textDirection="rtl"
                     android:text="title"
                     android:textColor="@color/colorDarkRed"
                     android:textSize="@dimen/text_size_medium" />
@@ -106,8 +106,10 @@
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
                     android:text="header_L"
+                    android:layoutDirection="ltr"
+                    android:textDirection="ltr"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_medium" />
 
                 <TextView
                     android:id="@+id/sheetHeaderR"
@@ -117,7 +119,7 @@
                     android:text="header_R"
                     android:textDirection="rtl"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_medium" />
             </LinearLayout>
 
             <ScrollView
@@ -128,11 +130,12 @@
                     android:id="@+id/sheetBody"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/text_size_xlarge"
-                    android:gravity="end"
+                    android:background="@color/colorBlueGreen"
+                    android:textDirection="rtl"
+                    android:layoutDirection="rtl"
                     android:text="context"
-                    android:textAlignment="textEnd"
                     android:textColor="@color/colorDarkBrown"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_medium" />
             </ScrollView>
 
             <LinearLayout
@@ -149,8 +152,10 @@
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
                     android:text="footer_L"
+                    android:layoutDirection="ltr"
+                    android:textDirection="ltr"
                     android:textColor="@color/colorOrange"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_medium" />
 
                 <TextView
                     android:id="@+id/sheetFootR"
@@ -161,7 +166,7 @@
                     android:text="footer_R"
                     android:textDirection="rtl"
                     android:textColor="@color/colorDarkGreen"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_medium" />
 
             </LinearLayout>
 

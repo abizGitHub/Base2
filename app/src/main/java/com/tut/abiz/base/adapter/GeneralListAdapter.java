@@ -8,22 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.tut.abiz.base.Consts;
 import com.tut.abiz.base.R;
 import com.tut.abiz.base.acts.BaseActivity;
 import com.tut.abiz.base.acts.ViewListItemActivity;
-import com.tut.abiz.base.frags.ListPagerFrag;
 import com.tut.abiz.base.listener.CheckListener;
 import com.tut.abiz.base.model.GeneralModel;
 import com.tut.abiz.base.model.TagVisiblity;
-import com.tut.abiz.base.service.DbHelper;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -114,22 +107,22 @@ public class GeneralListAdapter extends ArrayAdapter {
         }
         star = (ImageV) row.findViewById(R.id.sheetStar);
         layout.setOnClickListener(new LayoutClickListener(this, generalModels, titles, position));
-        ImageV star2 = (ImageV) row.findViewById(R.id.sheetStar2);
+        //ImageV star2 = (ImageV) row.findViewById(R.id.sheetStar2);
         if (visiblity.isStarVisible()) {
             star.setChecked(generalModels.get(position).getStared());
-            star.setScale(0.7f);
-            star2.setScale(0.7f);
+            //star.setScale(0.7f);
+            //star2.setScale(0.7f);
             star.setOnCheckedChangeListener(new CheckListener(baseActivity, this, generalModels, titles, position));
-            minHeight += rowHeight;
+            // FY -> minHeight += rowHeight;
         } else {
-            layout.removeView(star);
-            star.setVisibility(View.INVISIBLE);
-            layout.removeView(star2);
-            star2.setVisibility(View.INVISIBLE);
+            //layout.removeView(star);
+            //star.setVisibility(View.INVISIBLE);
+            //layout.removeView(star2);
+            //star2.setVisibility(View.INVISIBLE);
         }
         if (sheet_itemLayout == R.layout.sheet_itemlinear)
             doMoreRemove();
-        layout.setMinimumHeight(minHeight);
+        //layout.setMinimumHeight(minHeight);
         return row;
     }
 

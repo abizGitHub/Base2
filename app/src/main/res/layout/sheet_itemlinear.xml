@@ -4,21 +4,23 @@
     android:id="@+id/item_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="beforeDescendants"
+    android:layout_marginBottom="-1dp"
+    android:layout_marginTop="-1dp"
+    android:paddingBottom="-1dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:paddingTop="-1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/card_background_selector"
         android:descendantFocusability="afterDescendants"
         android:orientation="vertical"
-        android:paddingBottom="15dp"
+        android:paddingBottom="6dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="15dp">
+        android:paddingTop="3dp">
 
         <LinearLayout
             android:id="@+id/sheetTitle_S"
@@ -27,10 +29,13 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/sheetStarLay"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <com.tut.abiz.base.adapter.ImageV
+
+                <!--<com.tut.abiz.base.adapter.ImageV
                     android:id="@+id/sheetStar2"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
@@ -40,29 +45,27 @@
                     android:scaleY="0.5"
                     android:layout_centerInParent="true"
                     android:tint="@color/colorBlack"
-                    app:srcCompat="@drawable/baseline_star_border_black_18" />
+                    app:srcCompat="@drawable/baseline_star_border_black_18" />-->
+
                 <com.tut.abiz.base.adapter.ImageV
                     android:id="@+id/sheetStar"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:scaleType="fitXY"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:tint="@color/colorYellow"
+                    android:scaleType="fitXY"
+                    android:tint="@color/colorOrange"
                     app:srcCompat="@drawable/baseline_star_black_18" />
-            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/sheetTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/text_size_xlarge"
                 android:layout_weight="10"
-                android:text="title"
                 android:layoutDirection="rtl"
+                android:text="title"
+                android:textColor="@color/colorDarkRed"
                 android:textDirection="rtl"
-                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_size_medium" />
 
         </LinearLayout>
@@ -80,19 +83,22 @@
                 android:layout_height="@dimen/text_size_xlarge"
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
-                android:textColor="@color/colorBlack"
+                android:background="@color/colorBlueGreen"
+                android:layoutDirection="ltr"
                 android:text="header_L"
-                android:textSize="@dimen/text_size_small" />
+                android:textColor="@color/colorBlack"
+                android:textDirection="ltr"
+                android:textSize="@dimen/text_size_medium" />
 
             <TextView
                 android:id="@+id/sheetHeaderR"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/text_size_xlarge"
                 android:layout_weight="1"
-                android:textDirection="rtl"
-                android:textColor="@color/colorBlack"
                 android:text="header_R"
-                android:textSize="@dimen/text_size_small" />
+                android:textColor="@color/colorBlack"
+                android:textDirection="rtl"
+                android:textSize="@dimen/text_size_medium" />
         </LinearLayout>
 
         <TextView
@@ -100,10 +106,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/text_size_xlarge"
             android:layout_weight="7"
-            android:gravity="end"
+            android:background="@color/bgColor2"
+            android:layoutDirection="rtl"
             android:text="context"
-            android:textAlignment="textEnd"
             android:textColor="@color/colorAccent"
+            android:textDirection="rtl"
             android:textSize="@dimen/text_size_medium" />
 
         <LinearLayout
@@ -119,9 +126,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_weight="1"
+                android:layoutDirection="ltr"
                 android:text="footer_L"
                 android:textColor="@color/colorOrange"
-                android:textSize="@dimen/text_size_small" />
+                android:textDirection="ltr"
+                android:textSize="@dimen/text_size_medium" />
 
             <TextView
                 android:id="@+id/sheetFootR"
@@ -130,9 +139,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_weight="1"
                 android:text="footer_R"
-                android:textDirection="rtl"
                 android:textColor="@color/colorDarkRed"
-                android:textSize="@dimen/text_size_small" />
+                android:textDirection="rtl"
+                android:textSize="@dimen/text_size_medium" />
 
         </LinearLayout>
     </LinearLayout>

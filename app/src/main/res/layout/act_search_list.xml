@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/colorVLightGray"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -21,9 +21,9 @@
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/srchRel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/srchRel"
         android:layout_below="@id/appBarLayout"
         android:layout_gravity="start"
         android:background="@color/colorPrimary"
@@ -60,22 +60,25 @@
                     android:layout_height="match_parent"
                     android:layout_below="@id/search_btn"
                     android:layout_weight="1"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/search" />
+                    android:text="@string/search"
+                    android:textColor="@color/colorWhite" />
             </LinearLayout>
 
             <EditText
                 android:id="@+id/search_word"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:textSize="@dimen/text_size_large"
                 android:layout_marginLeft="@dimen/text_size_small"
+                android:layout_weight="1"
                 android:background="@color/colorVLightGray"
+                android:gravity="start"
+                android:inputType="text"
                 android:layoutDirection="rtl"
-                android:textAlignment="textStart" />
+                android:lines="1"
+                android:maxLines="1"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/text_size_medium" />
         </LinearLayout>
 
         <HorizontalScrollView
@@ -100,9 +103,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/text_size_large"
                     android:button="@null"
-                    android:textColor="@color/colorWhite"
                     android:drawableRight="@android:drawable/btn_radio"
                     android:text=""
+                    android:textColor="@color/colorWhite"
                     android:visibility="invisible" />
 
                 <RadioButton
@@ -165,23 +168,14 @@
 
     </RelativeLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView
+        android:id="@+id/list_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/srchRel"
-        android:background="@color/colorVLightGray"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/list_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:listSelector="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="@null"
-            android:dividerHeight="-10dp" />
-
-    </RelativeLayout>
-
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:listSelector="@android:color/transparent" />
 
 </RelativeLayout>

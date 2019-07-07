@@ -52,6 +52,8 @@ public class ListActivity extends BaseActivity {
             adapter = new GeneralListAdapter(this, generalList, visiblity, titles, R.layout.sheet_itemlinear);
         }
         listView.setAdapter(adapter);
+        //listView.setDividerHeight(0);
+        //listView.setDivider(null);
     }
 
     @Override

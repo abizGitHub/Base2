@@ -106,7 +106,8 @@ public class SearchActivity extends BaseActivity {
                     doSearch();*/
             }
         });
-
+        //listView.setDividerHeight(0);
+        //listView.setDivider(null);
     }
 
     private void doSearch() {
@@ -124,6 +125,8 @@ public class SearchActivity extends BaseActivity {
         }
         //progressDialog.dismiss();
         adapter.notifyDataSetChanged();
+        //listView.setDividerHeight(0);
+        //listView.setDivider(null);
     }
 
     @Override

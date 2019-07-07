@@ -39,7 +39,7 @@ public class ImageV extends android.support.v7.widget.AppCompatImageView {
             else
                 setImageResource(checkedImg);
             if (checkedColor == -1)
-                setColorFilter(Color.YELLOW);
+                setColorFilter(getResources().getColor(R.color.colorOrange));
             else
                 setColorFilter(getResources().getColor(checkedColor));
         } else {

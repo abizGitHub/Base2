@@ -27,7 +27,7 @@ public class Consts {
     public static final int NEWUSERID = -666;
     public static final String NEWUSERNAME = "newUser";
     //public static final String SERVERADDRESS = "http://10.0.2.2:8085/rest";
-    public static final String SERVERADDRESS = "http://46.21.147.88:8085/WSBase/rest";
+    public static final String SERVERADDRESS = "http://46.21.147.88/WSBase/rest";
     public static final String ID = "ID";
     public static final String SHEREDPREF = "sharedPrf";
     public static final String VISIBLITYPREF = "visiblityPrf";

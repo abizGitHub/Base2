@@ -130,7 +130,6 @@
                     android:id="@+id/sheetBody"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/text_size_xlarge"
-                    android:background="@color/colorBlueGreen"
                     android:textDirection="rtl"
                     android:layoutDirection="rtl"
                     android:text="context"

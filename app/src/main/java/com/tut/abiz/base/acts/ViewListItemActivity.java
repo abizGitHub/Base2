@@ -63,10 +63,11 @@ public class ViewListItemActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Boolean hasUserPermision = getDbHelper().getBriefConfiq().getHasUserPermision();
-                if (hasUserPermision == null || !hasUserPermision) {
+                // @TODO
+                /*if (hasUserPermision == null || !hasUserPermision) {
                     startDialog(getResources().getString(R.string.accountNotRegistered));
                     return;
-                }
+                }*/
                 Intent intent = new Intent(ViewListItemActivity.this, DownLoadImgAct.class);
                 intent.putExtra(Consts.GENERALMODEL, generalModel);
                 intent.putExtra(Consts.CURRENTPAGE, ViewListItemActivity.this.getSelectedTable());
